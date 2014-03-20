@@ -79,9 +79,9 @@ int count_and_set_jvm_options(char *jvm_options_string, JavaVMOption *options) {
 void attach_environment_environment() {
 	int getEnvStat = (*jvm)->GetEnv(jvm, (void **)&env, JNI_VERSION_1_6);
 	if (getEnvStat == JNI_EDETACHED) {
-		printf("GetEnv: not attached\n");
 		if ((*jvm)->AttachCurrentThread(jvm, (void **) &env, NULL) != 0) {
 			printf("Failed to attach\n");
+			exit(1);
 		}
 	}
 }
