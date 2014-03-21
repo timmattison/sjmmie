@@ -34,7 +34,7 @@ public class Sjmmie extends AbstractSjmmie {
     }
 
     @Inject
-    public Sjmmie(RestletApplicationFactory restletApplicationFactory, OpenInterceptor openInterceptor, CloseInterceptor closeInterceptor, ConnectInterceptor connectInterceptor, SendToInterceptor sendToInterceptor, SendToInterceptorToggle sendToInterceptorToggle, SocketInterceptor socketInterceptor) {
+    public Sjmmie(RestletApplicationFactory restletApplicationFactory, OpenInterceptor openInterceptor, CloseInterceptor closeInterceptor, ConnectInterceptor connectInterceptor, SendToInterceptor sendToInterceptor, SendToInterceptorToggle sendToInterceptorToggle, SocketInterceptor socketInterceptor, SendInterceptor sendInterceptor) {
         this.restletApplicationFactory = restletApplicationFactory;
         this.openInterceptor = openInterceptor;
         this.closeInterceptor = closeInterceptor;
@@ -42,6 +42,7 @@ public class Sjmmie extends AbstractSjmmie {
         this.sendToInterceptor = sendToInterceptor;
         this.sendToInterceptorToggle = sendToInterceptorToggle;
         this.socketInterceptor = socketInterceptor;
+        this.sendInterceptor = sendInterceptor;
 
         startRestlets();
     }

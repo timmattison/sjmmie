@@ -72,4 +72,10 @@ extern const char *socket_interceptor_arguments;
 extern jmethodID java_socket_method;
 extern jmethodID socket_interceptor;
 
+// For intercepting "send"
+extern const char *send_interceptor_name;
+extern const char *send_interceptor_arguments;
+extern jmethodID java_send_method;
+extern jmethodID send_interceptor;
+
 #endif // SJMMIE_HEADER
