@@ -27,7 +27,7 @@ int SJMMIE_close(int fildes) {
 	if(java_close_method != NULL) {
 		jclass close_callback_class;
 
-		get_env();
+		JNIEnv *env = get_env();
 
 		jint return_value = (*env)->CallIntMethod(env, sjmmie_instance, java_close_method, fildes);
 	

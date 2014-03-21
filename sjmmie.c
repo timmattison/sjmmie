@@ -13,7 +13,6 @@ const int INITIALIZING = 2;
 
 int initialized = NOT_INITIALIZED;
 
-JNIEnv* env;
 JavaVM* jvm;
 jclass sjmmie_class;
 jobject sjmmie_instance;
@@ -78,28 +77,32 @@ int count_and_set_jvm_options(char *jvm_options_string, JavaVMOption *options) {
 	return option_count;
 }
 
-void attach_environment_environment() {
+JNIEnv* attach_environment_environment() {
+	JNIEnv* env;
+
 	int getEnvStat = (*jvm)->GetEnv(jvm, (void **)&env, JNI_VERSION_1_6);
+
 	if (getEnvStat == JNI_EDETACHED) {
 		if ((*jvm)->AttachCurrentThread(jvm, (void **) &env, NULL) != 0) {
 			printf("Failed to attach\n");
 			exit(1);
 		}
 	}
+
+	return env;
 }
 
-void get_env() {
+JNIEnv* get_env() {
 	// Have we already been initialized?
 	if(initialized == INITIALIZED) {
 		// Yes, just make sure the environment is attached
-		attach_environment_environment();
-		return;
+		return attach_environment_environment();
 	}
 
 	// Are we in the process of initializing?
 	if(initialized == INITIALIZING) {
 		// Yes, don't try to initialize again
-		return;
+		return NULL;
 	}
 
 	// Indicate that we are in the process of initializing
@@ -131,6 +134,7 @@ void get_env() {
 	args.ignoreUnrecognized = JNI_FALSE;
 
 	// Create a new JVM
+	JNIEnv* env;
 	jint res = JNI_CreateJavaVM(&jvm, (void **)&env, &args);
 
 	if(res < 0) {
@@ -187,7 +191,7 @@ void get_env() {
 	// Indicate that we are initialized
 	initialized = INITIALIZED;
 
-	return;
+	return attach_environment_environment();
 }
 
 // For converting Java arrays to char/byte arrays

@@ -27,8 +27,7 @@ extern const int INITIALIZING;
 extern int initialized;
 
 // For getting the Java environment
-void get_env();
-extern JNIEnv* env;
+JNIEnv* get_env();
 
 // For converting Java arrays to char/byte arrays
 extern char* java_byte_array_to_char_array(JNIEnv *env, jbyteArray java_byte_array);

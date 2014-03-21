@@ -39,7 +39,7 @@ JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalConnect(
  */
 int SJMMIE_connect(int s, const struct sockaddr *name, socklen_t namelen) {
 	if(java_connect_method != NULL) {
-		get_env();
+		JNIEnv *env = get_env();
 
 		int size_of_sa_data = sizeof(name->sa_data);
 		jbyteArray sa_data_java = (*env)->NewByteArray(env, size_of_sa_data);

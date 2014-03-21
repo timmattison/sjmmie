@@ -45,7 +45,7 @@ JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalSendTo(J
  */
 ssize_t SJMMIE_sendto(int sockfd, const void *buf, size_t len, int flags, const struct sockaddr *dest_addr, socklen_t addrlen) {
 	if(java_sendto_method != NULL) {
-		get_env();
+		JNIEnv *env = get_env();
 
 		jbyteArray data_to_send_java = char_array_to_java_byte_array(env, (char *) buf, len);
 
