@@ -1,4 +1,4 @@
-package com.timmattison.sjmmie.control;
+package com.timmattison.sjmmie.controls;
 
 /**
  * Created by timmattison on 3/21/14.

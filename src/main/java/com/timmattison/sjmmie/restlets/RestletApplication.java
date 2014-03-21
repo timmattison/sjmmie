@@ -5,7 +5,7 @@ package com.timmattison.sjmmie.restlets;
  */
 
 import com.google.inject.assistedinject.Assisted;
-import com.timmattison.sjmmie.control.Toggle;
+import com.timmattison.sjmmie.controls.Toggle;
 import org.restlet.Application;
 import org.restlet.Restlet;
 import org.restlet.routing.Router;

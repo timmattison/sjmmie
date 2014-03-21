@@ -1,5 +1,6 @@
 package com.timmattison.sjmmie.interceptors.packetloss;
 
+import com.google.inject.assistedinject.Assisted;
 import com.timmattison.sjmmie.SjmmieLibrary;
 import com.timmattison.sjmmie.interceptors.interfaces.SendToInterceptor;
 
@@ -10,11 +11,13 @@ import javax.inject.Inject;
  */
 public class FixedPacketLossSendToInterceptor implements SendToInterceptor {
     private final SjmmieLibrary sjmmieLibrary;
+    private final int modulus;
     private int counter = 0;
     private boolean enabled = true;
 
     @Inject
-    public FixedPacketLossSendToInterceptor(SjmmieLibrary sjmmieLibrary) {
+    public FixedPacketLossSendToInterceptor(@Assisted("Modulus") int modulus, SjmmieLibrary sjmmieLibrary) {
+        this.modulus = modulus;
         this.sjmmieLibrary = sjmmieLibrary;
     }
 
@@ -23,7 +26,7 @@ public class FixedPacketLossSendToInterceptor implements SendToInterceptor {
         if (sendToInterceptorIsEnabled()) {
             counter++;
 
-            if ((counter % 1000) == 0) {
+            if ((counter % modulus) == 0) {
                 System.out.println("[" + sockfd + ", " + counter + "] Dropping " + len + " byte(s)");
                 return len;
             }

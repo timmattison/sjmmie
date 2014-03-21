@@ -12,6 +12,7 @@ public enum SocketProtocols {
     IPPROTO_IGMP(2),
     IPPROTO_IPV4(4),
     IPPROTO_TCP(6),
+    IPPROTO_UDP(17),
     IPPROTO_IPV6(41),
     UNKNOWN(Integer.MIN_VALUE);
 

@@ -1,4 +1,4 @@
-package com.timmattison.sjmmie.control;
+package com.timmattison.sjmmie.controls;
 
 import com.timmattison.sjmmie.interceptors.interfaces.SendToInterceptor;
 

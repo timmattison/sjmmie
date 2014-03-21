@@ -4,8 +4,7 @@ package com.timmattison.sjmmie.restlets;
  * Created by timmattison on 3/21/14.
  */
 
-import com.timmattison.sjmmie.control.Toggle;
-import org.restlet.resource.ServerResource;
+import com.timmattison.sjmmie.controls.Toggle;
 
 /**
  * Created with IntelliJ IDEA.

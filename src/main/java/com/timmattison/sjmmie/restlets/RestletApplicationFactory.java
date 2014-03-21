@@ -6,7 +6,7 @@ package com.timmattison.sjmmie.restlets;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-import com.timmattison.sjmmie.control.Toggle;
+import com.timmattison.sjmmie.controls.Toggle;
 
 import java.util.List;
 

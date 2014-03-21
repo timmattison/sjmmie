@@ -4,7 +4,7 @@ package com.timmattison.sjmmie.restlets;
  * Created by timmattison on 3/21/14.
  */
 
-import com.timmattison.sjmmie.control.Toggle;
+import com.timmattison.sjmmie.controls.Toggle;
 import org.restlet.data.MediaType;
 import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
