@@ -20,26 +20,14 @@ import org.restlet.Application;
 public class SjmmieModule extends AbstractModule {
     @Override
     protected void configure() {
-        System.out.println("Configuring");
         bind(SjmmieLibrary.class).toInstance(new SjmmieLibrary());
 
-        System.out.println("Configuring 1");
         bind(OpenInterceptor.class).to(BasicOpenInterceptor.class).asEagerSingleton();
-        System.out.println("Configuring 2");
         bind(CloseInterceptor.class).to(BasicCloseInterceptor.class).asEagerSingleton();
-        System.out.println("Configuring 3");
         bind(ConnectInterceptor.class).to(BasicConnectInterceptor.class).asEagerSingleton();
-        System.out.println("Configuring 4");
         bind(SendToInterceptor.class).to(FixedPacketLossSendToInterceptor.class).asEagerSingleton();
-        System.out.println("Configuring 5");
 
         // Use the RESTlet system
-        try {
         install(new FactoryModuleBuilder().implement(Application.class, RestletApplication.class).build(RestletApplicationFactory.class));
-        } catch (Throwable t) {
-            t.printStackTrace();
-            System.exit(1);
-        }
-        System.out.println("Configured 1");
     }
 }
