@@ -24,7 +24,6 @@ public class FixedPacketLossSendToInterceptor implements SendToInterceptor {
             counter++;
 
             if ((counter % 1000) == 0) {
-                System.out.println("Free memory: " + Runtime.getRuntime().freeMemory());
                 System.out.println("[" + counter + "] Dropping " + len + " byte(s)");
                 return len;
             }
