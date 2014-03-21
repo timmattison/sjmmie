@@ -21,8 +21,10 @@ public class NopSocketInterceptor implements SocketInterceptor {
 
     @Override
     public int socketInterceptor(int domain, int type, int protocol) {
-        System.out.println("Socket: Domain -> " + SocketAddressFamilies.findByValue(domain) + "[" + domain + "], type -> " + SocketTypes.findByValue(type) + "[" + type + "], protocol -> " + SocketProtocols.findByValue(protocol) + "[" + protocol + "]");
-        return sjmmieLibrary.originalSocket(domain, type, protocol);
+        int socketDescriptor = sjmmieLibrary.originalSocket(domain, type, protocol);
+        System.out.println("Socket: Descriptor -> " + socketDescriptor + ", Domain -> " + SocketAddressFamilies.findByValue(domain) + "[" + domain + "], type -> " + SocketTypes.findByValue(type) + "[" + type + "], protocol -> " + SocketProtocols.findByValue(protocol) + "[" + protocol + "]");
+
+        return socketDescriptor;
     }
 
     @Override
