@@ -1,6 +1,9 @@
 package com.timmattison.sjmmie.interceptors.nop;
 
 import com.timmattison.sjmmie.SjmmieLibrary;
+import com.timmattison.sjmmie.enums.SocketAddressFamilies;
+import com.timmattison.sjmmie.enums.SocketProtocols;
+import com.timmattison.sjmmie.enums.SocketTypes;
 import com.timmattison.sjmmie.interceptors.interfaces.SocketInterceptor;
 
 import javax.inject.Inject;
@@ -18,7 +21,7 @@ public class NopSocketInterceptor implements SocketInterceptor {
 
     @Override
     public int socketInterceptor(int domain, int type, int protocol) {
-        System.out.println("Socket: " + domain + ", " + type + " " + protocol);
+        System.out.println("Socket: Domain -> " + SocketAddressFamilies.findByValue(domain) + "[" + domain + "], type -> " + SocketTypes.findByValue(type) + "[" + type + "], protocol -> " + SocketProtocols.findByValue(protocol) + "[" + protocol + "]");
         return sjmmieLibrary.originalSocket(domain, type, protocol);
     }
 
