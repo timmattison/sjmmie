@@ -59,10 +59,8 @@ public class Sjmmie extends AbstractSjmmie {
             // Attach the sample application.
             component.getDefaultHost().attach(restletApplicationFactory.create(getToggles()));
 
-            System.out.println("Starting RESTlet server");
             // Start the component.
             component.start();
-            System.out.println("Started RESTlet server");
         } catch (Exception e) {
             // Something is wrong.
             e.printStackTrace();
