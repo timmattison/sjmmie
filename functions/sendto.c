@@ -11,7 +11,7 @@ const char *sendto_interceptor_arguments = "(I[BIIC[BI)I";
 jmethodID sendto_interceptor;
 
 /**
- * Java calls back into this function when it wants to call back to the original connect function
+ * Java calls back into this function when it wants to call back to the original sendto function
  */
 JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalSendTo(JNIEnv *env, jobject obj, jint sockfd, jbyteArray buf_java, jint len, jint flags, jchar sa_family, jbyteArray dest_addr_sa_data_java, jint addrlen) {
 	int return_value;
@@ -32,7 +32,7 @@ JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalSendTo(J
 	// Call the original function and store the result
 	return_value = sendto(sockfd, buf_c, len, flags, (dest_addr_sa_data_c == NULL) ? NULL : &dest_addr, addrlen);
 
-	// Release the memory for the copy of the string data (JNI_ABORT DOES NOT COPY DATA BACK)
+	// Release the memory for the copy of the string data
 	safe_release_byte_array_elements(env, buf_java, (signed char *) buf_c);
 	safe_release_byte_array_elements(env, dest_addr_sa_data_java, (signed char *) dest_addr_sa_data_c);
 
@@ -41,7 +41,7 @@ JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalSendTo(J
 }
 
 /**
- * This overrides the original connect function
+ * This overrides the original sendto function
  */
 ssize_t SJMMIE_sendto(int sockfd, const void *buf, size_t len, int flags, const struct sockaddr *dest_addr, socklen_t addrlen) {
 	if(java_sendto_method != NULL) {
