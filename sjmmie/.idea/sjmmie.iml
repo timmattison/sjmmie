@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="CIDR_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$/../com_timmattison_sjmmie_SjmmieLibrary.h">
+      <sourceFolder url="file://$MODULE_DIR$/../com_timmattison_sjmmie_SjmmieLibrary.h" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../functions">
+      <sourceFolder url="file://$MODULE_DIR$/../functions" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/build" />
+    </content>
+    <content url="file://$MODULE_DIR$/../sjmmie.c">
+      <sourceFolder url="file://$MODULE_DIR$/../sjmmie.c" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../sjmmie.h">
+      <sourceFolder url="file://$MODULE_DIR$/../sjmmie.h" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/.idea">
+      <sourceFolder url="file://$MODULE_DIR$/.idea" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/sjmmie.xcodeproj">
+      <sourceFolder url="file://$MODULE_DIR$/sjmmie.xcodeproj" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
+

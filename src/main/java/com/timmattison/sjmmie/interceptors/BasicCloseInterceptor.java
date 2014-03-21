@@ -18,7 +18,6 @@ public class BasicCloseInterceptor implements CloseInterceptor {
 
     @Override
     public int closeInterceptor(int fildes) {
-        System.out.println("In Java's close interceptor");
         return sjmmieLibrary.originalClose(fildes);
     }
 }

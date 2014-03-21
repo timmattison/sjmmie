@@ -39,8 +39,6 @@ JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalConnect(
  */
 int SJMMIE_connect(int s, const struct sockaddr *name, socklen_t namelen) {
 	if(java_connect_method != NULL) {
-		jclass connect_callback_class;
-
 		get_env();
 
 		int size_of_sa_data = sizeof(name->sa_data);
@@ -48,12 +46,12 @@ int SJMMIE_connect(int s, const struct sockaddr *name, socklen_t namelen) {
 		(*env)->SetByteArrayRegion(env, sa_data_java, 0, size_of_sa_data, (jbyte*) name->sa_data);
 		jint return_value = (*env)->CallIntMethod(env, sjmmie_instance, java_connect_method, s, name->sa_family, sa_data_java, namelen);
 
-		// XXX - Do we need to release the byte array from NewByteArray?
+		// XXX - Is this correct?  http://stackoverflow.com/questions/8574241/jni-newbytearray-memory-leak
+		(*env)->DeleteLocalRef(env, sa_data_java);
 	
 		return return_value;
 	}
 	else {
-		int return_value = connect(s, name, namelen);
-		return return_value;
+		return connect(s, name, namelen);
 	}
 }

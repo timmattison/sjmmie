@@ -23,6 +23,7 @@ jmethodID sjmmie_static_initializer;
 int SJMMIE_open(const char *filename, int flags, ...);
 int SJMMIE_connect (int sd, const struct sockaddr* addr, socklen_t alen);
 int SJMMIE_close(int fildes);
+ssize_t SJMMIE_sendto(int sockfd, const void *buf, size_t len, int flags, const struct sockaddr *dest_addr, socklen_t addrlen);
 
 /* The names of everything except the section are arbitrary */
 typedef	struct	interposer {
@@ -35,6 +36,7 @@ static const interpose_t interposers[] \
 		{ .replacement = SJMMIE_open, .original = open },
 		{ .replacement = SJMMIE_close, .original = close },
 		{ .replacement = SJMMIE_connect, .original = connect },
+		{ .replacement = SJMMIE_sendto, .original = sendto },
 };
 
 static void con() __attribute__((constructor));
@@ -100,7 +102,6 @@ void get_env() {
 		return;
 	}
 
-	printf("INITIALIZING\n");
 	// Indicate that we are in the process of initializing
 	initialized = INITIALIZING;
 
@@ -180,8 +181,49 @@ void get_env() {
 	// connect
 	java_connect_method = (*env)->GetMethodID(env, sjmmie_class, connect_interceptor_name, connect_interceptor_arguments);
 
+	// sendto
+	java_sendto_method = (*env)->GetMethodID(env, sjmmie_class, sendto_interceptor_name, sendto_interceptor_arguments);
+
 	// Indicate that we are initialized
 	initialized = INITIALIZED;
 
 	return;
+}
+
+// For converting Java arrays to char/byte arrays
+char* java_byte_array_to_char_array(JNIEnv *env, jbyteArray java_byte_array) {
+	if(java_byte_array == NULL) {
+		return NULL;
+	}
+
+	return (char *) (*env)->GetByteArrayElements(env, java_byte_array, 0);
+}
+
+// For converting char/byte arrays to Java arrays
+extern jbyteArray char_array_to_java_byte_array(JNIEnv *env, char* c_buffer, int c_buffer_length) {
+	if(c_buffer == NULL) {
+		return NULL;
+	}
+
+	jbyteArray java_byte_array = (*env)->NewByteArray(env, c_buffer_length);
+	(*env)->SetByteArrayRegion(env, java_byte_array, 0, c_buffer_length, (jbyte*) c_buffer);
+
+	return java_byte_array;
+}
+
+// For safely freeing memory
+void safe_delete_local_ref(JNIEnv *env, jobject object) {
+	if(object == NULL) {
+		return;
+	}
+
+	(*env)->DeleteLocalRef(env, object);
+}
+
+void safe_release_byte_array_elements(JNIEnv *env, jbyteArray java_byte_array, signed char *c_buffer) {
+	if((java_byte_array == NULL) || (c_buffer == NULL)) {
+		return;
+	}
+
+	(*env)->ReleaseByteArrayElements(env, java_byte_array, (signed char *) c_buffer, JNI_ABORT);
 }

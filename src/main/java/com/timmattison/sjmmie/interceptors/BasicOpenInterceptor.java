@@ -18,7 +18,6 @@ public class BasicOpenInterceptor implements OpenInterceptor {
 
     @Override
     public int openInterceptor(String filename, int flags) {
-        System.out.println("In Java's open interceptor");
         return sjmmieLibrary.originalOpen(filename, flags);
     }
 }
