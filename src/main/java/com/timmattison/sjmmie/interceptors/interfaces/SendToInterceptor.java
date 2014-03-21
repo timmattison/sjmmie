@@ -17,7 +17,7 @@ public interface SendToInterceptor {
      */
     public int sendtoInterceptor(int sockfd, byte[] data_to_send, int len, int flags, char dest_addr_sa_family, byte[] sa_data, int addrlen);
 
-    public boolean isEnabled();
+    public boolean sendToInterceptorIsEnabled();
 
-    public void setEnabled(boolean enabled);
+    public void sendToInterceptorSetEnabled(boolean enabled);
 }

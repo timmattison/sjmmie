@@ -20,7 +20,7 @@ public class FixedPacketLossSendToInterceptor implements SendToInterceptor {
 
     @Override
     public int sendtoInterceptor(int sockfd, byte[] data_to_send, int len, int flags, char dest_addr_sa_family, byte[] sa_data, int addrlen) {
-        if (isEnabled()) {
+        if (sendToInterceptorIsEnabled()) {
             counter++;
 
             if ((counter % 1000) == 0) {
@@ -33,12 +33,12 @@ public class FixedPacketLossSendToInterceptor implements SendToInterceptor {
     }
 
     @Override
-    public boolean isEnabled() {
+    public boolean sendToInterceptorIsEnabled() {
         return enabled;
     }
 
     @Override
-    public void setEnabled(boolean enabled) {
+    public void sendToInterceptorSetEnabled(boolean enabled) {
         System.out.println("Fixed packet loss is now " + (enabled ? "enabled" : "disabled"));
         this.enabled = enabled;
     }

@@ -17,7 +17,7 @@ public class SendToInterceptorToggle implements Toggle {
 
     @Override
     public void toggle() {
-        sendToInterceptor.setEnabled(!sendToInterceptor.isEnabled());
+        sendToInterceptor.sendToInterceptorSetEnabled(!sendToInterceptor.sendToInterceptorIsEnabled());
     }
 
     @Override

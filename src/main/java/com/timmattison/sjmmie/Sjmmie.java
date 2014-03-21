@@ -74,14 +74,14 @@ public class Sjmmie extends AbstractSjmmie {
     }
 
     @Override
-    public boolean isEnabled() {
+    public boolean sendToInterceptorIsEnabled() {
         // TODO FIXME XXX - UGLY AND BAD, FIX ME
-        return sendToInterceptor.isEnabled();
+        return sendToInterceptor.sendToInterceptorIsEnabled();
     }
 
     @Override
-    public void setEnabled(boolean enabled) {
+    public void sendToInterceptorSetEnabled(boolean enabled) {
         // TODO FIXME XXX - UGLY AND BAD, FIX ME
-        sendToInterceptor.setEnabled(enabled);
+        sendToInterceptor.sendToInterceptorSetEnabled(enabled);
     }
 }
