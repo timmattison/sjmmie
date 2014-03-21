@@ -5,7 +5,7 @@ package com.timmattison.sjmmie.interceptors.interfaces;
  */
 public interface SendToInterceptor {
     /**
-     * The connect function call interceptor
+     * The sendto function call interceptor
      * @param sockfd
      * @param data_to_send
      * @param len

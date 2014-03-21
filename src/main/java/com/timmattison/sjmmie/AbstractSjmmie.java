@@ -1,20 +1,18 @@
 package com.timmattison.sjmmie;
 
-import com.timmattison.sjmmie.interceptors.interfaces.CloseInterceptor;
-import com.timmattison.sjmmie.interceptors.interfaces.ConnectInterceptor;
-import com.timmattison.sjmmie.interceptors.interfaces.OpenInterceptor;
-import com.timmattison.sjmmie.interceptors.interfaces.SendToInterceptor;
+import com.timmattison.sjmmie.interceptors.interfaces.*;
 
 /**
  * Created by timmattison on 2/20/14.
  */
-public abstract class AbstractSjmmie implements OpenInterceptor, CloseInterceptor, ConnectInterceptor, SendToInterceptor {
+public abstract class AbstractSjmmie implements OpenInterceptor, CloseInterceptor, ConnectInterceptor, SendToInterceptor, SocketInterceptor {
     private static SjmmieLibrary sjmmieLibrary = new SjmmieLibrary();
 
     protected OpenInterceptor openInterceptor;
     protected CloseInterceptor closeInterceptor;
     protected ConnectInterceptor connectInterceptor;
-    public SendToInterceptor sendToInterceptor;
+    protected SendToInterceptor sendToInterceptor;
+    protected SocketInterceptor socketInterceptor;
 
     @Override
     public int openInterceptor(String filename, int flags) {
@@ -50,5 +48,34 @@ public abstract class AbstractSjmmie implements OpenInterceptor, CloseIntercepto
         } else {
             return sjmmieLibrary.originalSendTo(sockfd, data_to_send, len, flags, dest_addr_sa_family, sa_data, addrlen);
         }
+    }
+
+    @Override
+    public boolean sendToInterceptorIsEnabled() {
+        return sendToInterceptor.sendToInterceptorIsEnabled();
+    }
+
+    @Override
+    public void sendToInterceptorSetEnabled(boolean enabled) {
+        sendToInterceptor.sendToInterceptorSetEnabled(enabled);
+    }
+
+    @Override
+    public int socketInterceptor(int domain, int type, int protocol) {
+        if (socketInterceptor != null) {
+            return socketInterceptor.socketInterceptor(domain, type, protocol);
+        } else {
+            return sjmmieLibrary.originalSocket(domain, type, protocol);
+        }
+    }
+
+    @Override
+    public boolean socketInterceptorIsEnabled() {
+        return socketInterceptor.socketInterceptorIsEnabled();
+    }
+
+    @Override
+    public void socketInterceptorSetEnabled(boolean enabled) {
+        socketInterceptor.socketInterceptorSetEnabled(enabled);
     }
 }

@@ -4,10 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.timmattison.sjmmie.control.SendToInterceptorToggle;
 import com.timmattison.sjmmie.control.Toggle;
-import com.timmattison.sjmmie.interceptors.interfaces.CloseInterceptor;
-import com.timmattison.sjmmie.interceptors.interfaces.ConnectInterceptor;
-import com.timmattison.sjmmie.interceptors.interfaces.OpenInterceptor;
-import com.timmattison.sjmmie.interceptors.interfaces.SendToInterceptor;
+import com.timmattison.sjmmie.interceptors.interfaces.*;
 import com.timmattison.sjmmie.restlets.RestletApplicationFactory;
 import org.restlet.Component;
 import org.restlet.data.Protocol;
@@ -37,13 +34,14 @@ public class Sjmmie extends AbstractSjmmie {
     }
 
     @Inject
-    public Sjmmie(RestletApplicationFactory restletApplicationFactory, OpenInterceptor openInterceptor, CloseInterceptor closeInterceptor, ConnectInterceptor connectInterceptor, SendToInterceptor sendToInterceptor, SendToInterceptorToggle sendToInterceptorToggle) {
+    public Sjmmie(RestletApplicationFactory restletApplicationFactory, OpenInterceptor openInterceptor, CloseInterceptor closeInterceptor, ConnectInterceptor connectInterceptor, SendToInterceptor sendToInterceptor, SendToInterceptorToggle sendToInterceptorToggle, SocketInterceptor socketInterceptor) {
         this.restletApplicationFactory = restletApplicationFactory;
         this.openInterceptor = openInterceptor;
         this.closeInterceptor = closeInterceptor;
         this.connectInterceptor = connectInterceptor;
         this.sendToInterceptor = sendToInterceptor;
         this.sendToInterceptorToggle = sendToInterceptorToggle;
+        this.socketInterceptor = socketInterceptor;
 
         startRestlets();
     }
@@ -71,17 +69,5 @@ public class Sjmmie extends AbstractSjmmie {
         List<Toggle> returnValue = new ArrayList<Toggle>();
         returnValue.add(sendToInterceptorToggle);
         return returnValue;
-    }
-
-    @Override
-    public boolean sendToInterceptorIsEnabled() {
-        // TODO FIXME XXX - UGLY AND BAD, FIX ME
-        return sendToInterceptor.sendToInterceptorIsEnabled();
-    }
-
-    @Override
-    public void sendToInterceptorSetEnabled(boolean enabled) {
-        // TODO FIXME XXX - UGLY AND BAD, FIX ME
-        sendToInterceptor.sendToInterceptorSetEnabled(enabled);
     }
 }

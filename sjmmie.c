@@ -23,6 +23,7 @@ int SJMMIE_open(const char *filename, int flags, ...);
 int SJMMIE_connect (int sd, const struct sockaddr* addr, socklen_t alen);
 int SJMMIE_close(int fildes);
 ssize_t SJMMIE_sendto(int sockfd, const void *buf, size_t len, int flags, const struct sockaddr *dest_addr, socklen_t addrlen);
+int SJMMIE_socket(int domain, int type, int protocol);
 
 /* The names of everything except the section are arbitrary */
 typedef	struct	interposer {
@@ -36,6 +37,7 @@ static const interpose_t interposers[] \
 		{ .replacement = SJMMIE_close, .original = close },
 		{ .replacement = SJMMIE_connect, .original = connect },
 		{ .replacement = SJMMIE_sendto, .original = sendto },
+		{ .replacement = SJMMIE_socket, .original = socket },
 };
 
 static void con() __attribute__((constructor));
@@ -187,6 +189,9 @@ JNIEnv* get_env() {
 
 	// sendto
 	java_sendto_method = (*env)->GetMethodID(env, sjmmie_class, sendto_interceptor_name, sendto_interceptor_arguments);
+
+	// socket
+	java_socket_method = (*env)->GetMethodID(env, sjmmie_class, socket_interceptor_name, socket_interceptor_arguments);
 
 	// Indicate that we are initialized
 	initialized = INITIALIZED;

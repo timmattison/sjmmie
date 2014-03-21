@@ -66,4 +66,10 @@ extern const char *sendto_interceptor_arguments;
 extern jmethodID java_sendto_method;
 extern jmethodID sendto_interceptor;
 
+// For intercepting "socket"
+extern const char *socket_interceptor_name;
+extern const char *socket_interceptor_arguments;
+extern jmethodID java_socket_method;
+extern jmethodID socket_interceptor;
+
 #endif // SJMMIE_HEADER
