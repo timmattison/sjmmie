@@ -24,7 +24,7 @@ public class Sjmmie extends AbstractSjmmie {
 
     public static Sjmmie getInstance() {
         if (INSTANCE == null) {
-            Injector injector = Guice.createInjector(new SjmmieNopModule());
+            Injector injector = Guice.createInjector(new SjmmieFixedPacketDelayModule());
 
             // Get an instance of the Sjmmie object
             INSTANCE = injector.getInstance(Sjmmie.class);
