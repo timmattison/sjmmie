@@ -19,4 +19,6 @@ public class SjmmieLibrary {
     public native int originalSocket(int domain, int type, int protocol);
 
     public native int originalSend(int socket, byte[] buffer, int length, int flags);
+
+    public native int originalRecv(int socket, byte[] buffer, int size, int flags);
 }

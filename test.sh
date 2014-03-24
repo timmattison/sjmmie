@@ -2,7 +2,8 @@
 
 #PROGRAM_TO_SJMMIE="cat example-data/input.txt"
 #PROGRAM_TO_SJMMIE="curl localhost"
-PROGRAM_TO_SJMMIE="wget localhost -O /dev/null"
+#PROGRAM_TO_SJMMIE="wget localhost -O /dev/null"
+PROGRAM_TO_SJMMIE="wget localhost"
 #PROGRAM_TO_SJMMIE="/Applications/Firefox.app/Contents/MacOS/firefox"
 #PROGRAM_TO_SJMMIE="ls"
 
