@@ -5,7 +5,7 @@ import com.timmattison.sjmmie.interceptors.interfaces.*;
 /**
  * Created by timmattison on 2/20/14.
  */
-public abstract class AbstractSjmmie implements OpenInterceptor, CloseInterceptor, ConnectInterceptor, SendToInterceptor, SocketInterceptor, SendInterceptor {
+public abstract class AbstractSjmmie implements OpenInterceptor, CloseInterceptor, ConnectInterceptor, SendToInterceptor, SocketInterceptor, SendInterceptor, RecvInterceptor {
     private static SjmmieLibrary sjmmieLibrary = new SjmmieLibrary();
 
     protected OpenInterceptor openInterceptor;
@@ -14,6 +14,7 @@ public abstract class AbstractSjmmie implements OpenInterceptor, CloseIntercepto
     protected SendToInterceptor sendToInterceptor;
     protected SocketInterceptor socketInterceptor;
     protected SendInterceptor sendInterceptor;
+    protected RecvInterceptor recvInterceptor;
 
     @Override
     public int openInterceptor(String filename, int flags) {
@@ -97,5 +98,24 @@ public abstract class AbstractSjmmie implements OpenInterceptor, CloseIntercepto
     @Override
     public void sendInterceptorSetEnabled(boolean enabled) {
         sendInterceptor.sendInterceptorSetEnabled(enabled);
+    }
+
+    @Override
+    public int recvInterceptor(int socket, byte[] buffer, int length, int flags) {
+        if (recvInterceptor != null) {
+            return recvInterceptor.recvInterceptor(socket, buffer, length, flags);
+        } else {
+            return sjmmieLibrary.originalRecv(socket, buffer, length, flags);
+        }
+    }
+
+    @Override
+    public boolean recvInterceptorIsEnabled() {
+        return recvInterceptor.recvInterceptorIsEnabled();
+    }
+
+    @Override
+    public void recvInterceptorSetEnabled(boolean enabled) {
+        recvInterceptor.recvInterceptorSetEnabled(enabled);
     }
 }

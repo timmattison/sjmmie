@@ -38,6 +38,7 @@ extern jbyteArray char_array_to_java_byte_array(JNIEnv *env, char* c_buffer, int
 // For safely freeing memory
 extern void safe_delete_local_ref(JNIEnv *env, jobject object);
 extern void safe_release_byte_array_elements(JNIEnv *env, jbyteArray java_byte_array, signed char *c_buffer);
+extern void safe_release_byte_array_elements_copy_back(JNIEnv *env, jbyteArray java_byte_array, signed char *c_buffer);
 
 // For getting the current Sjmmie instance
 extern jobject sjmmie_instance;
@@ -77,5 +78,11 @@ extern const char *send_interceptor_name;
 extern const char *send_interceptor_arguments;
 extern jmethodID java_send_method;
 extern jmethodID send_interceptor;
+
+// For intercepting "recv"
+extern const char *recv_interceptor_name;
+extern const char *recv_interceptor_arguments;
+extern jmethodID java_recv_method;
+extern jmethodID recv_interceptor;
 
 #endif // SJMMIE_HEADER

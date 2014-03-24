@@ -25,6 +25,7 @@ int SJMMIE_close(int fildes);
 ssize_t SJMMIE_sendto(int sockfd, const void *buf, size_t len, int flags, const struct sockaddr *dest_addr, socklen_t addrlen);
 int SJMMIE_socket(int domain, int type, int protocol);
 ssize_t SJMMIE_send(int socket, const void *buffer, size_t length, int flags);
+ssize_t SJMMIE_recv (int socket, void *buffer, size_t size, int flags);
 
 /* The names of everything except the section are arbitrary */
 typedef	struct	interposer {
@@ -40,6 +41,7 @@ static const interpose_t interposers[] \
 		{ .replacement = SJMMIE_sendto, .original = sendto },
 		{ .replacement = SJMMIE_socket, .original = socket },
 		{ .replacement = SJMMIE_send, .original = send },
+		{ .replacement = SJMMIE_recv, .original = recv },
 };
 
 static void con() __attribute__((constructor));
@@ -198,6 +200,9 @@ JNIEnv* get_env() {
 	// send
 	java_send_method = (*env)->GetMethodID(env, sjmmie_class, send_interceptor_name, send_interceptor_arguments);
 
+	// recv
+	java_recv_method = (*env)->GetMethodID(env, sjmmie_class, recv_interceptor_name, recv_interceptor_arguments);
+
 	// Indicate that we are initialized
 	initialized = INITIALIZED;
 
@@ -240,4 +245,12 @@ void safe_release_byte_array_elements(JNIEnv *env, jbyteArray java_byte_array, s
 	}
 
 	(*env)->ReleaseByteArrayElements(env, java_byte_array, (signed char *) c_buffer, JNI_ABORT);
+}
+
+void safe_release_byte_array_elements_copy_back(JNIEnv *env, jbyteArray java_byte_array, signed char *c_buffer) {
+	if((java_byte_array == NULL) || (c_buffer == NULL)) {
+		return;
+	}
+
+	(*env)->ReleaseByteArrayElements(env, java_byte_array, (signed char *) c_buffer, 0);
 }
