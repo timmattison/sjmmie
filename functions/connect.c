@@ -21,14 +21,14 @@ JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalConnect(
 	temp.sa_family = sa_family;
 
 	// Get the string data and copy it to the sockaddr structure
-	char* sa_data_c = (char *) (*env)->GetByteArrayElements(env, sa_data_java, 0);
+	char* sa_data_c = java_byte_array_to_char_array(env, sa_data_java);
 	memcpy(&temp.sa_data[0], sa_data_c, sizeof(temp.sa_data));
 
 	// Call the original function and store the result
 	return_value = connect(s, &temp, namelen);
 
 	// Release the memory for the copy of the string data
-	(*env)->ReleaseByteArrayElements(env, sa_data_java, (signed char *) sa_data_c, JNI_ABORT);
+	safe_release_byte_array_elements(env, sa_data_java, (signed char *) sa_data_c);
 
 	// Return the result
 	return return_value;
@@ -42,12 +42,12 @@ int SJMMIE_connect(int s, const struct sockaddr *name, socklen_t namelen) {
 		JNIEnv *env = get_env();
 
 		int size_of_sa_data = sizeof(name->sa_data);
-		jbyteArray sa_data_java = (*env)->NewByteArray(env, size_of_sa_data);
-		(*env)->SetByteArrayRegion(env, sa_data_java, 0, size_of_sa_data, (jbyte*) name->sa_data);
+		jbyteArray sa_data_java = char_array_to_java_byte_array(env, (char *) name->sa_data, size_of_sa_data);
+
 		jint return_value = (*env)->CallIntMethod(env, sjmmie_instance, java_connect_method, s, name->sa_family, sa_data_java, namelen);
 
 		// XXX - Is this correct?  http://stackoverflow.com/questions/8574241/jni-newbytearray-memory-leak
-		(*env)->DeleteLocalRef(env, sa_data_java);
+		safe_delete_local_ref(env, sa_data_java);
 	
 		return return_value;
 	}
