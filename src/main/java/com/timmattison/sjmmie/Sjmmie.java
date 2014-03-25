@@ -5,6 +5,7 @@ import com.google.inject.Injector;
 import com.timmattison.sjmmie.controls.SendToInterceptorToggle;
 import com.timmattison.sjmmie.controls.Toggle;
 import com.timmattison.sjmmie.interceptors.interfaces.*;
+import com.timmattison.sjmmie.interceptors.packetdelay.SjmmieFixedPacketDelayModule;
 import com.timmattison.sjmmie.restlets.RestletApplicationFactory;
 import org.restlet.Component;
 import org.restlet.data.Protocol;

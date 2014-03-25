@@ -1,9 +1,15 @@
-package com.timmattison.sjmmie;
+package com.timmattison.sjmmie.interceptors.packetloss;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
+import com.google.inject.name.Names;
+import com.timmattison.sjmmie.SjmmieLibrary;
 import com.timmattison.sjmmie.interceptors.interfaces.*;
-import com.timmattison.sjmmie.interceptors.nop.*;
+import com.timmattison.sjmmie.interceptors.nop.NopCloseInterceptor;
+import com.timmattison.sjmmie.interceptors.nop.NopConnectInterceptor;
+import com.timmattison.sjmmie.interceptors.nop.NopOpenInterceptor;
+import com.timmattison.sjmmie.interceptors.nop.NopSocketInterceptor;
+import com.timmattison.sjmmie.interceptors.packetloss.FixedPacketLossSendToInterceptor;
 import com.timmattison.sjmmie.restlets.RestletApplication;
 import com.timmattison.sjmmie.restlets.RestletApplicationFactory;
 import org.restlet.Application;
@@ -11,7 +17,13 @@ import org.restlet.Application;
 /**
  * Created by timmattison on 3/13/14.
  */
-public class SjmmieNopModule extends AbstractModule {
+public class SjmmieFixedPacketLossModule extends AbstractModule {
+    private final int modulus;
+
+    public SjmmieFixedPacketLossModule(int modulus) {
+        this.modulus = modulus;
+    }
+
     @Override
     protected void configure() {
         bind(SjmmieLibrary.class).toInstance(new SjmmieLibrary());
@@ -19,10 +31,10 @@ public class SjmmieNopModule extends AbstractModule {
         bind(OpenInterceptor.class).to(NopOpenInterceptor.class).asEagerSingleton();
         bind(CloseInterceptor.class).to(NopCloseInterceptor.class).asEagerSingleton();
         bind(ConnectInterceptor.class).to(NopConnectInterceptor.class).asEagerSingleton();
-        bind(SendToInterceptor.class).to(NopSendToIntereceptor.class).asEagerSingleton();
         bind(SocketInterceptor.class).to(NopSocketInterceptor.class).asEagerSingleton();
-        bind(SendInterceptor.class).to(NopSendIntereceptor.class).asEagerSingleton();
-        bind(RecvInterceptor.class).to(NopRecvIntereceptor.class).asEagerSingleton();
+
+        bindConstant().annotatedWith(Names.named("Modulus")).to(modulus);
+        bind(SendToInterceptor.class).to(FixedPacketLossSendToInterceptor.class).asEagerSingleton();
 
         // Use the RESTlet system
         install(new FactoryModuleBuilder().implement(Application.class, RestletApplication.class).build(RestletApplicationFactory.class));
