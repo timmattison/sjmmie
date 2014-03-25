@@ -44,13 +44,12 @@ Then add a new interposer where the "SJMMIE_" version is the replacement and the
 Step 2: Add the externs required for interception into sjmmie.h
 ---------------------------------------------------------------
 
-There are four required externs for each intercepted function.  They are the name of the interceptor in Java, its arguments in JNI type signature format (http://docs.oracle.com/javase/1.5.0/docs/guide/jni/spec/types.html#wp276), a JNI methodID reference to the interceptor, XXX and another random variable that I don't get XXX.  For send it looks like this:
+There are three required externs for each intercepted function.  They are the name of the interceptor in Java, its arguments in JNI type signature format (http://docs.oracle.com/javase/1.5.0/docs/guide/jni/spec/types.html#wp276), a JNI methodID reference to the interceptor.  For send it looks like this:
 
 // For intercepting "send"
 extern const char *send_interceptor_name;
 extern const char *send_interceptor_arguments;
 extern jmethodID java_send_method;
-extern jmethodID send_interceptor;
 
 Step 3: Unroll the C parameters if necessary
 --------------------------------------------
@@ -106,7 +105,7 @@ Step 5: Create a file in the functions directory that contains the C glue code a
 
 This file contains your interceptor function (SJMMIE_send for us) and a function that allows the JVM to call back to C to use the original function.  This function is a JNIEXPORTed function that contains all of the parameters needed to call the original function with the parameters unrolled as necessary.
 
-Here is where you also define the XXX four XXX externs from step 2.
+Here is where you also define the three externs from step 2.
 
 Our signature for the JNI function looks like this:
 
