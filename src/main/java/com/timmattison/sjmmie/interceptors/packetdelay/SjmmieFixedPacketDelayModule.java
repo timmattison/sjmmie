@@ -8,7 +8,6 @@ import com.timmattison.sjmmie.interceptors.nop.NopCloseInterceptor;
 import com.timmattison.sjmmie.interceptors.nop.NopConnectInterceptor;
 import com.timmattison.sjmmie.interceptors.nop.NopOpenInterceptor;
 import com.timmattison.sjmmie.interceptors.nop.NopSocketInterceptor;
-import com.timmattison.sjmmie.interceptors.packetdelay.*;
 import com.timmattison.sjmmie.restlets.RestletApplication;
 import com.timmattison.sjmmie.restlets.RestletApplicationFactory;
 import org.restlet.Application;
@@ -31,6 +30,7 @@ public class SjmmieFixedPacketDelayModule extends AbstractModule {
         bind(SendToInterceptor.class).to(DelaySendToIntereceptor.class).asEagerSingleton();
         bind(SendInterceptor.class).to(DelaySendIntereceptor.class).asEagerSingleton();
         bind(RecvInterceptor.class).to(DelayRecvIntereceptor.class).asEagerSingleton();
+        bind(RecvFromInterceptor.class).to(DelayRecvFromIntereceptor.class).asEagerSingleton();
 
         // Delayer
         bind(SocketDelayer.class).to(BasicSocketDelayer.class).asEagerSingleton();

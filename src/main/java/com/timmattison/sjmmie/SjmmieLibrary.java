@@ -21,4 +21,6 @@ public class SjmmieLibrary {
     public native int originalSend(int socket, byte[] buffer, int length, int flags);
 
     public native int originalRecv(int socket, byte[] buffer, int size, int flags);
+
+    public native int originalRecvFrom(int sockfd, byte[] buf_java, int len, int flags, char sa_family, byte[] sa_data_java, int[] addrlen);
 }

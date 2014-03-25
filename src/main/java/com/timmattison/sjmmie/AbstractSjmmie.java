@@ -5,7 +5,7 @@ import com.timmattison.sjmmie.interceptors.interfaces.*;
 /**
  * Created by timmattison on 2/20/14.
  */
-public abstract class AbstractSjmmie implements OpenInterceptor, CloseInterceptor, ConnectInterceptor, SendToInterceptor, SocketInterceptor, SendInterceptor, RecvInterceptor {
+public abstract class AbstractSjmmie implements OpenInterceptor, CloseInterceptor, ConnectInterceptor, SendToInterceptor, SocketInterceptor, SendInterceptor, RecvInterceptor, RecvFromInterceptor {
     private static SjmmieLibrary sjmmieLibrary = new SjmmieLibrary();
 
     protected OpenInterceptor openInterceptor;
@@ -15,6 +15,7 @@ public abstract class AbstractSjmmie implements OpenInterceptor, CloseIntercepto
     protected SocketInterceptor socketInterceptor;
     protected SendInterceptor sendInterceptor;
     protected RecvInterceptor recvInterceptor;
+    protected RecvFromInterceptor recvFromInterceptor;
 
     @Override
     public int openInterceptor(String filename, int flags) {
@@ -117,5 +118,24 @@ public abstract class AbstractSjmmie implements OpenInterceptor, CloseIntercepto
     @Override
     public void recvInterceptorSetEnabled(boolean enabled) {
         recvInterceptor.recvInterceptorSetEnabled(enabled);
+    }
+
+    @Override
+    public int recvfromInterceptor(int sockfd, byte[] buf_java, int len, int flags, char sa_family, byte[] sa_data_java, int[] addrlen) {
+        if (recvFromInterceptor != null) {
+            return recvFromInterceptor.recvfromInterceptor(sockfd, buf_java, len, flags, sa_family, sa_data_java, addrlen);
+        } else {
+            return sjmmieLibrary.originalRecvFrom(sockfd, buf_java, len, flags, sa_family, sa_data_java, addrlen);
+        }
+    }
+
+    @Override
+    public boolean recvfromInterceptorIsEnabled() {
+        return recvFromInterceptor.recvfromInterceptorIsEnabled();
+    }
+
+    @Override
+    public void recvfromInterceptorSetEnabled(boolean enabled) {
+        recvFromInterceptor.recvfromInterceptorSetEnabled(enabled);
     }
 }

@@ -29,6 +29,12 @@ extern int initialized;
 // For getting the Java environment
 JNIEnv* get_env();
 
+// For converting Java arrays to int arrays
+extern int* java_int_array_to_int_array(JNIEnv *env, jintArray java_int_array);
+
+// For converting int arrays to Java arrays
+extern jintArray int_array_to_java_int_array(JNIEnv *env, int* c_buffer, int c_buffer_length);
+
 // For converting Java arrays to char/byte arrays
 extern char* java_byte_array_to_char_array(JNIEnv *env, jbyteArray java_byte_array);
 
@@ -37,8 +43,9 @@ extern jbyteArray char_array_to_java_byte_array(JNIEnv *env, char* c_buffer, int
 
 // For safely freeing memory
 extern void safe_delete_local_ref(JNIEnv *env, jobject object);
-extern void safe_release_byte_array_elements(JNIEnv *env, jbyteArray java_byte_array, signed char *c_buffer);
-extern void safe_release_byte_array_elements_copy_back(JNIEnv *env, jbyteArray java_byte_array, signed char *c_buffer);
+extern void safe_release_int_array_elements(JNIEnv *env, jintArray java_int_array, void *c_buffer);
+extern void safe_release_byte_array_elements(JNIEnv *env, jbyteArray java_byte_array, void *c_buffer);
+extern void safe_release_byte_array_elements_copy_back(JNIEnv *env, jbyteArray java_byte_array, void *c_buffer);
 
 // For getting the current Sjmmie instance
 extern jobject sjmmie_instance;
@@ -77,5 +84,10 @@ extern jmethodID java_send_method;
 extern const char *recv_interceptor_name;
 extern const char *recv_interceptor_arguments;
 extern jmethodID java_recv_method;
+
+// For intercepting "recvfrom"
+extern const char *recvfrom_interceptor_name;
+extern const char *recvfrom_interceptor_arguments;
+extern jmethodID java_recvfrom_method;
 
 #endif // SJMMIE_HEADER

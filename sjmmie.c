@@ -26,6 +26,7 @@ ssize_t SJMMIE_sendto(int sockfd, const void *buf, size_t len, int flags, const 
 int SJMMIE_socket(int domain, int type, int protocol);
 ssize_t SJMMIE_send(int socket, const void *buffer, size_t length, int flags);
 ssize_t SJMMIE_recv (int socket, void *buffer, size_t size, int flags);
+ssize_t SJMMIE_recvfrom(int sockfd, void *buf, size_t len, int flags, struct sockaddr *src_addr, socklen_t *addrlen);
 
 /* The names of everything except the section are arbitrary */
 typedef	struct	interposer {
@@ -42,6 +43,7 @@ static const interpose_t interposers[] \
 		{ .replacement = SJMMIE_socket, .original = socket },
 		{ .replacement = SJMMIE_send, .original = send },
 		{ .replacement = SJMMIE_recv, .original = recv },
+		{ .replacement = SJMMIE_recvfrom, .original = recvfrom },
 };
 
 static void con() __attribute__((constructor));
@@ -203,10 +205,36 @@ JNIEnv* get_env() {
 	// recv
 	java_recv_method = (*env)->GetMethodID(env, sjmmie_class, recv_interceptor_name, recv_interceptor_arguments);
 
+	// recvfrom
+	java_recvfrom_method = (*env)->GetMethodID(env, sjmmie_class, recvfrom_interceptor_name, recvfrom_interceptor_arguments);
+	if(java_recvfrom_method == NULL) { printf("RECVFROM NULL\n"); }
+	else { printf("RECVFROM NOT NULL\n"); }
+
 	// Indicate that we are initialized
 	initialized = INITIALIZED;
 
 	return attach_environment_environment();
+}
+
+// For converting Java arrays to int arrays
+int* java_int_array_to_int_array(JNIEnv *env, jintArray java_int_array) {
+	if(java_int_array == NULL) {
+		return NULL;
+	}
+
+	return (int *) (*env)->GetIntArrayElements(env, java_int_array, 0);
+}
+
+// For converting int arrays to Java arrays
+jintArray int_array_to_java_int_array(JNIEnv *env, int* c_buffer, int c_buffer_length) {
+	if(c_buffer == NULL) {
+		return NULL;
+	}
+
+	jintArray java_int_array = (*env)->NewIntArray(env, c_buffer_length);
+	(*env)->SetIntArrayRegion(env, java_int_array, 0, c_buffer_length, (jint*) c_buffer);
+
+	return java_int_array;
 }
 
 // For converting Java arrays to char/byte arrays
@@ -219,7 +247,7 @@ char* java_byte_array_to_char_array(JNIEnv *env, jbyteArray java_byte_array) {
 }
 
 // For converting char/byte arrays to Java arrays
-extern jbyteArray char_array_to_java_byte_array(JNIEnv *env, char* c_buffer, int c_buffer_length) {
+jbyteArray char_array_to_java_byte_array(JNIEnv *env, char* c_buffer, int c_buffer_length) {
 	if(c_buffer == NULL) {
 		return NULL;
 	}
@@ -239,18 +267,26 @@ void safe_delete_local_ref(JNIEnv *env, jobject object) {
 	(*env)->DeleteLocalRef(env, object);
 }
 
-void safe_release_byte_array_elements(JNIEnv *env, jbyteArray java_byte_array, signed char *c_buffer) {
-	if((java_byte_array == NULL) || (c_buffer == NULL)) {
+void safe_release_int_array_elements(JNIEnv *env, jintArray java_int_array, void *c_buffer) {
+	if((java_int_array == NULL) || (c_buffer == NULL)) {
 		return;
 	}
 
-	(*env)->ReleaseByteArrayElements(env, java_byte_array, (signed char *) c_buffer, JNI_ABORT);
+	(*env)->ReleaseIntArrayElements(env, java_int_array, (void *) c_buffer, JNI_ABORT);
 }
 
-void safe_release_byte_array_elements_copy_back(JNIEnv *env, jbyteArray java_byte_array, signed char *c_buffer) {
+void safe_release_byte_array_elements(JNIEnv *env, jbyteArray java_byte_array, void *c_buffer) {
 	if((java_byte_array == NULL) || (c_buffer == NULL)) {
 		return;
 	}
 
-	(*env)->ReleaseByteArrayElements(env, java_byte_array, (signed char *) c_buffer, 0);
+	(*env)->ReleaseByteArrayElements(env, java_byte_array, (void *) c_buffer, JNI_ABORT);
+}
+
+void safe_release_byte_array_elements_copy_back(JNIEnv *env, jbyteArray java_byte_array, void *c_buffer) {
+	if((java_byte_array == NULL) || (c_buffer == NULL)) {
+		return;
+	}
+
+	(*env)->ReleaseByteArrayElements(env, java_byte_array, (void *) c_buffer, 0);
 }
