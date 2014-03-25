@@ -1,0 +1,292 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		DD8670B1C48ED938D5118050 /* close.c in Sources */ = {isa = PBXBuildFile; fileRef = DD8675EED2A14C165BB99BA3 /* close.c */; };
+		DD86717B13B3F929635B9F16 /* socket.c in Sources */ = {isa = PBXBuildFile; fileRef = DD86718B495E7CA38A6EFDD7 /* socket.c */; };
+		DD8671D04BB0E69F9DF2F91B /* recv.c in Sources */ = {isa = PBXBuildFile; fileRef = DD867CFBC8FF889CB545CAA9 /* recv.c */; };
+		DD86727B6464B5E13236CDC0 /* sjmmie.h in Headers */ = {isa = PBXBuildFile; fileRef = DD867EC93F9DAB52134355D5 /* sjmmie.h */; };
+		DD86729AD54A50BBE342AF61 /* sjmmie.c in Sources */ = {isa = PBXBuildFile; fileRef = DD8673C01A45A50AA04BE565 /* sjmmie.c */; };
+		DD8673F6BDB61E3BDF9263CE /* com_timmattison_sjmmie_SjmmieLibrary.h in Headers */ = {isa = PBXBuildFile; fileRef = DD8675C5B5B92ECE50464EE9 /* com_timmattison_sjmmie_SjmmieLibrary.h */; };
+		DD867909AC1969BE68A93B8A /* sendto.c in Sources */ = {isa = PBXBuildFile; fileRef = DD867DFE065DA76043338AF7 /* sendto.c */; };
+		DD8679F488C3C93DAAB5BC83 /* open.c in Sources */ = {isa = PBXBuildFile; fileRef = DD86765DF5A7238D7623E25A /* open.c */; };
+		DD867D28BE30E09EDAEC1422 /* send.c in Sources */ = {isa = PBXBuildFile; fileRef = DD86774A077A58265B5193D9 /* send.c */; };
+		DD867F23693C6C155B283EE4 /* connect.c in Sources */ = {isa = PBXBuildFile; fileRef = DD8676E16F1379987C98AC01 /* connect.c */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		DD86718B495E7CA38A6EFDD7 /* socket.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = socket.c; sourceTree = "<group>"; };
+		DD8673C01A45A50AA04BE565 /* sjmmie.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sjmmie.c; path = ../sjmmie.c; sourceTree = "<group>"; };
+		DD8675C5B5B92ECE50464EE9 /* com_timmattison_sjmmie_SjmmieLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = com_timmattison_sjmmie_SjmmieLibrary.h; path = ../com_timmattison_sjmmie_SjmmieLibrary.h; sourceTree = "<group>"; };
+		DD8675EED2A14C165BB99BA3 /* close.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = close.c; sourceTree = "<group>"; };
+		DD86765DF5A7238D7623E25A /* open.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = open.c; sourceTree = "<group>"; };
+		DD8676E16F1379987C98AC01 /* connect.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = connect.c; sourceTree = "<group>"; };
+		DD86774A077A58265B5193D9 /* send.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = send.c; sourceTree = "<group>"; };
+		DD867AA6B5AF65986E2BE7F3 /* libsjmmie.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libsjmmie.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		DD867CFBC8FF889CB545CAA9 /* recv.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = recv.c; sourceTree = "<group>"; };
+		DD867DFE065DA76043338AF7 /* sendto.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sendto.c; sourceTree = "<group>"; };
+		DD867EC93F9DAB52134355D5 /* sjmmie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sjmmie.h; path = ../sjmmie.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DD867615415748D0388C01F0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		DD867121BEF04329DE1E5343 /* functions */ = {
+			isa = PBXGroup;
+			children = (
+				DD86765DF5A7238D7623E25A /* open.c */,
+				DD8675EED2A14C165BB99BA3 /* close.c */,
+				DD8676E16F1379987C98AC01 /* connect.c */,
+				DD867CFBC8FF889CB545CAA9 /* recv.c */,
+				DD86774A077A58265B5193D9 /* send.c */,
+				DD867DFE065DA76043338AF7 /* sendto.c */,
+				DD86718B495E7CA38A6EFDD7 /* socket.c */,
+			);
+			name = functions;
+			path = ../functions;
+			sourceTree = "<group>";
+		};
+		DD86739FF57FF832D3304F17 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DD867AA6B5AF65986E2BE7F3 /* libsjmmie.dylib */,
+				DD8675C5B5B92ECE50464EE9 /* com_timmattison_sjmmie_SjmmieLibrary.h */,
+				DD867121BEF04329DE1E5343 /* functions */,
+				DD8673C01A45A50AA04BE565 /* sjmmie.c */,
+				DD867EC93F9DAB52134355D5 /* sjmmie.h */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DD867975D74EDD95005552BC = {
+			isa = PBXGroup;
+			children = (
+				DD86739FF57FF832D3304F17 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		DD867C963389DEDD993428FC /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DD8673F6BDB61E3BDF9263CE /* com_timmattison_sjmmie_SjmmieLibrary.h in Headers */,
+				DD86727B6464B5E13236CDC0 /* sjmmie.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		DD8676040E6B914973DD3CE4 /* sjmmie */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DD86742E2D74410CE478775E /* Build configuration list for PBXNativeTarget "sjmmie" */;
+			buildPhases = (
+				DD867C963389DEDD993428FC /* Headers */,
+				DD867BE21EDF6C2DEA2CB566 /* Sources */,
+				DD867615415748D0388C01F0 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = sjmmie;
+			productName = sjmmie;
+			productReference = DD867AA6B5AF65986E2BE7F3 /* libsjmmie.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		DD867F17E03E99794A79224C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				ORGANIZATIONNAME = timmattison;
+			};
+			buildConfigurationList = DD867B2694DE13A6FC090F18 /* Build configuration list for PBXProject "sjmmie" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = DD867975D74EDD95005552BC;
+			productRefGroup = DD86739FF57FF832D3304F17 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				DD8676040E6B914973DD3CE4 /* sjmmie */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		DD867BE21EDF6C2DEA2CB566 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DD8679F488C3C93DAAB5BC83 /* open.c in Sources */,
+				DD8670B1C48ED938D5118050 /* close.c in Sources */,
+				DD867F23693C6C155B283EE4 /* connect.c in Sources */,
+				DD86729AD54A50BBE342AF61 /* sjmmie.c in Sources */,
+				DD8671D04BB0E69F9DF2F91B /* recv.c in Sources */,
+				DD867D28BE30E09EDAEC1422 /* send.c in Sources */,
+				DD867909AC1969BE68A93B8A /* sendto.c in Sources */,
+				DD86717B13B3F929635B9F16 /* socket.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		DD86717418641635C2C8D978 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/include/**",
+					"/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/include/darwin/**",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/server/**",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				OTHER_LDFLAGS = (
+					"-dynamiclib",
+					"-fPIC",
+					"-ldl",
+					"-ljvm",
+				);
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		DD867217B03411F98751867F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/include/**",
+					"/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/include/darwin/**",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/server/**",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-dynamiclib",
+					"-fPIC",
+					"-ldl",
+					"-ljvm",
+				);
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		DD86796B11573F55F5E29DAB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		DD867C4584EFFED21C3EE436 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		DD86742E2D74410CE478775E /* Build configuration list for PBXNativeTarget "sjmmie" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DD867C4584EFFED21C3EE436 /* Release */,
+				DD86796B11573F55F5E29DAB /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DD867B2694DE13A6FC090F18 /* Build configuration list for PBXProject "sjmmie" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DD86717418641635C2C8D978 /* Release */,
+				DD867217B03411F98751867F /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = DD867F17E03E99794A79224C /* Project object */;
+}
