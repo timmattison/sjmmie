@@ -46,10 +46,12 @@ Step 2: Add the externs required for interception into sjmmie.h
 
 There are three required externs for each intercepted function.  They are the name of the interceptor in Java, its arguments in JNI type signature format (http://docs.oracle.com/javase/1.5.0/docs/guide/jni/spec/types.html#wp276), a JNI methodID reference to the interceptor.  For send it looks like this:
 
+```C
 // For intercepting "send"
 extern const char *send_interceptor_name;
 extern const char *send_interceptor_arguments;
 extern jmethodID java_send_method;
+```
 
 Step 3: Unroll the C parameters if necessary
 --------------------------------------------
