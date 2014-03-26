@@ -8,11 +8,11 @@ import javax.inject.Inject;
 /**
  * Created by timmattison on 3/21/14.
  */
-public class NopRecvIntereceptor implements RecvInterceptor {
+public class NopRecvInterceptor implements RecvInterceptor {
     private final SjmmieLibrary sjmmieLibrary;
 
     @Inject
-    public NopRecvIntereceptor(SjmmieLibrary sjmmieLibrary) {
+    public NopRecvInterceptor(SjmmieLibrary sjmmieLibrary) {
         this.sjmmieLibrary = sjmmieLibrary;
     }
 

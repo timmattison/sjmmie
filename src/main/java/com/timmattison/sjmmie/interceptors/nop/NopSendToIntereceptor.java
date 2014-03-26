@@ -8,11 +8,11 @@ import javax.inject.Inject;
 /**
  * Created by timmattison on 3/21/14.
  */
-public class NopSendToIntereceptor implements SendToInterceptor {
+public class NopSendToInterceptor implements SendToInterceptor {
     private final SjmmieLibrary sjmmieLibrary;
 
     @Inject
-    public NopSendToIntereceptor(SjmmieLibrary sjmmieLibrary) {
+    public NopSendToInterceptor(SjmmieLibrary sjmmieLibrary) {
         this.sjmmieLibrary = sjmmieLibrary;
     }
 

@@ -201,11 +201,11 @@ import javax.inject.Inject;
 /**
  * Created by timmattison on 3/21/14.
  */
-public class NopSendIntereceptor implements SendInterceptor {
+public class NopSendInterceptor implements SendInterceptor {
     private final SjmmieLibrary sjmmieLibrary;
 
     @Inject
-    public NopSendIntereceptor(SjmmieLibrary sjmmieLibrary) {
+    public NopSendInterceptor(SjmmieLibrary sjmmieLibrary) {
         this.sjmmieLibrary = sjmmieLibrary;
     }
 
@@ -237,5 +237,5 @@ NOTE: We use Guice for dependency injection
 Wire up your new NOP interceptor to your interceptor's interface as an eager singleton in SjmmieNopModule.java.  This makes sure you have one global instance across all threads.  For send this looks like this:
 
 ```Java
-bind(SendInterceptor.class).to(NopSendIntereceptor.class).asEagerSingleton();
+bind(SendInterceptor.class).to(NopSendInterceptor.class).asEagerSingleton();
 ```

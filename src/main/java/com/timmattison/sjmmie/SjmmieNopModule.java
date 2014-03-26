@@ -19,10 +19,10 @@ public class SjmmieNopModule extends AbstractModule {
         bind(OpenInterceptor.class).to(NopOpenInterceptor.class).asEagerSingleton();
         bind(CloseInterceptor.class).to(NopCloseInterceptor.class).asEagerSingleton();
         bind(ConnectInterceptor.class).to(NopConnectInterceptor.class).asEagerSingleton();
-        bind(SendToInterceptor.class).to(NopSendToIntereceptor.class).asEagerSingleton();
+        bind(SendToInterceptor.class).to(NopSendToInterceptor.class).asEagerSingleton();
         bind(SocketInterceptor.class).to(NopSocketInterceptor.class).asEagerSingleton();
-        bind(SendInterceptor.class).to(NopSendIntereceptor.class).asEagerSingleton();
-        bind(RecvInterceptor.class).to(NopRecvIntereceptor.class).asEagerSingleton();
+        bind(SendInterceptor.class).to(NopSendInterceptor.class).asEagerSingleton();
+        bind(RecvInterceptor.class).to(NopRecvInterceptor.class).asEagerSingleton();
 
         // Use the RESTlet system
         install(new FactoryModuleBuilder().implement(Application.class, RestletApplication.class).build(RestletApplicationFactory.class));
