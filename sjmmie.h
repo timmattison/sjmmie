@@ -53,6 +53,10 @@ void java_c_sockaddr(JNIEnv *env, jbyteArray sa_data_java);
 
 #define RELEASE_JAVA_CHAR_ARRAY(INPUT) safe_delete_local_ref(env, INPUT_buffer);
 
+#define JAVA_C_CHAR_ARRAY(INPUT) char* INPUT_buffer = java_byte_array_to_char_array(env, INPUT);
+#define RELEASE_C_CHAR_ARRAY(INPUT) safe_release_byte_array_elements_copy_back(env, INPUT, (signed char *) INPUT_buffer);
+
+
 // For sockaddr
 #define C_JAVA_SOCKADDR(INPUT) jbyteArray INPUT_sa_data_java = c_java_sockaddr(env, (struct sockaddr *) INPUT);
 #define SOCKADDR_UNROLL(INPUT) ((INPUT == NULL) ? 0 : INPUT->sa_family), INPUT_sa_data_java

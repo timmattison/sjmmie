@@ -17,13 +17,13 @@ JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalRecv(JNI
 	int return_value;
 
 	// Get the bytes back
-	char* buf_c = java_byte_array_to_char_array(env, buf_java);
+    JAVA_C_CHAR_ARRAY(buf_java);
 
 	// Call the original function and store the result
-	return_value = recv(socket, buf_c, size, flags);
+	return_value = recv(socket, CHAR_ARRAY_UNROLL(buf_java), size, flags);
 
 	// Release the memory for the copy of the string data
-	safe_release_byte_array_elements_copy_back(env, buf_java, (signed char *) buf_c);
+    RELEASE_C_CHAR_ARRAY(buf_java);
 
 	// Return the result
 	return return_value;
