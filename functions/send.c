@@ -17,13 +17,13 @@ JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalSend(JNI
 	int return_value;
 
 	// Get the bytes back
-	char* buf_c = java_byte_array_to_char_array(env, buf_java);
+    JAVA_C_CHAR_ARRAY(buf_java);
 
 	// Call the original function and store the result
-	return_value = send(socket, buf_c, length, flags);
+	return_value = send(socket, CHAR_ARRAY_UNROLL(buf_java), length, flags);
 
 	// Release the memory for the copy of the string data
-	safe_release_byte_array_elements(env, buf_java, (signed char *) buf_c);
+    RELEASE_C_CHAR_ARRAY(buf_java);
 
 	// Return the result
 	return return_value;
@@ -36,15 +36,19 @@ ssize_t SJMMIE_send(int socket, const void *buffer, size_t length, int flags) {
 	if(java_send_method != NULL) {
 		JNIEnv *env = get_env();
 
-		jbyteArray data_to_send_java = char_array_to_java_byte_array(env, (char *) buffer, length);
+        C_JAVA_CHAR_ARRAY(buffer, length);
 
-		jint return_value;
+        jint return_value;
 
-		return_value = (*env)->CallIntMethod(env, sjmmie_instance, java_send_method, socket, data_to_send_java, length, flags);
+		return_value = (*env)->CallIntMethod(env, sjmmie_instance, java_send_method, socket, CHAR_ARRAY_UNROLL(buffer), length, flags);
 
-		safe_delete_local_ref(env, data_to_send_java);
-	
-		return return_value;
+        // Copy the data back from Java to C and release the Java copy immediately
+        JAVA_C_CHAR_ARRAY_COPY_BACK(buffer, length);
+
+        // Release the copy of the original C data
+        RELEASE_JAVA_CHAR_ARRAY(buffer);
+
+        return return_value;
 	}
 	else {
 		return send(socket, buffer, length, flags);
