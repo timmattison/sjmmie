@@ -47,27 +47,27 @@ jbyteArray c_java_sockaddr(JNIEnv *env, struct sockaddr *input);
 void java_c_sockaddr(JNIEnv *env, jbyteArray sa_data_java);
 
 // For character arrays
-#define C_JAVA_CHAR_ARRAY(INPUT, LENGTH) jbyteArray INPUT_buffer = char_array_to_java_byte_array(env, (char *) INPUT, LENGTH);
-#define CHAR_ARRAY_UNROLL(INPUT) INPUT_buffer
-#define JAVA_C_CHAR_ARRAY_COPY_BACK(INPUT, SIZE) char* INPUT_temp_buffer = java_byte_array_to_char_array(env, INPUT_buffer); memcpy((void *) buffer, INPUT_temp_buffer, SIZE); safe_release_byte_array_elements(env, INPUT_buffer, (signed char *) INPUT_temp_buffer);
+#define C_JAVA_CHAR_ARRAY(INPUT, LENGTH) jbyteArray INPUT ## _buffer = char_array_to_java_byte_array(env, (char *) INPUT, LENGTH);
+#define CHAR_ARRAY_UNROLL(INPUT) INPUT ## _buffer
+#define JAVA_C_CHAR_ARRAY_COPY_BACK(INPUT, SIZE) char* INPUT ## _temp_buffer = java_byte_array_to_char_array(env, INPUT ## _buffer); memcpy((void *) buffer, INPUT ## _temp_buffer, SIZE); safe_release_byte_array_elements(env, INPUT ## _buffer, (signed char *) INPUT ## _temp_buffer);
 
-#define RELEASE_JAVA_CHAR_ARRAY(INPUT) safe_delete_local_ref(env, INPUT_buffer);
+#define RELEASE_JAVA_CHAR_ARRAY(INPUT) safe_delete_local_ref(env, INPUT ## _buffer);
 
-#define JAVA_C_CHAR_ARRAY(INPUT) char* INPUT_buffer = java_byte_array_to_char_array(env, INPUT);
-#define RELEASE_C_CHAR_ARRAY(INPUT) safe_release_byte_array_elements_copy_back(env, INPUT, (signed char *) INPUT_buffer);
+#define JAVA_C_CHAR_ARRAY(INPUT) char* INPUT ## _buffer = java_byte_array_to_char_array(env, INPUT);
+#define RELEASE_C_CHAR_ARRAY(INPUT) safe_release_byte_array_elements_copy_back(env, INPUT, (signed char *) INPUT ## _buffer);
 
 // For strings
-#define JAVA_C_STRING(INPUT) const char *INPUT_buffer = (*env)->GetStringUTFChars(env, INPUT, NULL);
-#define STRING_UNROLL(INPUT) INPUT_buffer
-#define RELEASE_C_STRING(INPUT) (*env)->ReleaseStringUTFChars(env, INPUT, INPUT_buffer);
+#define JAVA_C_STRING(INPUT) const char *INPUT ## _buffer = (*env)->GetStringUTFChars(env, INPUT, NULL);
+#define STRING_UNROLL(INPUT) INPUT ## _buffer
+#define RELEASE_C_STRING(INPUT) (*env)->ReleaseStringUTFChars(env, INPUT, INPUT ## _buffer);
 
-#define C_JAVA_STRING(INPUT) jstring INPUT_buffer = (*env)->NewStringUTF(env, INPUT);
-#define RELEASE_JAVA_STRING(INPUT) safe_delete_local_ref(env, INPUT_buffer)
+#define C_JAVA_STRING(INPUT) jstring INPUT ## _buffer = (*env)->NewStringUTF(env, INPUT);
+#define RELEASE_JAVA_STRING(INPUT) safe_delete_local_ref(env, INPUT ## _buffer)
 
 // For sockaddr
-#define C_JAVA_SOCKADDR(INPUT) jbyteArray INPUT_buffer = c_java_sockaddr(env, (struct sockaddr *) INPUT);
-#define JAVA_SOCKADDR_UNROLL(INPUT) ((INPUT == NULL) ? 0 : INPUT->sa_family), INPUT_buffer
-#define RELEASE_JAVA_SOCKADDR(INPUT) java_c_sockaddr(env, INPUT_buffer);
+#define C_JAVA_SOCKADDR(INPUT) jbyteArray INPUT ## _buffer = c_java_sockaddr(env, (struct sockaddr *) INPUT);
+#define JAVA_SOCKADDR_UNROLL(INPUT) ((INPUT == NULL) ? 0 : INPUT->sa_family), INPUT ## _buffer
+#define RELEASE_JAVA_SOCKADDR(INPUT) java_c_sockaddr(env, INPUT ## _buffer);
 
 #define JAVA_C_SOCKADDR(INPUT, INPUT_SA_FAMILY) \
 struct sockaddr INPUT_temp;\
