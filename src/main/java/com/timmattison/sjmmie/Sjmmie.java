@@ -5,6 +5,7 @@ import com.google.inject.Injector;
 import com.timmattison.sjmmie.controls.SendToInterceptorToggle;
 import com.timmattison.sjmmie.controls.Toggle;
 import com.timmattison.sjmmie.interceptors.interfaces.*;
+import com.timmattison.sjmmie.interceptors.nop.SjmmieNopModule;
 import com.timmattison.sjmmie.interceptors.packetdelay.SjmmieFixedPacketDelayModule;
 import com.timmattison.sjmmie.restlets.RestletApplicationFactory;
 import org.restlet.Component;
@@ -25,7 +26,7 @@ public class Sjmmie extends AbstractSjmmie {
 
     public static Sjmmie getInstance() {
         if (INSTANCE == null) {
-            Injector injector = Guice.createInjector(new SjmmieFixedPacketDelayModule());
+            Injector injector = Guice.createInjector(new SjmmieNopModule());
 
             // Get an instance of the Sjmmie object
             INSTANCE = injector.getInstance(Sjmmie.class);
