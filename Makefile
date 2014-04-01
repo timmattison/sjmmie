@@ -3,7 +3,7 @@ INCLUDE=-I/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/includ
 OPTIONS=-dynamiclib -fPIC -ldl -L/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/server -ljvm
 DEPS=sjmmie.h
 
-libsjmmie.dylib: sjmmie.c marshalling.c jvm_init.c
+libsjmmie.dylib: sjmmie.c
 	javah -verbose -jni -classpath target/classes com.timmattison.sjmmie.SjmmieLibrary
 	$(CC) $(INCLUDE) $(OPTIONS) -o $@ $^ functions/*.c
 

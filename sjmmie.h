@@ -12,15 +12,11 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 
+extern const char *constructor_name;
+extern const char *no_arguments;
+
 extern const char *SJMMIE_JVM_OPTS_VARIABLE;
 extern const char *SJMMIE_CLASS_VARIABLE;
-
-extern jmethodID sjmmie_static_initializer;
-extern const char *static_initializer_name;
-extern const char *static_initializer_signature;
-
-extern JavaVM* jvm;
-extern jclass sjmmie_class;
 
 extern const int debug;
 
