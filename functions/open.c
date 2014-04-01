@@ -13,13 +13,13 @@ JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalOpen(JNI
 	int return_value;
 
 	// Convert the string to a const char *
-	const char *c_filename = (*env)->GetStringUTFChars(env, filename, NULL);
+    JAVA_C_STRING(filename);
 
 	// Call the original function and store the result
-	return_value = open(c_filename, flags);
+	return_value = open(STRING_UNROLL(filename), flags);
 
 	// Release the resources for the converted string
-	(*env)->ReleaseStringUTFChars(env, filename, c_filename);
+    RELEASE_C_STRING(filename);
 
 	// Return the result
 	return return_value;
@@ -32,7 +32,9 @@ int SJMMIE_open(const char *filename, int flags, ...) {
 	if(java_open_method != NULL) {
 		JNIEnv *env = get_env();
 
-		jint return_value = (*env)->CallIntMethod(env, sjmmie_instance, java_open_method, (*env)->NewStringUTF(env, filename), flags);
+        C_JAVA_STRING(filename);
+		jint return_value = (*env)->CallIntMethod(env, sjmmie_instance, java_open_method, STRING_UNROLL(filename), flags);
+        RELEASE_JAVA_STRING(filename);
 	
 		return return_value;
 	}
