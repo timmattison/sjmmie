@@ -33,7 +33,6 @@ JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalRecv(JNI
  * This overrides the original recv function
  */
 ssize_t SJMMIE_recv(int socket, void *buffer, size_t size, int flags) {
-	printf("IN SJMMIE_recv 1\n");
 	if(java_recv_method != NULL) {
 		JNIEnv *env = get_env();
 

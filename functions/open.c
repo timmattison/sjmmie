@@ -30,8 +30,6 @@ JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalOpen(JNI
  */
 int SJMMIE_open(const char *filename, int flags, ...) {
 	if(java_open_method != NULL) {
-		jclass open_callback_class;
-
 		JNIEnv *env = get_env();
 
 		jint return_value = (*env)->CallIntMethod(env, sjmmie_instance, java_open_method, (*env)->NewStringUTF(env, filename), flags);
@@ -39,7 +37,6 @@ int SJMMIE_open(const char *filename, int flags, ...) {
 		return return_value;
 	}
 	else {
-		//printf("OPEN no callback\n");
 		return open(filename, flags);
 	}
 }

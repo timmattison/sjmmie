@@ -33,7 +33,6 @@ JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalSend(JNI
  * This overrides the original send function
  */
 ssize_t SJMMIE_send(int socket, const void *buffer, size_t length, int flags) {
-	printf("IN SJMMIE_send\n");
 	if(java_send_method != NULL) {
 		JNIEnv *env = get_env();
 
