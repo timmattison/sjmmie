@@ -83,7 +83,7 @@ int count_and_set_jvm_options(char *jvm_options_string, JavaVMOption *options) {
 	return option_count;
 }
 
-JNIEnv* attach_environment_environment() {
+JNIEnv* attach_environment() {
 	JNIEnv* env;
 
 	int getEnvStat = (*jvm)->GetEnv(jvm, (void **)&env, JNI_VERSION_1_6);
@@ -102,7 +102,7 @@ JNIEnv* get_env() {
 	// Have we already been initialized?
 	if(initialized == INITIALIZED) {
 		// Yes, just make sure the environment is attached
-		return attach_environment_environment();
+		return attach_environment();
 	}
 
 	// Are we in the process of initializing?
@@ -133,7 +133,7 @@ JNIEnv* get_env() {
 
 	// XXX - LEAK
 	JavaVMOption *options = (JavaVMOption*) calloc(jvm_option_count, sizeof(JavaVMOption));
-	
+
 	args.version = JNI_VERSION_1_6;
 	args.nOptions = count_and_set_jvm_options(jvm_options_string, options);
 	args.options = options;
@@ -206,7 +206,7 @@ JNIEnv* get_env() {
 	// Indicate that we are initialized
 	initialized = INITIALIZED;
 
-	return attach_environment_environment();
+	return attach_environment();
 }
 
 // For converting Java arrays to char/byte arrays
