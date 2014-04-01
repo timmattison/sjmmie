@@ -254,3 +254,14 @@ void safe_release_byte_array_elements_copy_back(JNIEnv *env, jbyteArray java_byt
 
 	(*env)->ReleaseByteArrayElements(env, java_byte_array, (signed char *) c_buffer, 0);
 }
+
+jbyteArray c_java_sockaddr(JNIEnv *env, struct sockaddr *input) {
+    printf("X1\n");
+    int size_of_sa_data = (input == NULL) ? 0 : sizeof(input->sa_data);
+    printf("X2\n");
+    return char_array_to_java_byte_array(env, (input == NULL) ? NULL : (char *) input->sa_data, size_of_sa_data);
+}
+
+void java_c_sockaddr(JNIEnv *env, jbyteArray sa_data_java) {
+    safe_delete_local_ref(env, sa_data_java);
+}

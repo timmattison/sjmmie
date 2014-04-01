@@ -52,15 +52,16 @@ ssize_t SJMMIE_sendto(int sockfd, const void *buf, size_t len, int flags, const 
 		jint return_value;
 
 		if(dest_addr != NULL) {
-			int size_of_sa_data = (dest_addr == NULL) ? 0 : sizeof(dest_addr->sa_data);
-			jbyteArray sa_data_java = char_array_to_java_byte_array(env, (dest_addr == NULL) ? NULL : (char *) dest_addr->sa_data, size_of_sa_data);
-			return_value = (*env)->CallIntMethod(env, sjmmie_instance, java_sendto_method, sockfd, data_to_send_java, len, flags, dest_addr->sa_family, sa_data_java, addrlen);
-			safe_delete_local_ref(env, sa_data_java);
+            C_JAVA_SOCKADDR(dest_addr);
+			return_value = (*env)->CallIntMethod(env, sjmmie_instance, java_sendto_method, sockfd, data_to_send_java, len, flags, SOCKADDR_UNROLL(dest_addr), addrlen);
+            RELEASE_JAVA_SOCKADDR(dest_addr);
 		}
 		else {
+            printf("9\n");
 			return_value = (*env)->CallIntMethod(env, sjmmie_instance, java_sendto_method, sockfd, data_to_send_java, len, flags, 0, NULL, addrlen);
 		}
 
+        printf("10\n");
 		safe_delete_local_ref(env, data_to_send_java);
 	
 		return return_value;

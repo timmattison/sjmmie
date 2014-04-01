@@ -40,6 +40,16 @@ extern void safe_delete_local_ref(JNIEnv *env, jobject object);
 extern void safe_release_byte_array_elements(JNIEnv *env, jbyteArray java_byte_array, signed char *c_buffer);
 extern void safe_release_byte_array_elements_copy_back(JNIEnv *env, jbyteArray java_byte_array, signed char *c_buffer);
 
+// Converts a sockaddr from C to Java
+jbyteArray c_java_sockaddr(JNIEnv *env, struct sockaddr *input);
+
+// Frees a sockaddr that was sent to Java
+void java_c_sockaddr(JNIEnv *env, jbyteArray sa_data_java);
+
+#define C_JAVA_SOCKADDR(INPUT) jbyteArray INPUT_sa_data_java = c_java_sockaddr(env, (struct sockaddr *) INPUT);
+#define SOCKADDR_UNROLL(INPUT) ((INPUT == NULL) ? 0 : INPUT->sa_family), INPUT_sa_data_java
+#define RELEASE_JAVA_SOCKADDR(INPUT) java_c_sockaddr(env, INPUT_sa_data_java);
+
 // For getting the current Sjmmie instance
 extern jobject sjmmie_instance;
 
