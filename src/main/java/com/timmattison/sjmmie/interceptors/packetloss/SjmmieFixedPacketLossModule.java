@@ -10,6 +10,7 @@ import com.timmattison.sjmmie.interceptors.nop.NopConnectInterceptor;
 import com.timmattison.sjmmie.interceptors.nop.NopOpenInterceptor;
 import com.timmattison.sjmmie.interceptors.nop.NopSocketInterceptor;
 import com.timmattison.sjmmie.interceptors.packetloss.FixedPacketLossSendToInterceptor;
+import com.timmattison.sjmmie.restlets.BasicRestletApplicationFactory;
 import com.timmattison.sjmmie.restlets.RestletApplication;
 import com.timmattison.sjmmie.restlets.RestletApplicationFactory;
 import org.restlet.Application;
@@ -37,6 +38,6 @@ public class SjmmieFixedPacketLossModule extends AbstractModule {
         bind(SendToInterceptor.class).to(FixedPacketLossSendToInterceptor.class).asEagerSingleton();
 
         // Use the RESTlet system
-        install(new FactoryModuleBuilder().implement(Application.class, RestletApplication.class).build(RestletApplicationFactory.class));
+        bind(RestletApplicationFactory.class).to(BasicRestletApplicationFactory.class).asEagerSingleton();
     }
 }
