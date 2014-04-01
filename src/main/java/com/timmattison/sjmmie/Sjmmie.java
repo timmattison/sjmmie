@@ -23,6 +23,7 @@ public class Sjmmie extends AbstractSjmmie {
     private static final int listeningPort = 64000;
     private final RestletApplicationFactory restletApplicationFactory;
     private final SendToInterceptorToggle sendToInterceptorToggle;
+    private static boolean restletsStarted = false;
 
     public static Sjmmie getInstance() {
         if (INSTANCE == null) {
@@ -47,7 +48,9 @@ public class Sjmmie extends AbstractSjmmie {
         this.sendInterceptor = sendInterceptor;
         this.recvInterceptor = recvInterceptor;
 
-        startRestlets();
+        if(!restletsStarted) {
+            startRestlets();
+        }
     }
 
     private void startRestlets() {
@@ -63,6 +66,9 @@ public class Sjmmie extends AbstractSjmmie {
 
             // Start the component.
             component.start();
+
+            // Indicate that the RESTlets were started
+            restletsStarted = true;
         } catch (Exception e) {
             // Something is wrong.
             e.printStackTrace();
