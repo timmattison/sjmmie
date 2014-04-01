@@ -53,7 +53,7 @@ ssize_t SJMMIE_sendto(int sockfd, const void *buf, size_t len, int flags, const 
 
 		if(dest_addr != NULL) {
             C_JAVA_SOCKADDR(dest_addr);
-            return_value = (*env)->CallIntMethod(env, sjmmie_instance, java_sendto_method, sockfd, CHAR_ARRAY_UNROLL(buf), len, flags, SOCKADDR_UNROLL(dest_addr), addrlen);
+            return_value = (*env)->CallIntMethod(env, sjmmie_instance, java_sendto_method, sockfd, CHAR_ARRAY_UNROLL(buf), len, flags, JAVA_SOCKADDR_UNROLL(dest_addr), addrlen);
             RELEASE_JAVA_SOCKADDR(dest_addr);
 		}
 		else {

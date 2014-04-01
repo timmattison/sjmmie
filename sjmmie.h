@@ -65,9 +65,18 @@ void java_c_sockaddr(JNIEnv *env, jbyteArray sa_data_java);
 #define RELEASE_JAVA_STRING(INPUT) safe_delete_local_ref(env, INPUT_buffer)
 
 // For sockaddr
-#define C_JAVA_SOCKADDR(INPUT) jbyteArray INPUT_sa_data_java = c_java_sockaddr(env, (struct sockaddr *) INPUT);
-#define SOCKADDR_UNROLL(INPUT) ((INPUT == NULL) ? 0 : INPUT->sa_family), INPUT_sa_data_java
-#define RELEASE_JAVA_SOCKADDR(INPUT) java_c_sockaddr(env, INPUT_sa_data_java);
+#define C_JAVA_SOCKADDR(INPUT) jbyteArray INPUT_buffer = c_java_sockaddr(env, (struct sockaddr *) INPUT);
+#define JAVA_SOCKADDR_UNROLL(INPUT) ((INPUT == NULL) ? 0 : INPUT->sa_family), INPUT_buffer
+#define RELEASE_JAVA_SOCKADDR(INPUT) java_c_sockaddr(env, INPUT_buffer);
+
+#define JAVA_C_SOCKADDR(INPUT, INPUT_SA_FAMILY) \
+struct sockaddr INPUT_temp;\
+INPUT_temp.sa_family = INPUT_SA_FAMILY; \
+char* INPUT_buffer = java_byte_array_to_char_array(env, INPUT); \
+memcpy(&INPUT_temp.sa_data[0], INPUT_buffer, sizeof(INPUT_temp.sa_data));
+#define C_SOCKADDR_UNROLL(INPUT) INPUT_temp
+#define RELEASE_C_SOCKADDR(INPUT) safe_release_byte_array_elements(env, INPUT, (signed char *) INPUT_buffer);
+
 
 // For getting the current Sjmmie instance
 extern jobject sjmmie_instance;

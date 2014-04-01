@@ -17,18 +17,13 @@ JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalConnect(
 	int return_value;
 
 	// Rebuild the sockaddr structure
-	struct sockaddr temp;
-	temp.sa_family = sa_family;
-
-	// Get the string data and copy it to the sockaddr structure
-	char* sa_data_c = java_byte_array_to_char_array(env, sa_data_java);
-	memcpy(&temp.sa_data[0], sa_data_c, sizeof(temp.sa_data));
+    JAVA_C_SOCKADDR(sa_data_java, sa_family);
 
 	// Call the original function and store the result
-	return_value = connect(s, &temp, namelen);
+	return_value = connect(s, &C_SOCKADDR_UNROLL(sa_data_java), namelen);
 
 	// Release the memory for the copy of the string data
-	safe_release_byte_array_elements(env, sa_data_java, (signed char *) sa_data_c);
+    RELEASE_C_SOCKADDR(sa_data_java);
 
 	// Return the result
 	return return_value;
@@ -43,7 +38,7 @@ int SJMMIE_connect(int s, const struct sockaddr *name, socklen_t namelen) {
 
         C_JAVA_SOCKADDR(name);
 
-		jint return_value = (*env)->CallIntMethod(env, sjmmie_instance, java_connect_method, s, SOCKADDR_UNROLL(name), namelen);
+		jint return_value = (*env)->CallIntMethod(env, sjmmie_instance, java_connect_method, s, JAVA_SOCKADDR_UNROLL(name), namelen);
 
         RELEASE_JAVA_SOCKADDR(name);
 	
