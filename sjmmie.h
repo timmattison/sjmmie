@@ -46,6 +46,12 @@ jbyteArray c_java_sockaddr(JNIEnv *env, struct sockaddr *input);
 // Frees a sockaddr that was sent to Java
 void java_c_sockaddr(JNIEnv *env, jbyteArray sa_data_java);
 
+// For character arrays
+#define C_JAVA_CHAR_ARRAY(INPUT, LENGTH) jbyteArray INPUT_buffer = char_array_to_java_byte_array(env, (char *) INPUT, LENGTH);
+#define CHAR_ARRAY_UNROLL(INPUT) INPUT_buffer
+#define RELEASE_JAVA_CHAR_ARRAY(INPUT) safe_delete_local_ref(env, INPUT_buffer);
+
+// For sockaddr
 #define C_JAVA_SOCKADDR(INPUT) jbyteArray INPUT_sa_data_java = c_java_sockaddr(env, (struct sockaddr *) INPUT);
 #define SOCKADDR_UNROLL(INPUT) ((INPUT == NULL) ? 0 : INPUT->sa_family), INPUT_sa_data_java
 #define RELEASE_JAVA_SOCKADDR(INPUT) java_c_sockaddr(env, INPUT_sa_data_java);

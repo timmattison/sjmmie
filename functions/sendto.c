@@ -47,23 +47,21 @@ ssize_t SJMMIE_sendto(int sockfd, const void *buf, size_t len, int flags, const 
 	if(java_sendto_method != NULL) {
 		JNIEnv *env = get_env();
 
-		jbyteArray data_to_send_java = char_array_to_java_byte_array(env, (char *) buf, len);
+        C_JAVA_CHAR_ARRAY(buf, len);
 
 		jint return_value;
 
 		if(dest_addr != NULL) {
             C_JAVA_SOCKADDR(dest_addr);
-			return_value = (*env)->CallIntMethod(env, sjmmie_instance, java_sendto_method, sockfd, data_to_send_java, len, flags, SOCKADDR_UNROLL(dest_addr), addrlen);
+            return_value = (*env)->CallIntMethod(env, sjmmie_instance, java_sendto_method, sockfd, CHAR_ARRAY_UNROLL(buf), len, flags, SOCKADDR_UNROLL(dest_addr), addrlen);
             RELEASE_JAVA_SOCKADDR(dest_addr);
 		}
 		else {
-            printf("9\n");
-			return_value = (*env)->CallIntMethod(env, sjmmie_instance, java_sendto_method, sockfd, data_to_send_java, len, flags, 0, NULL, addrlen);
+			return_value = (*env)->CallIntMethod(env, sjmmie_instance, java_sendto_method, sockfd, CHAR_ARRAY_UNROLL(buf), len, flags, 0, NULL, addrlen);
 		}
 
-        printf("10\n");
-		safe_delete_local_ref(env, data_to_send_java);
-	
+        RELEASE_JAVA_CHAR_ARRAY(buf);
+
 		return return_value;
 	}
 	else {
