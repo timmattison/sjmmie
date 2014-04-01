@@ -49,7 +49,7 @@ void java_c_sockaddr(JNIEnv *env, jbyteArray sa_data_java);
 // For character arrays
 #define C_JAVA_CHAR_ARRAY(INPUT, LENGTH) jbyteArray INPUT_buffer = char_array_to_java_byte_array(env, (char *) INPUT, LENGTH);
 #define CHAR_ARRAY_UNROLL(INPUT) INPUT_buffer
-#define JAVA_C_CHAR_ARRAY_COPY_BACK(INPUT, SIZE) char* INPUT_temp_buffer = java_byte_array_to_char_array(env, INPUT_buffer); memcpy(buffer, INPUT_temp_buffer, SIZE); safe_release_byte_array_elements(env, INPUT_buffer, (signed char *) INPUT_temp_buffer);
+#define JAVA_C_CHAR_ARRAY_COPY_BACK(INPUT, SIZE) char* INPUT_temp_buffer = java_byte_array_to_char_array(env, INPUT_buffer); memcpy((void *) buffer, INPUT_temp_buffer, SIZE); safe_release_byte_array_elements(env, INPUT_buffer, (signed char *) INPUT_temp_buffer);
 
 #define RELEASE_JAVA_CHAR_ARRAY(INPUT) safe_delete_local_ref(env, INPUT_buffer);
 
