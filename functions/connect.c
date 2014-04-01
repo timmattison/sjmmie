@@ -41,13 +41,11 @@ int SJMMIE_connect(int s, const struct sockaddr *name, socklen_t namelen) {
 	if(java_connect_method != NULL) {
 		JNIEnv *env = get_env();
 
-		int size_of_sa_data = sizeof(name->sa_data);
-		jbyteArray sa_data_java = char_array_to_java_byte_array(env, (char *) name->sa_data, size_of_sa_data);
+        C_JAVA_SOCKADDR(name);
 
-		jint return_value = (*env)->CallIntMethod(env, sjmmie_instance, java_connect_method, s, name->sa_family, sa_data_java, namelen);
+		jint return_value = (*env)->CallIntMethod(env, sjmmie_instance, java_connect_method, s, SOCKADDR_UNROLL(name), namelen);
 
-		// XXX - Is this correct?  http://stackoverflow.com/questions/8574241/jni-newbytearray-memory-leak
-		safe_delete_local_ref(env, sa_data_java);
+        RELEASE_JAVA_SOCKADDR(name);
 	
 		return return_value;
 	}
