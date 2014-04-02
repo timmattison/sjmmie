@@ -53,6 +53,8 @@ ssize_t SJMMIE_sendto(int sockfd, const void *buf, size_t len, int flags, const 
 			return_value = (*env)->CallIntMethod(env, sjmmie_instance, java_sendto_method, sockfd, CHAR_ARRAY_UNROLL(buf), len, flags, 0, NULL, addrlen);
 		}
 
+        JAVA_C_CHAR_ARRAY_COPY_BACK(buf, len);
+
         RELEASE_JAVA_CHAR_ARRAY(buf);
 
 		return return_value;
