@@ -90,6 +90,9 @@ for(int INPUT ## _temp_loop = 0; INPUT ## _temp_loop < INPUT.msg_iovlen; INPUT #
 } \
 jbyteArray INPUT ## _msg_control = char_array_to_java_byte_array(env, (char *) INPUT.msg_control, INPUT.msg_controllen);
 #define JAVA_MSGHDR_UNROLL(INPUT) INPUT ## _msg_name, INPUT.msg_namelen, INPUT ## _msg_iov, INPUT.msg_iovlen, INPUT ## _msg_control, INPUT.msg_controllen, INPUT.msg_flags
+#define RELEASE_JAVA_MSGHDR(INPUT) safe_delete_local_ref(env, INPUT ## _msg_name); \
+safe_delete_local_ref(env, INPUT ## _msg_iov); \
+safe_delete_local_ref(env, INPUT ## _msg_control);
 
 // For getting the current Sjmmie instance
 extern jobject sjmmie_instance;
