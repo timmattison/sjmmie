@@ -70,12 +70,15 @@ void java_c_sockaddr(JNIEnv *env, jbyteArray sa_data_java);
 #define RELEASE_JAVA_SOCKADDR(INPUT) java_c_sockaddr(env, INPUT ## _buffer);
 
 #define JAVA_C_SOCKADDR(INPUT, INPUT_SA_FAMILY) \
-struct sockaddr INPUT_temp;\
-INPUT_temp.sa_family = INPUT_SA_FAMILY; \
-char* INPUT_buffer = java_byte_array_to_char_array(env, INPUT); \
-memcpy(&INPUT_temp.sa_data[0], INPUT_buffer, sizeof(INPUT_temp.sa_data));
-#define C_SOCKADDR_UNROLL(INPUT) INPUT_temp
-#define RELEASE_C_SOCKADDR(INPUT) safe_release_byte_array_elements(env, INPUT, (signed char *) INPUT_buffer);
+struct sockaddr INPUT ## _temp;\
+INPUT ## _temp.sa_family = INPUT_SA_FAMILY; \
+char* INPUT ## _buffer = NULL; \
+if(INPUT != NULL) { \
+INPUT ## _buffer = java_byte_array_to_char_array(env, INPUT); \
+memcpy(&INPUT ## _temp.sa_data[0], INPUT ## _buffer, sizeof(INPUT ## _temp.sa_data)); \
+}
+#define C_SOCKADDR_UNROLL(INPUT) ((INPUT == NULL) ? NULL : &INPUT ## _temp)
+#define RELEASE_C_SOCKADDR(INPUT) safe_release_byte_array_elements(env, INPUT, (signed char *) INPUT ## _buffer);
 
 
 // For getting the current Sjmmie instance

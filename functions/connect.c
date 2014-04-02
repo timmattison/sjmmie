@@ -20,7 +20,7 @@ JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalConnect(
     JAVA_C_SOCKADDR(sa_data_java, sa_family);
 
 	// Call the original function and store the result
-	return_value = connect(s, &C_SOCKADDR_UNROLL(sa_data_java), namelen);
+	return_value = connect(s, C_SOCKADDR_UNROLL(sa_data_java), namelen);
 
 	// Release the memory for the copy of the string data
     RELEASE_C_SOCKADDR(sa_data_java);

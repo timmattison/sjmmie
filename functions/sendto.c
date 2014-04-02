@@ -13,28 +13,21 @@ jmethodID sendto_interceptor;
 /**
  * Java calls back into this function when it wants to call back to the original sendto function
  */
-JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalSendTo(JNIEnv *env, jobject obj, jint sockfd, jbyteArray buf_java, jint len, jint flags, jchar sa_family, jbyteArray dest_addr_sa_data_java, jint addrlen) {
+JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalSendTo(JNIEnv *env, jobject obj, jint sockfd, jbyteArray buf_java, jint len, jint flags, jchar sa_family, jbyteArray sa_data_java, jint addrlen) {
 	int return_value;
 
 	// Get the bytes back
-	char* buf_c = java_byte_array_to_char_array(env, buf_java);
+    JAVA_C_CHAR_ARRAY(buf_java);
 
 	// Rebuild the sockaddr structure
-	struct sockaddr dest_addr;
-	dest_addr.sa_family = sa_family;
-
-	// Get the string data and copy it to the sockaddr structure
-	char* dest_addr_sa_data_c = java_byte_array_to_char_array(env, dest_addr_sa_data_java);
-	if(dest_addr_sa_data_c != NULL) {
-		memcpy(&dest_addr.sa_data[0], dest_addr_sa_data_c, sizeof(dest_addr.sa_data));
-	}
+    JAVA_C_SOCKADDR(sa_data_java, sa_family);
 
 	// Call the original function and store the result
-	return_value = sendto(sockfd, buf_c, len, flags, (dest_addr_sa_data_c == NULL) ? NULL : &dest_addr, addrlen);
+	return_value = sendto(sockfd, CHAR_ARRAY_UNROLL(buf_java), len, flags, C_SOCKADDR_UNROLL(sa_data_java), addrlen);
 
 	// Release the memory for the copy of the string data
-	safe_release_byte_array_elements(env, buf_java, (signed char *) buf_c);
-	safe_release_byte_array_elements(env, dest_addr_sa_data_java, (signed char *) dest_addr_sa_data_c);
+    RELEASE_C_CHAR_ARRAY(buf_java);
+    RELEASE_C_SOCKADDR(sa_data_java);
 
 	// Return the result
 	return return_value;
