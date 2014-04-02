@@ -80,6 +80,15 @@ memcpy(&INPUT ## _temp.sa_data[0], INPUT ## _buffer, sizeof(INPUT ## _temp.sa_da
 #define C_SOCKADDR_UNROLL(INPUT) ((INPUT == NULL) ? NULL : &INPUT ## _temp)
 #define RELEASE_C_SOCKADDR(INPUT) safe_release_byte_array_elements(env, INPUT, (signed char *) INPUT ## _buffer);
 
+// For msghdr
+#define C_JAVA_MSGHDR(INPUT) jbyteArray INPUT ## _msg_name = char_array_to_java_byte_array(env, (char *) INPUT.msg_name, INPUT.msg_namelen); \
+jclass byteArrayClass = (*env)->FindClass(env, "[B"); \
+jobjectArray INPUT ## _msg_iov = (*env)->NewObjectArray(env, (jsize) INPUT.msg_iovlen, byteArrayClass, NULL); \
+jbyteArray[] INPUT ## _iovec = calloc(INPUT.msg_iovlen, sizeof(socklen_t)); \
+for(int INPUT ## _temp_loop = 0; INPUT ## _temp_loop < INPUT.msg_iovlen; INPUT ## _temp_loop++) { \
+  INPUT ## _iovec[INPUT ## _temp_loop] = char_array_to_java_byte_array(env, (char *) INPUT.msg_iov[INPUT ## _temp_loop], INPUT.msg_iov.iov_len); \
+} \
+jbyteArray INPUT ## _msg_control = char_array_to_java_byte_array(env, (char *) INPUT.msg_control, INPUT.msg_controllen);
 
 // For getting the current Sjmmie instance
 extern jobject sjmmie_instance;
