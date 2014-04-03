@@ -16,6 +16,8 @@ public class SjmmieLibrary {
 
     public native int originalSendTo(int sockfd, byte[] data_to_send, int len, int flags, char dest_addr_sa_family, byte[] sa_data, int addrlen);
 
+    public native int originalRecvFrom(int sockfd, byte[] receive_buffer, int len, int flags, char address_family, byte[] address_data, int addrlen);
+
     public native int originalSocket(int domain, int type, int protocol);
 
     public native int originalSend(int socket, byte[] buffer, int length, int flags);

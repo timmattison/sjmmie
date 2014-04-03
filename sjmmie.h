@@ -35,13 +35,21 @@ extern char* java_byte_array_to_char_array(JNIEnv *env, jbyteArray java_byte_arr
 // For converting char/byte arrays to Java arrays
 extern jbyteArray char_array_to_java_byte_array(JNIEnv *env, char* c_buffer, int c_buffer_length);
 
+// For converting Java arrays to int arrays
+extern int* java_int_array_to_int_array(JNIEnv *env, jintArray java_byte_array);
+
+// For converting int arrays to Java arrays
+extern jintArray int_array_to_java_int_array(JNIEnv *env, int* c_buffer, int c_buffer_length);
+
 // For safely freeing memory
 extern void safe_delete_local_ref(JNIEnv *env, jobject object);
 extern void safe_release_byte_array_elements(JNIEnv *env, jbyteArray java_byte_array, signed char *c_buffer);
 extern void safe_release_byte_array_elements_copy_back(JNIEnv *env, jbyteArray java_byte_array, signed char *c_buffer);
+extern void safe_release_int_array_elements(JNIEnv *env, jintArray java_int_array, int *c_buffer);
+extern void safe_release_int_array_elements_copy_back(JNIEnv *env, jintArray java_byte_array, int *c_buffer);
 
 // Converts a sockaddr from C to Java
-jbyteArray c_java_sockaddr(JNIEnv *env, struct sockaddr *input);
+jbyteArray c_java_sockaddr(JNIEnv *env, struct sockaddr *input, int size);
 
 // Frees a sockaddr that was sent to Java
 void java_c_sockaddr(JNIEnv *env, jbyteArray sa_data_java);
@@ -56,6 +64,16 @@ void java_c_sockaddr(JNIEnv *env, jbyteArray sa_data_java);
 #define JAVA_C_CHAR_ARRAY(INPUT) char* INPUT ## _buffer = java_byte_array_to_char_array(env, INPUT);
 #define RELEASE_C_CHAR_ARRAY(INPUT) safe_release_byte_array_elements_copy_back(env, INPUT, (signed char *) INPUT ## _buffer);
 
+// For int arrays
+#define C_JAVA_INT_ARRAY(INPUT, LENGTH) jintArray INPUT ## _buffer = int_array_to_java_int_array(env, (int *) INPUT, LENGTH);
+#define INT_ARRAY_UNROLL(INPUT) INPUT ## _buffer
+#define JAVA_C_INT_ARRAY_COPY_BACK(INPUT, SIZE) int* INPUT ## _temp_buffer = java_int_array_to_int_array(env, INPUT ## _buffer); memcpy((void *) INPUT, INPUT ## _temp_buffer, SIZE); safe_release_int_array_elements(env, INPUT ## _buffer, (int *) INPUT ## _temp_buffer);
+
+#define RELEASE_JAVA_INT_ARRAY(INPUT) safe_delete_local_ref(env, INPUT ## _buffer);
+
+#define JAVA_C_INT_ARRAY(INPUT) int* INPUT ## _buffer = java_int_array_to_int_array(env, INPUT);
+#define RELEASE_C_INT_ARRAY(INPUT) safe_release_int_array_elements_copy_back(env, INPUT, (int *) INPUT ## _buffer);
+
 // For strings
 #define JAVA_C_STRING(INPUT) const char *INPUT ## _buffer = (*env)->GetStringUTFChars(env, INPUT, NULL);
 #define STRING_UNROLL(INPUT) INPUT ## _buffer
@@ -65,17 +83,17 @@ void java_c_sockaddr(JNIEnv *env, jbyteArray sa_data_java);
 #define RELEASE_JAVA_STRING(INPUT) safe_delete_local_ref(env, INPUT ## _buffer)
 
 // For sockaddr
-#define C_JAVA_SOCKADDR(INPUT) jbyteArray INPUT ## _buffer = c_java_sockaddr(env, (struct sockaddr *) INPUT);
+#define C_JAVA_SOCKADDR(INPUT, LENGTH) jbyteArray INPUT ## _buffer = c_java_sockaddr(env, (struct sockaddr *) INPUT, LENGTH);
 #define JAVA_SOCKADDR_UNROLL(INPUT) ((INPUT == NULL) ? 0 : INPUT->sa_family), INPUT ## _buffer
 #define RELEASE_JAVA_SOCKADDR(INPUT) java_c_sockaddr(env, INPUT ## _buffer);
 
-#define JAVA_C_SOCKADDR(INPUT, INPUT_SA_FAMILY) \
+#define JAVA_C_SOCKADDR(INPUT, INPUT_SA_FAMILY, ADDRLEN) \
 struct sockaddr INPUT ## _temp;\
 INPUT ## _temp.sa_family = INPUT_SA_FAMILY; \
 char* INPUT ## _buffer = NULL; \
 if(INPUT != NULL) { \
 INPUT ## _buffer = java_byte_array_to_char_array(env, INPUT); \
-memcpy(&INPUT ## _temp.sa_data[0], INPUT ## _buffer, sizeof(INPUT ## _temp.sa_data)); \
+memcpy(&INPUT ## _temp.sa_data[0], INPUT ## _buffer, ADDRLEN); \
 }
 #define C_SOCKADDR_UNROLL(INPUT) ((INPUT == NULL) ? NULL : &INPUT ## _temp)
 #define RELEASE_C_SOCKADDR(INPUT) safe_release_byte_array_elements(env, INPUT, (signed char *) INPUT ## _buffer);
@@ -116,6 +134,11 @@ extern jmethodID java_connect_method;
 extern const char *sendto_interceptor_name;
 extern const char *sendto_interceptor_arguments;
 extern jmethodID java_sendto_method;
+
+// For intercepting "recvfrom"
+extern const char *recvfrom_interceptor_name;
+extern const char *recvfrom_interceptor_arguments;
+extern jmethodID java_recvfrom_method;
 
 // For intercepting "socket"
 extern const char *socket_interceptor_name;

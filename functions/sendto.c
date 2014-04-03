@@ -19,17 +19,23 @@ JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalSendTo(J
 	// Get the bytes back
     JAVA_C_CHAR_ARRAY(buf_java);
 
+    printf("ABOUT TO CRASH %d\n", addrlen);
 	// Rebuild the sockaddr structure
-    JAVA_C_SOCKADDR(sa_data_java, sa_family);
+    JAVA_C_SOCKADDR(sa_data_java, sa_family, addrlen);
+    printf("DIDN'T CRASH %d\n", addrlen);
 
 	// Call the original function and store the result
+    printf("3\n");
 	return_value = sendto(sockfd, CHAR_ARRAY_UNROLL(buf_java), len, flags, C_SOCKADDR_UNROLL(sa_data_java), addrlen);
 
 	// Release the memory for the copy of the string data
+    printf("4\n");
     RELEASE_C_CHAR_ARRAY(buf_java);
+    printf("5\n");
     RELEASE_C_SOCKADDR(sa_data_java);
 
 	// Return the result
+    printf("6\n");
 	return return_value;
 }
 
@@ -45,7 +51,7 @@ ssize_t SJMMIE_sendto(int sockfd, const void *buf, size_t len, int flags, const 
 		jint return_value;
 
 		if(dest_addr != NULL) {
-            C_JAVA_SOCKADDR(dest_addr);
+            C_JAVA_SOCKADDR(dest_addr, addrlen);
             return_value = (*env)->CallIntMethod(env, sjmmie_instance, java_sendto_method, sockfd, CHAR_ARRAY_UNROLL(buf), len, flags, JAVA_SOCKADDR_UNROLL(dest_addr), addrlen);
             RELEASE_JAVA_SOCKADDR(dest_addr);
 		}

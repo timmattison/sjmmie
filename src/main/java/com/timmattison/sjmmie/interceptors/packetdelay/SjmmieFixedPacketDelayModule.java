@@ -3,10 +3,7 @@ package com.timmattison.sjmmie.interceptors.packetdelay;
 import com.google.inject.AbstractModule;
 import com.timmattison.sjmmie.SjmmieLibrary;
 import com.timmattison.sjmmie.interceptors.interfaces.*;
-import com.timmattison.sjmmie.interceptors.nop.NopCloseInterceptor;
-import com.timmattison.sjmmie.interceptors.nop.NopConnectInterceptor;
-import com.timmattison.sjmmie.interceptors.nop.NopOpenInterceptor;
-import com.timmattison.sjmmie.interceptors.nop.NopSocketInterceptor;
+import com.timmattison.sjmmie.interceptors.nop.*;
 import com.timmattison.sjmmie.restlets.BasicRestletApplicationFactory;
 import com.timmattison.sjmmie.restlets.RestletApplicationFactory;
 
@@ -26,6 +23,7 @@ public class SjmmieFixedPacketDelayModule extends AbstractModule {
 
         // Delay implementations
         bind(SendToInterceptor.class).to(DelaySendToIntereceptor.class).asEagerSingleton();
+        bind(RecvFromInterceptor.class).to(DelayRecvFromIntereceptor.class).asEagerSingleton();
         bind(SendInterceptor.class).to(DelaySendIntereceptor.class).asEagerSingleton();
         bind(RecvInterceptor.class).to(DelayRecvIntereceptor.class).asEagerSingleton();
 

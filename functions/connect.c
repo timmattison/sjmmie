@@ -17,7 +17,7 @@ JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalConnect(
 	int return_value;
 
 	// Rebuild the sockaddr structure
-    JAVA_C_SOCKADDR(sa_data_java, sa_family);
+    JAVA_C_SOCKADDR(sa_data_java, sa_family, namelen);
 
 	// Call the original function and store the result
 	return_value = connect(s, C_SOCKADDR_UNROLL(sa_data_java), namelen);
@@ -36,7 +36,7 @@ int SJMMIE_connect(int s, const struct sockaddr *name, socklen_t namelen) {
 	if(java_connect_method != NULL) {
 		JNIEnv *env = get_env();
 
-        C_JAVA_SOCKADDR(name);
+        C_JAVA_SOCKADDR(name, namelen);
 
 		jint return_value = (*env)->CallIntMethod(env, sjmmie_instance, java_connect_method, s, JAVA_SOCKADDR_UNROLL(name), namelen);
 

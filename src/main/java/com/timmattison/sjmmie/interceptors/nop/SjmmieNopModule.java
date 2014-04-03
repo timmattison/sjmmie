@@ -18,6 +18,7 @@ public class SjmmieNopModule extends AbstractModule {
         bind(CloseInterceptor.class).to(NopCloseInterceptor.class).asEagerSingleton();
         bind(ConnectInterceptor.class).to(NopConnectInterceptor.class).asEagerSingleton();
         bind(SendToInterceptor.class).to(NopSendToInterceptor.class).asEagerSingleton();
+        bind(RecvFromInterceptor.class).to(NopRecvFromInterceptor.class).asEagerSingleton();
         bind(SocketInterceptor.class).to(NopSocketInterceptor.class).asEagerSingleton();
         bind(SendInterceptor.class).to(NopSendInterceptor.class).asEagerSingleton();
         bind(RecvInterceptor.class).to(NopRecvInterceptor.class).asEagerSingleton();

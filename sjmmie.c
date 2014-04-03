@@ -23,6 +23,7 @@ int SJMMIE_open(const char *filename, int flags, ...);
 int SJMMIE_connect (int sd, const struct sockaddr* addr, socklen_t alen);
 int SJMMIE_close(int fildes);
 ssize_t SJMMIE_sendto(int sockfd, const void *buf, size_t len, int flags, const struct sockaddr *dest_addr, socklen_t addrlen);
+ssize_t SJMMIE_recvfrom(int sockfd, const void *buf, size_t len, int flags, const struct sockaddr *dest_addr, socklen_t addrlen);
 int SJMMIE_socket(int domain, int type, int protocol);
 ssize_t SJMMIE_send(int socket, const void *buffer, size_t length, int flags);
 ssize_t SJMMIE_recv (int socket, void *buffer, size_t size, int flags);
@@ -38,7 +39,8 @@ static const interpose_t interposers[] \
 		{ .replacement = SJMMIE_open, .original = open },
 		{ .replacement = SJMMIE_close, .original = close },
 		{ .replacement = SJMMIE_connect, .original = connect },
-		{ .replacement = SJMMIE_sendto, .original = sendto },
+        { .replacement = SJMMIE_sendto, .original = sendto },
+        { .replacement = SJMMIE_recvfrom, .original = recvfrom },
 		{ .replacement = SJMMIE_socket, .original = socket },
 		{ .replacement = SJMMIE_send, .original = send },
 		{ .replacement = SJMMIE_recv, .original = recv },
@@ -194,7 +196,10 @@ JNIEnv* get_env() {
 	// sendto
 	java_sendto_method = (*env)->GetMethodID(env, sjmmie_class, sendto_interceptor_name, sendto_interceptor_arguments);
 
-	// socket
+    // recvfrom
+    java_recvfrom_method = (*env)->GetMethodID(env, sjmmie_class, recvfrom_interceptor_name, recvfrom_interceptor_arguments);
+
+    // socket
 	java_socket_method = (*env)->GetMethodID(env, sjmmie_class, socket_interceptor_name, socket_interceptor_arguments);
 
 	// send
@@ -220,14 +225,35 @@ char* java_byte_array_to_char_array(JNIEnv *env, jbyteArray java_byte_array) {
 
 // For converting char/byte arrays to Java arrays
 jbyteArray char_array_to_java_byte_array(JNIEnv *env, char* c_buffer, int c_buffer_length) {
-	if(c_buffer == NULL) {
-		return NULL;
-	}
+    if(c_buffer == NULL) {
+        return NULL;
+    }
 
-	jbyteArray java_byte_array = (*env)->NewByteArray(env, c_buffer_length);
-	(*env)->SetByteArrayRegion(env, java_byte_array, 0, c_buffer_length, (jbyte*) c_buffer);
+    jbyteArray java_byte_array = (*env)->NewByteArray(env, c_buffer_length);
+    (*env)->SetByteArrayRegion(env, java_byte_array, 0, c_buffer_length, (jbyte*) c_buffer);
 
-	return java_byte_array;
+    return java_byte_array;
+}
+
+// For converting Java arrays to int arrays
+int* java_int_array_to_int_array(JNIEnv *env, jintArray java_int_array) {
+    if(java_int_array == NULL) {
+        return NULL;
+    }
+
+    return (int *) (*env)->GetIntArrayElements(env, java_int_array, 0);
+}
+
+// For converting int arrays to Java arrays
+jbyteArray int_array_to_java_int_array(JNIEnv *env, int* c_buffer, int c_buffer_length) {
+    if(c_buffer == NULL) {
+        return NULL;
+    }
+
+    jintArray java_int_array = (*env)->NewIntArray(env, c_buffer_length);
+    (*env)->SetIntArrayRegion(env, java_int_array, 0, c_buffer_length, (jint*) c_buffer);
+
+    return java_int_array;
 }
 
 // For safely freeing memory
@@ -240,24 +266,39 @@ void safe_delete_local_ref(JNIEnv *env, jobject object) {
 }
 
 void safe_release_byte_array_elements(JNIEnv *env, jbyteArray java_byte_array, signed char *c_buffer) {
-	if((java_byte_array == NULL) || (c_buffer == NULL)) {
-		return;
-	}
+    if((java_byte_array == NULL) || (c_buffer == NULL)) {
+        return;
+    }
 
-	(*env)->ReleaseByteArrayElements(env, java_byte_array, (signed char *) c_buffer, JNI_ABORT);
+    (*env)->ReleaseByteArrayElements(env, java_byte_array, (signed char *) c_buffer, JNI_ABORT);
 }
 
 void safe_release_byte_array_elements_copy_back(JNIEnv *env, jbyteArray java_byte_array, signed char *c_buffer) {
-	if((java_byte_array == NULL) || (c_buffer == NULL)) {
-		return;
-	}
+    if((java_byte_array == NULL) || (c_buffer == NULL)) {
+        return;
+    }
 
-	(*env)->ReleaseByteArrayElements(env, java_byte_array, (signed char *) c_buffer, 0);
+    (*env)->ReleaseByteArrayElements(env, java_byte_array, (signed char *) c_buffer, 0);
 }
 
-jbyteArray c_java_sockaddr(JNIEnv *env, struct sockaddr *input) {
-    int size_of_sa_data = (input == NULL) ? 0 : sizeof(input->sa_data);
-    return char_array_to_java_byte_array(env, (input == NULL) ? NULL : (char *) input->sa_data, size_of_sa_data);
+void safe_release_int_array_elements(JNIEnv *env, jintArray java_int_array, int *c_buffer) {
+    if((java_int_array == NULL) || (c_buffer == NULL)) {
+        return;
+    }
+
+    (*env)->ReleaseIntArrayElements(env, java_int_array, (int *) c_buffer, JNI_ABORT);
+}
+
+void safe_release_int_array_elements_copy_back(JNIEnv *env, jintArray java_int_array, int *c_buffer) {
+    if((java_int_array == NULL) || (c_buffer == NULL)) {
+        return;
+    }
+
+    (*env)->ReleaseIntArrayElements(env, java_int_array, (int *) c_buffer, 0);
+}
+
+jbyteArray c_java_sockaddr(JNIEnv *env, struct sockaddr *input, int size) {
+    return char_array_to_java_byte_array(env, (input == NULL) ? NULL : (char *) input->sa_data, size);
 }
 
 void java_c_sockaddr(JNIEnv *env, jbyteArray sa_data_java) {
