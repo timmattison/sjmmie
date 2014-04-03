@@ -9,7 +9,7 @@ import java.util.Set;
 public class BasicSocketDelayer implements SocketDelayer {
     private Set<Integer> socketDescriptorSet = new HashSet<Integer>();
 
-    private int delay = 2500;
+    private int delay = 50;
 
     @Override
     public int getDelay() {
