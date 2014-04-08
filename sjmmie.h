@@ -93,7 +93,7 @@ INPUT ## _temp.sa_family = INPUT_SA_FAMILY; \
 char* INPUT ## _buffer = NULL; \
 if(INPUT != NULL) { \
 INPUT ## _buffer = java_byte_array_to_char_array(env, INPUT); \
-memcpy(&INPUT ## _temp.sa_data[0], INPUT ## _buffer, ADDRLEN); \
+memcpy(&INPUT ## _temp.sa_data[0], INPUT ## _buffer, (ADDRLEN > sizeof(INPUT ## _temp.sa_data)) ? sizeof(INPUT ## _temp.sa_data) : ADDRLEN); \
 }
 #define C_SOCKADDR_UNROLL(INPUT) ((INPUT == NULL) ? NULL : &INPUT ## _temp)
 #define RELEASE_C_SOCKADDR(INPUT) safe_release_byte_array_elements(env, INPUT, (signed char *) INPUT ## _buffer);
