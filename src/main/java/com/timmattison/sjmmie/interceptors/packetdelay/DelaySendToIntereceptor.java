@@ -20,7 +20,7 @@ public class DelaySendToIntereceptor implements SendToInterceptor {
 
     @Override
     public int sendtoInterceptor(int sockfd, byte[] data_to_send, int len, int flags, char dest_addr_sa_family, byte[] sa_data, int addrlen) {
-        System.out.println("Delay Sendto: " + sockfd + ", " + len + ", " + flags + ", " + addrlen);
+        System.out.println("Delay Sendto: " + sockfd + ", " + len + ", " + flags + ", " + sa_data.length + ", " + addrlen);
 
         if (socketDelayer != null) {
             socketDelayer.sentDataOnSocket(sockfd);
