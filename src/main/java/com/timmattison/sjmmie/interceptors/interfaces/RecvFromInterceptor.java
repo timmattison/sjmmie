@@ -10,12 +10,11 @@ public interface RecvFromInterceptor {
      * @param receive_buffer
      * @param len
      * @param flags
-     * @param address_family
      * @param address_data
      * @param addrlen
      * @return
      */
-    public int recvfromInterceptor(int sockfd, byte[] receive_buffer, int len, int flags, char address_family, byte[] address_data, int addrlen);
+    public int recvfromInterceptor(int sockfd, byte[] receive_buffer, int len, int flags, byte[] address_data, int addrlen);
 
     public boolean recvFromInterceptorIsEnabled();
 

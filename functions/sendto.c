@@ -21,7 +21,7 @@ JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalSendTo(J
 
     printf("ABOUT TO CRASH %d\n", addrlen);
 	// Rebuild the sockaddr structure
-    JAVA_C_SOCKADDR(sa_data_java, sa_family, addrlen);
+    JAVA_C_SOCKADDR(sa_data_java, addrlen);
     printf("DIDN'T CRASH %d\n", addrlen);
 
 	// Call the original function and store the result

@@ -17,7 +17,7 @@ JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalConnect(
 	int return_value;
 
 	// Rebuild the sockaddr structure
-    JAVA_C_SOCKADDR(sa_data_java, sa_family, namelen);
+    JAVA_C_SOCKADDR(sa_data_java, namelen);
 
 	// Call the original function and store the result
 	return_value = connect(s, C_SOCKADDR_UNROLL(sa_data_java), namelen);

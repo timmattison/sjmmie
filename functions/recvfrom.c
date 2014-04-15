@@ -23,7 +23,7 @@ JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalRecvFrom
     JAVA_C_INT_ARRAY(addrlen);
 
     // Rebuild the sockaddr structure
-    JAVA_C_SOCKADDR(sa_data_java, sa_family, INT_ARRAY_UNROLL(addrlen)[0])
+    JAVA_C_SOCKADDR(sa_data_java, INT_ARRAY_UNROLL(addrlen)[0])
 
 	// Call the original function and store the result
 	return_value = recvfrom(sockfd, CHAR_ARRAY_UNROLL(buf_java), len, flags, C_SOCKADDR_UNROLL(sa_data_java), (socklen_t *) INT_ARRAY_UNROLL(addrlen));

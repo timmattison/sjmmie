@@ -87,15 +87,12 @@ void java_c_sockaddr(JNIEnv *env, jbyteArray sa_data_java);
 #define JAVA_SOCKADDR_UNROLL(INPUT) ((INPUT == NULL) ? 0 : INPUT->sa_family), INPUT ## _buffer
 #define RELEASE_JAVA_SOCKADDR(INPUT) java_c_sockaddr(env, INPUT ## _buffer);
 
-#define JAVA_C_SOCKADDR(INPUT, INPUT_SA_FAMILY, ADDRLEN) \
-struct sockaddr INPUT ## _temp;\
-INPUT ## _temp.sa_family = INPUT_SA_FAMILY; \
+#define JAVA_C_SOCKADDR(INPUT, ADDRLEN) \
 char* INPUT ## _buffer = NULL; \
 if(INPUT != NULL) { \
-INPUT ## _buffer = java_byte_array_to_char_array(env, INPUT); \
-memcpy(&INPUT ## _temp.sa_data[0], INPUT ## _buffer, (ADDRLEN > sizeof(INPUT ## _temp.sa_data)) ? sizeof(INPUT ## _temp.sa_data) : ADDRLEN); \
+INPUT ## _buffer = java_byte_array_to_char_array(env, (char *) INPUT); \
 }
-#define C_SOCKADDR_UNROLL(INPUT) ((INPUT == NULL) ? NULL : &INPUT ## _temp)
+#define C_SOCKADDR_UNROLL(INPUT) ((INPUT == NULL) ? NULL : *INPUT ## _buffer)
 #define RELEASE_C_SOCKADDR(INPUT) safe_release_byte_array_elements(env, INPUT, (signed char *) INPUT ## _buffer);
 
 // For msghdr

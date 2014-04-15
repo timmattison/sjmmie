@@ -12,11 +12,11 @@ public class SjmmieLibrary {
 
     public native int originalClose(int fildes);
 
-    public native int originalConnect(int s, char sa_family, byte[] sa_data, int namelen);
+    public native int originalConnect(int s, byte[] sa_data, int namelen);
 
-    public native int originalSendTo(int sockfd, byte[] data_to_send, int len, int flags, char dest_addr_sa_family, byte[] sa_data, int addrlen);
+    public native int originalSendTo(int sockfd, byte[] data_to_send, int len, int flags, byte[] sa_data, int addrlen);
 
-    public native int originalRecvFrom(int sockfd, byte[] receive_buffer, int len, int flags, char address_family, byte[] address_data, int addrlen);
+    public native int originalRecvFrom(int sockfd, byte[] receive_buffer, int len, int flags, byte[] address_data, int addrlen);
 
     public native int originalSocket(int domain, int type, int protocol);
 

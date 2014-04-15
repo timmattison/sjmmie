@@ -22,7 +22,7 @@ public class FixedPacketLossSendToInterceptor implements SendToInterceptor {
     }
 
     @Override
-    public int sendtoInterceptor(int sockfd, byte[] data_to_send, int len, int flags, char dest_addr_sa_family, byte[] sa_data, int addrlen) {
+    public int sendtoInterceptor(int sockfd, byte[] data_to_send, int len, int flags, byte[] sa_data, int addrlen) {
         if (sendToInterceptorIsEnabled()) {
             counter++;
 
@@ -32,7 +32,7 @@ public class FixedPacketLossSendToInterceptor implements SendToInterceptor {
             }
         }
 
-        return sjmmieLibrary.originalSendTo(sockfd, data_to_send, len, flags, dest_addr_sa_family, sa_data, addrlen);
+        return sjmmieLibrary.originalSendTo(sockfd, data_to_send, len, flags, sa_data, addrlen);
     }
 
     @Override

@@ -2,7 +2,6 @@ package com.timmattison.sjmmie.interceptors.nop;
 
 import com.timmattison.sjmmie.SjmmieLibrary;
 import com.timmattison.sjmmie.interceptors.interfaces.RecvFromInterceptor;
-import com.timmattison.sjmmie.interceptors.interfaces.SendToInterceptor;
 
 import javax.inject.Inject;
 
@@ -18,9 +17,9 @@ public class NopRecvFromInterceptor implements RecvFromInterceptor {
     }
 
     @Override
-    public int recvfromInterceptor(int sockfd, byte[] receive_buffer, int len, int flags, char address_family, byte[] address_data, int addrlen) {
+    public int recvfromInterceptor(int sockfd, byte[] receive_buffer, int len, int flags, byte[] address_data, int addrlen) {
         System.out.println("Recvfrom: " + sockfd + ", " + len + ", " + flags + ", " + addrlen);
-        return sjmmieLibrary.originalRecvFrom(sockfd, receive_buffer, len, flags, address_family, address_data, addrlen);
+        return sjmmieLibrary.originalRecvFrom(sockfd, receive_buffer, len, flags, address_data, addrlen);
     }
 
     @Override

@@ -7,10 +7,9 @@ public interface ConnectInterceptor {
     /**
      * The connect function call interceptor
      * @param s
-     * @param sa_family
      * @param sa_data
      * @param namelen
      * @return
      */
-    public int connectInterceptor(int s, char sa_family, byte[] sa_data, int namelen);
+    public int connectInterceptor(int s, byte[] sa_data, int namelen);
 }

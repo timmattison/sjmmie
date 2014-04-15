@@ -17,8 +17,8 @@ public class NopConnectInterceptor implements ConnectInterceptor {
     }
 
     @Override
-    public int connectInterceptor(int s, char sa_family, byte[] sa_data, int namelen) {
+    public int connectInterceptor(int s, byte[] sa_data, int namelen) {
         System.out.println("Connect: " + s + ", " + namelen);
-        return sjmmieLibrary.originalConnect(s, sa_family, sa_data, namelen);
+        return sjmmieLibrary.originalConnect(s, sa_data, namelen);
     }
 }
