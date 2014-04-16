@@ -27,6 +27,8 @@ ssize_t SJMMIE_recvfrom(int sockfd, const void *buf, size_t len, int flags, cons
 int SJMMIE_socket(int domain, int type, int protocol);
 ssize_t SJMMIE_send(int socket, const void *buffer, size_t length, int flags);
 ssize_t SJMMIE_recv (int socket, void *buffer, size_t size, int flags);
+ssize_t SJMMIE_sendmsg(int socket, const struct msghdr *message, int flags);
+ssize_t SJMMIE_recvmsg(int socket, struct msghdr *message, int flags);
 
 /* The names of everything except the section are arbitrary */
 typedef	struct	interposer {
@@ -43,7 +45,9 @@ static const interpose_t interposers[] \
         { .replacement = SJMMIE_recvfrom, .original = recvfrom },
 		{ .replacement = SJMMIE_socket, .original = socket },
 		{ .replacement = SJMMIE_send, .original = send },
-		{ .replacement = SJMMIE_recv, .original = recv },
+        { .replacement = SJMMIE_recv, .original = recv },
+        { .replacement = SJMMIE_sendmsg, .original = sendmsg },
+        { .replacement = SJMMIE_recvmsg, .original = recvmsg },
 };
 
 static void con() __attribute__((constructor));
