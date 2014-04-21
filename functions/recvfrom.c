@@ -62,6 +62,7 @@ ssize_t SJMMIE_recvfrom(int sockfd, const void *buf, size_t len, int flags, cons
         JAVA_C_CHAR_ARRAY_COPY_BACK(buf, len);
 
         RELEASE_JAVA_CHAR_ARRAY(buf);
+        RELEASE_JAVA_INT_ARRAY(addrlen);
 
 		return return_value;
 	}
