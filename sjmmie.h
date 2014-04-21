@@ -96,9 +96,8 @@ INPUT ## _buffer = java_byte_array_to_char_array(env, (char *) INPUT); \
 #define C_JAVA_MSGHDR(INPUT) jbyteArray INPUT ## _msg_name = char_array_to_java_byte_array(env, (char *) INPUT.msg_name, INPUT.msg_namelen); \
 jclass byteArrayClass = (*env)->FindClass(env, "[B"); \
 jobjectArray INPUT ## _msg_iov = (*env)->NewObjectArray(env, (jsize) INPUT.msg_iovlen, byteArrayClass, NULL); \
-jbyteArray[] INPUT ## _iovec = calloc(INPUT.msg_iovlen, sizeof(socklen_t)); \
 for(int INPUT ## _temp_loop = 0; INPUT ## _temp_loop < INPUT.msg_iovlen; INPUT ## _temp_loop++) { \
-  INPUT ## _iovec[INPUT ## _temp_loop] = char_array_to_java_byte_array(env, (char *) INPUT.msg_iov[INPUT ## _temp_loop], INPUT.msg_iov.iov_len); \
+  (*env)->SetObjectArrayElement(env, INPUT ## _msg_iov, INPUT ## _temp_loop, char_array_to_java_byte_array(env, (char *) INPUT.msg_iov[INPUT ## _temp_loop].iov_base, INPUT.msg_iov[INPUT ## _temp_loop].iov_len)); \
 } \
 jbyteArray INPUT ## _msg_control = char_array_to_java_byte_array(env, (char *) INPUT.msg_control, INPUT.msg_controllen);
 
