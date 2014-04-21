@@ -301,10 +301,6 @@ void safe_release_int_array_elements_copy_back(JNIEnv *env, jintArray java_int_a
     (*env)->ReleaseIntArrayElements(env, java_int_array, (int *) c_buffer, 0);
 }
 
-jbyteArray c_java_sockaddr(JNIEnv *env, struct sockaddr *input, int size) {
+jbyteArray copy_c_to_java_sockaddr(JNIEnv *env, struct sockaddr *input, int size) {
     return char_array_to_java_byte_array(env, (input == NULL) ? NULL : (char *) input->sa_data, size);
-}
-
-void java_c_sockaddr(JNIEnv *env, jbyteArray sa_data_java) {
-    safe_delete_local_ref(env, sa_data_java);
 }

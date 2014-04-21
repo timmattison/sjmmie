@@ -48,11 +48,8 @@ extern void safe_release_byte_array_elements_copy_back(JNIEnv *env, jbyteArray j
 extern void safe_release_int_array_elements(JNIEnv *env, jintArray java_int_array, int *c_buffer);
 extern void safe_release_int_array_elements_copy_back(JNIEnv *env, jintArray java_byte_array, int *c_buffer);
 
-// Converts a sockaddr from C to Java
-jbyteArray c_java_sockaddr(JNIEnv *env, struct sockaddr *input, int size);
-
-// Frees a sockaddr that was sent to Java
-void java_c_sockaddr(JNIEnv *env, jbyteArray sa_data_java);
+// Copies a sockaddr from C to Java
+jbyteArray copy_c_to_java_sockaddr(JNIEnv *env, struct sockaddr *input, int size);
 
 // For character arrays
 #define C_JAVA_CHAR_ARRAY(INPUT, LENGTH) jbyteArray INPUT ## _buffer = char_array_to_java_byte_array(env, (char *) INPUT, LENGTH);
@@ -83,9 +80,9 @@ void java_c_sockaddr(JNIEnv *env, jbyteArray sa_data_java);
 #define RELEASE_JAVA_STRING(INPUT) safe_delete_local_ref(env, INPUT ## _buffer)
 
 // For sockaddr
-#define C_JAVA_SOCKADDR(INPUT, LENGTH) jbyteArray INPUT ## _buffer = c_java_sockaddr(env, (struct sockaddr *) INPUT, LENGTH);
+#define C_JAVA_SOCKADDR(INPUT, LENGTH) jbyteArray INPUT ## _buffer = copy_c_to_java_sockaddr(env, (struct sockaddr *) INPUT, LENGTH);
 #define JAVA_SOCKADDR_UNROLL(INPUT) ((INPUT == NULL) ? 0 : INPUT->sa_family), INPUT ## _buffer
-#define RELEASE_JAVA_SOCKADDR(INPUT) java_c_sockaddr(env, INPUT ## _buffer);
+#define RELEASE_JAVA_SOCKADDR(INPUT) safe_delete_local_ref(env, INPUT ## _buffer);
 
 #define JAVA_C_SOCKADDR(INPUT, ADDRLEN) \
 char* INPUT ## _buffer = NULL; \
