@@ -13,6 +13,7 @@
 		DD86727B6464B5E13236CDC0 /* sjmmie.h in Headers */ = {isa = PBXBuildFile; fileRef = DD867EC93F9DAB52134355D5 /* sjmmie.h */; };
 		DD86729AD54A50BBE342AF61 /* sjmmie.c in Sources */ = {isa = PBXBuildFile; fileRef = DD8673C01A45A50AA04BE565 /* sjmmie.c */; };
 		DD8673F6BDB61E3BDF9263CE /* com_timmattison_sjmmie_SjmmieLibrary.h in Headers */ = {isa = PBXBuildFile; fileRef = DD8675C5B5B92ECE50464EE9 /* com_timmattison_sjmmie_SjmmieLibrary.h */; };
+		DD86776E481BD4656D22C9EB /* recvmsg.c in Sources */ = {isa = PBXBuildFile; fileRef = DD86793F54E14670BA343785 /* recvmsg.c */; };
 		DD867909AC1969BE68A93B8A /* sendto.c in Sources */ = {isa = PBXBuildFile; fileRef = DD867DFE065DA76043338AF7 /* sendto.c */; };
 		DD8679F488C3C93DAAB5BC83 /* open.c in Sources */ = {isa = PBXBuildFile; fileRef = DD86765DF5A7238D7623E25A /* open.c */; };
 		DD867AD31A07D95E46D70AEB /* recvfrom.c in Sources */ = {isa = PBXBuildFile; fileRef = DD867C3184865262E6714952 /* recvfrom.c */; };
@@ -28,6 +29,7 @@
 		DD86765DF5A7238D7623E25A /* open.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = open.c; sourceTree = "<group>"; };
 		DD8676E16F1379987C98AC01 /* connect.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = connect.c; sourceTree = "<group>"; };
 		DD86774A077A58265B5193D9 /* send.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = send.c; sourceTree = "<group>"; };
+		DD86793F54E14670BA343785 /* recvmsg.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = recvmsg.c; sourceTree = "<group>"; };
 		DD867AA6B5AF65986E2BE7F3 /* libsjmmie.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libsjmmie.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD867C3184865262E6714952 /* recvfrom.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = recvfrom.c; sourceTree = "<group>"; };
 		DD867CFBC8FF889CB545CAA9 /* recv.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = recv.c; sourceTree = "<group>"; };
@@ -57,6 +59,7 @@
 				DD867DFE065DA76043338AF7 /* sendto.c */,
 				DD86718B495E7CA38A6EFDD7 /* socket.c */,
 				DD867C3184865262E6714952 /* recvfrom.c */,
+				DD86793F54E14670BA343785 /* recvmsg.c */,
 			);
 			name = functions;
 			path = ../functions;
@@ -152,6 +155,7 @@
 				DD867909AC1969BE68A93B8A /* sendto.c in Sources */,
 				DD86717B13B3F929635B9F16 /* socket.c in Sources */,
 				DD867AD31A07D95E46D70AEB /* recvfrom.c in Sources */,
+				DD86776E481BD4656D22C9EB /* recvmsg.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

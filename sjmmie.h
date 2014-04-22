@@ -95,7 +95,7 @@ INPUT ## _buffer = java_byte_array_to_char_array(env, (char *) INPUT); \
 // For msghdr
 #define C_JAVA_MSGHDR(INPUT) jbyteArray INPUT ## _msg_name = char_array_to_java_byte_array(env, (char *) INPUT.msg_name, INPUT.msg_namelen); \
 jclass byteArrayClass = (*env)->FindClass(env, "[B"); \
-jobjectArray INPUT ## _msg_iov = (*env)->NewObjectArray(env, (jsize) INPUT.msg_iovlen, byteArrayClass, NULL); \
+jobjectArray INPUT ## _msg_iov = (*env)->NewObjectArray(env, INPUT.msg_iovlen, byteArrayClass, NULL); \
 for(int INPUT ## _temp_loop = 0; INPUT ## _temp_loop < INPUT.msg_iovlen; INPUT ## _temp_loop++) { \
   (*env)->SetObjectArrayElement(env, INPUT ## _msg_iov, INPUT ## _temp_loop, char_array_to_java_byte_array(env, (char *) INPUT.msg_iov[INPUT ## _temp_loop].iov_base, INPUT.msg_iov[INPUT ## _temp_loop].iov_len)); \
 } \
@@ -148,5 +148,10 @@ extern jmethodID java_send_method;
 extern const char *recv_interceptor_name;
 extern const char *recv_interceptor_arguments;
 extern jmethodID java_recv_method;
+
+// For intercepting "recvmsg"
+extern const char *recvmsg_interceptor_name;
+extern const char *recvmsg_interceptor_arguments;
+extern jmethodID java_recvmsg_method;
 
 #endif // SJMMIE_HEADER
