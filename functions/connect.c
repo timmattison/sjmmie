@@ -6,7 +6,8 @@
 jmethodID java_connect_method;
 
 const char *connect_interceptor_name = "connectInterceptor";
-const char *connect_interceptor_arguments = "(IC[BI)I";
+XXX CONNECT INTERCEPTOR ARGUMENTS ARE WRONG XXX
+const char *connect_interceptor_arguments = "(I[BI)I";
 
 jmethodID connect_interceptor;
 
@@ -31,6 +32,7 @@ JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalConnect(
  * This overrides the original connect function
  */
 int SJMMIE_connect(int s, const struct sockaddr *name, socklen_t namelen) {
+    printf("Calling sjmmied code\n");
 	if(java_connect_method != NULL) {
 		JNIEnv *env = get_env();
 
