@@ -65,6 +65,13 @@
 			path = ../functions;
 			sourceTree = "<group>";
 		};
+		DD8671F6424FC31B9695F8DD /* objects */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = objects;
+			sourceTree = "<group>";
+		};
 		DD86739FF57FF832D3304F17 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -73,6 +80,7 @@
 				DD867121BEF04329DE1E5343 /* functions */,
 				DD8673C01A45A50AA04BE565 /* sjmmie.c */,
 				DD867EC93F9DAB52134355D5 /* sjmmie.h */,
+				DD8671F6424FC31B9695F8DD /* objects */,
 			);
 			name = Products;
 			sourceTree = "<group>";

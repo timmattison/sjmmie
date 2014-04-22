@@ -7,6 +7,12 @@
     <content url="file://$MODULE_DIR$/../functions">
       <sourceFolder url="file://$MODULE_DIR$/../functions" isTestSource="false" />
     </content>
+    <content url="file://$MODULE_DIR$/../objects/msghdr.c">
+      <sourceFolder url="file://$MODULE_DIR$/../objects/msghdr.c" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../objects/sockaddr.c">
+      <sourceFolder url="file://$MODULE_DIR$/../objects/sockaddr.c" isTestSource="false" />
+    </content>
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/build" />
     </content>
