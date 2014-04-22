@@ -1,6 +1,7 @@
 package com.timmattison.sjmmie;
 
 import com.timmattison.sjmmie.interceptors.interfaces.*;
+import com.timmattison.sjmmie.objects.ReferenceSockaddr;
 
 /**
  * Created by timmattison on 2/20/14.
@@ -36,11 +37,11 @@ public abstract class AbstractSjmmie implements OpenInterceptor, CloseIntercepto
     }
 
     @Override
-    public int connectInterceptor(int s, byte[] sa_data, int namelen) {
+    public int connectInterceptor(int s, ReferenceSockaddr referenceSockaddr) {
         if (connectInterceptor != null) {
-            return connectInterceptor.connectInterceptor(s, sa_data, namelen);
+            return connectInterceptor.connectInterceptor(s, referenceSockaddr);
         } else {
-            return sjmmieLibrary.originalConnect(s, sa_data, namelen);
+            return sjmmieLibrary.originalConnect(s, referenceSockaddr);
         }
     }
 

@@ -12,6 +12,8 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 
+#include "objects/sockaddr.h"
+
 extern const char *constructor_name;
 extern const char *no_arguments;
 

@@ -2,6 +2,7 @@ package com.timmattison.sjmmie.interceptors.nop;
 
 import com.timmattison.sjmmie.SjmmieLibrary;
 import com.timmattison.sjmmie.interceptors.interfaces.ConnectInterceptor;
+import com.timmattison.sjmmie.objects.ReferenceSockaddr;
 
 import javax.inject.Inject;
 
@@ -17,8 +18,8 @@ public class NopConnectInterceptor implements ConnectInterceptor {
     }
 
     @Override
-    public int connectInterceptor(int s, byte[] sa_data, int namelen) {
-        System.out.println("Connect: " + s + ", " + namelen);
-        return sjmmieLibrary.originalConnect(s, sa_data, namelen);
+    public int connectInterceptor(int s, ReferenceSockaddr referenceSockaddr) {
+        System.out.println("Connect: " + s + ", " + referenceSockaddr.sa_data.length + ", " + referenceSockaddr.sa_len);
+        return sjmmieLibrary.originalConnect(s, referenceSockaddr);
     }
 }

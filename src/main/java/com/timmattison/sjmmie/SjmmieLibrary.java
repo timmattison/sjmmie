@@ -1,5 +1,7 @@
 package com.timmattison.sjmmie;
 
+import com.timmattison.sjmmie.objects.ReferenceSockaddr;
+
 /**
  * Created by timmattison on 2/20/14.
  */
@@ -12,7 +14,7 @@ public class SjmmieLibrary {
 
     public native int originalClose(int fildes);
 
-    public native int originalConnect(int s, byte[] sa_data, int namelen);
+    public native int originalConnect(int s, ReferenceSockaddr referenceSockaddr);
 
     public native int originalSendTo(int sockfd, byte[] data_to_send, int len, int flags, byte[] sa_data, int addrlen);
 
