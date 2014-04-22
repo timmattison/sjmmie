@@ -4,6 +4,8 @@ const char *static_initializer_name = "getInstance";
 //const char *static_initializer_signature = "()[Ljava/lang/Object;";
 const char *static_initializer_signature = "()Lcom/timmattison/sjmmie/Sjmmie;";
 
+const char *no_arguments = "()V";
+
 const char *SJMMIE_JVM_OPTS_VARIABLE = "SJMMIE_JVM_OPTS";
 const char *SJMMIE_CLASS_VARIABLE    = "SJMMIE_CLASS";
 
@@ -299,8 +301,4 @@ void safe_release_int_array_elements_copy_back(JNIEnv *env, jintArray java_int_a
     }
 
     (*env)->ReleaseIntArrayElements(env, java_int_array, (int *) c_buffer, 0);
-}
-
-jbyteArray copy_c_to_java_sockaddr(JNIEnv *env, struct sockaddr *input, int size) {
-    return char_array_to_java_byte_array(env, (input == NULL) ? NULL : (char *) input->sa_data, size);
 }
