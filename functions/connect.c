@@ -35,12 +35,9 @@ int SJMMIE_connect(int s, const struct sockaddr *name, socklen_t namelen) {
 		JNIEnv *env = get_env();
 
         jobject reference_sockaddr_object = sockaddr_to_reference_sockaddr(env, name, namelen);
-        C_JAVA_SOCKADDR(name, namelen);
 
 		jint return_value = (*env)->CallIntMethod(env, sjmmie_instance, java_connect_method, s, reference_sockaddr_object);
 
-        RELEASE_JAVA_SOCKADDR(name);
-	
 		return return_value;
 	}
 	else {
