@@ -14,36 +14,21 @@ INPUT ## _buffer = java_byte_array_to_char_array(env, (char *) INPUT); \
 #define RELEASE_C_SOCKADDR(INPUT) safe_release_byte_array_elements(env, INPUT, (signed char *) INPUT ## _buffer);
 
 jobject sockaddr_to_reference_sockaddr(JNIEnv *env, struct sockaddr *address, int address_length) {
-    if(address == NULL) {
-        printf("NULL address\n");
-    }
-    printf("SOCKADDR 1\n");
     jclass reference_sockaddr_class = (*env)->FindClass(env, REFERENCE_SOCKADDR_CLASS_NAME);
-    printf("SOCKADDR 2\n");
     jmethodID reference_sockaddr_constructor = (*env)->GetMethodID(env, reference_sockaddr_class, "<init>", no_arguments);
-    printf("SOCKADDR 3\n");
     jobject reference_sockaddr_object = (*env)->NewObject(env, reference_sockaddr_class, reference_sockaddr_constructor);
 
-    printf("SOCKADDR 4\n");
     jfieldID sa_len_field_id = (*env)->GetFieldID(env, reference_sockaddr_class, REFERENCE_SOCKADDR_SA_LEN_FIELD_NAME, "I");
-    printf("SOCKADDR 5\n");
     (*env)->SetIntField(env, reference_sockaddr_object, sa_len_field_id, address->sa_len);
 
-    printf("SOCKADDR 6\n");
     jfieldID sa_family_field_id = (*env)->GetFieldID(env, reference_sockaddr_class, REFERENCE_SOCKADDR_SA_FAMILY_FIELD_NAME, "I");
-    printf("SOCKADDR 7\n");
     (*env)->SetIntField(env, reference_sockaddr_object, sa_family_field_id, address->sa_family);
 
-    printf("SOCKADDR 8\n");
     jfieldID sa_data_field_id = (*env)->GetFieldID(env, reference_sockaddr_class, REFERENCE_SOCKADDR_SA_DATA_FIELD_NAME, "[B");
-    printf("SOCKADDR 9\n");
     jbyteArray sa_data_byte_array = (*env)->NewByteArray(env, address_length);
-    printf("SOCKADDR 10\n");
     (*env)->SetByteArrayRegion(env, sa_data_byte_array, 0, address_length, (jbyte*) address->sa_data);
-    printf("SOCKADDR 11\n");
     (*env)->SetObjectField(env, reference_sockaddr_object, sa_data_field_id, sa_data_byte_array);
 
-    printf("SOCKADDR 12\n");
     return reference_sockaddr_object;
 }
 
