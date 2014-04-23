@@ -18,8 +18,8 @@ public class NopConnectInterceptor implements ConnectInterceptor {
     }
 
     @Override
-    public int connectInterceptor(int s, ReferenceSockaddr referenceSockaddr) {
-        System.out.println("Connect: " + s + ", " + referenceSockaddr.sa_data.length + ", " + referenceSockaddr.sa_len);
-        return sjmmieLibrary.originalConnect(s, referenceSockaddr);
+    public int connectInterceptor(int socketDescriptor, ReferenceSockaddr referenceSockaddr) {
+        System.out.println("Connect: " + socketDescriptor + ", " + referenceSockaddr.sa_data.length + ", " + referenceSockaddr.sa_len);
+        return sjmmieLibrary.originalConnect(socketDescriptor, referenceSockaddr);
     }
 }

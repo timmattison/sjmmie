@@ -82,31 +82,11 @@ jbyteArray copy_c_to_java_sockaddr(JNIEnv *env, struct sockaddr *input, int size
 #define RELEASE_JAVA_STRING(INPUT) safe_delete_local_ref(env, INPUT ## _buffer)
 
 // For sockaddr
-#define C_JAVA_SOCKADDR(INPUT, LENGTH) jbyteArray INPUT ## _buffer = copy_c_to_java_sockaddr(env, (struct sockaddr *) INPUT, LENGTH);
-#define JAVA_SOCKADDR_UNROLL(INPUT) ((INPUT == NULL) ? 0 : INPUT->sa_family), INPUT ## _buffer
-#define RELEASE_JAVA_SOCKADDR(INPUT) safe_delete_local_ref(env, INPUT ## _buffer);
+#define REFERENCE_SOCKADDR_CLASS_NAME "Lcom/timmattison/sjmmie/objects/ReferenceSockaddr;"
+#define REFERENCE_SOCKADDR_SA_LEN_FIELD_NAME "sa_len"
+#define REFERENCE_SOCKADDR_SA_FAMILY_FIELD_NAME "sa_family"
+#define REFERENCE_SOCKADDR_SA_DATA_FIELD_NAME "sa_data"
 
-#define JAVA_C_SOCKADDR(INPUT, ADDRLEN) \
-char* INPUT ## _buffer = NULL; \
-if(INPUT != NULL) { \
-INPUT ## _buffer = java_byte_array_to_char_array(env, (char *) INPUT); \
-}
-#define C_SOCKADDR_UNROLL(INPUT) ((INPUT == NULL) ? NULL : *INPUT ## _buffer)
-#define RELEASE_C_SOCKADDR(INPUT) safe_release_byte_array_elements(env, INPUT, (signed char *) INPUT ## _buffer);
-
-// For msghdr
-#define C_JAVA_MSGHDR(INPUT) jbyteArray INPUT ## _msg_name = char_array_to_java_byte_array(env, (char *) INPUT.msg_name, INPUT.msg_namelen); \
-jclass byteArrayClass = (*env)->FindClass(env, "[B"); \
-jobjectArray INPUT ## _msg_iov = (*env)->NewObjectArray(env, INPUT.msg_iovlen, byteArrayClass, NULL); \
-for(int INPUT ## _temp_loop = 0; INPUT ## _temp_loop < INPUT.msg_iovlen; INPUT ## _temp_loop++) { \
-  (*env)->SetObjectArrayElement(env, INPUT ## _msg_iov, INPUT ## _temp_loop, char_array_to_java_byte_array(env, (char *) INPUT.msg_iov[INPUT ## _temp_loop].iov_base, INPUT.msg_iov[INPUT ## _temp_loop].iov_len)); \
-} \
-jbyteArray INPUT ## _msg_control = char_array_to_java_byte_array(env, (char *) INPUT.msg_control, INPUT.msg_controllen);
-
-#define JAVA_MSGHDR_UNROLL(INPUT) INPUT ## _msg_name, INPUT.msg_namelen, INPUT ## _msg_iov, INPUT.msg_iovlen, INPUT ## _msg_control, INPUT.msg_controllen, INPUT.msg_flags
-#define RELEASE_JAVA_MSGHDR(INPUT) safe_delete_local_ref(env, INPUT ## _msg_name); \
-safe_delete_local_ref(env, INPUT ## _msg_iov); \
-safe_delete_local_ref(env, INPUT ## _msg_control);
 
 // For getting the current Sjmmie instance
 extern jobject sjmmie_instance;
