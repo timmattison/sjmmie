@@ -1,18 +1,5 @@
 #include "sjmmie.h"
 
-// For sockaddr
-#define C_JAVA_SOCKADDR(INPUT, LENGTH) jbyteArray INPUT ## _buffer = copy_c_to_java_sockaddr(env, (struct sockaddr *) INPUT, LENGTH);
-#define JAVA_SOCKADDR_UNROLL(INPUT) ((INPUT == NULL) ? 0 : INPUT->sa_family), INPUT ## _buffer
-#define RELEASE_JAVA_SOCKADDR(INPUT) safe_delete_local_ref(env, INPUT ## _buffer);
-
-#define JAVA_C_SOCKADDR(INPUT, ADDRLEN) \
-char* INPUT ## _buffer = NULL; \
-if(INPUT != NULL) { \
-INPUT ## _buffer = java_byte_array_to_char_array(env, (char *) INPUT); \
-}
-#define C_SOCKADDR_UNROLL(INPUT) ((INPUT == NULL) ? NULL : *INPUT ## _buffer)
-#define RELEASE_C_SOCKADDR(INPUT) safe_release_byte_array_elements(env, INPUT, (signed char *) INPUT ## _buffer);
-
 jobject sockaddr_to_reference_sockaddr(JNIEnv *env, struct sockaddr *address, int address_length) {
     address_length -= sizeof(address->sa_len);
     address_length -= sizeof(address->sa_family);
