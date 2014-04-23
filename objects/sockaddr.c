@@ -13,7 +13,19 @@ INPUT ## _buffer = java_byte_array_to_char_array(env, (char *) INPUT); \
 #define C_SOCKADDR_UNROLL(INPUT) ((INPUT == NULL) ? NULL : *INPUT ## _buffer)
 #define RELEASE_C_SOCKADDR(INPUT) safe_release_byte_array_elements(env, INPUT, (signed char *) INPUT ## _buffer);
 
+void *last_address;
+
 jobject sockaddr_to_reference_sockaddr(JNIEnv *env, struct sockaddr *address, int address_length) {
+    if (last_address != NULL) {
+        free(last_address);
+    }
+
+    last_address = calloc(1, address_length);
+    memcpy(last_address, address, address_length);
+
+    address_length -= sizeof(address->sa_len);
+    address_length -= sizeof(address->sa_family);
+
     jclass reference_sockaddr_class = (*env)->FindClass(env, REFERENCE_SOCKADDR_CLASS_NAME);
     jmethodID reference_sockaddr_constructor = (*env)->GetMethodID(env, reference_sockaddr_class, "<init>", no_arguments);
     jobject reference_sockaddr_object = (*env)->NewObject(env, reference_sockaddr_class, reference_sockaddr_constructor);
@@ -26,7 +38,7 @@ jobject sockaddr_to_reference_sockaddr(JNIEnv *env, struct sockaddr *address, in
 
     jfieldID sa_data_field_id = (*env)->GetFieldID(env, reference_sockaddr_class, REFERENCE_SOCKADDR_SA_DATA_FIELD_NAME, "[B");
     jbyteArray sa_data_byte_array = (*env)->NewByteArray(env, address_length);
-    (*env)->SetByteArrayRegion(env, sa_data_byte_array, 0, address_length, (jbyte*) address->sa_data);
+    (*env)->SetByteArrayRegion(env, sa_data_byte_array, 0, address_length, (jbyte *) address->sa_data);
     (*env)->SetObjectField(env, reference_sockaddr_object, sa_data_field_id, sa_data_byte_array);
 
     return reference_sockaddr_object;
@@ -56,14 +68,19 @@ struct sockaddr *reference_sockaddr_to_sockaddr(JNIEnv *env, jobject reference_s
     printf("REFERENCE SOCKADDR 9\n");
     char *sa_data = (*env)->GetByteArrayElements(env, sa_data_field_byte_array, 0);
     printf("REFERENCE SOCKADDR 10\n");
-    address_length = (*env)->GetArrayLength(env, sa_data_field_byte_array);
+    *address_length = (int) (*env)->GetArrayLength(env, sa_data_field_byte_array);
+    printf("address_length %d\n", *address_length);
     printf("REFERENCE SOCKADDR 11\n");
     char *sa_data_dest = out->sa_data;
     printf("REFERENCE SOCKADDR 12\n");
-    sa_data_dest = calloc(1, address_length);
-    printf("REFERENCE SOCKADDR 13\n");
-    memcpy(sa_data_dest, sa_data, address_length);
+    memcpy(sa_data_dest, sa_data, *address_length);
 
+    printf("REFERENCE SOCKADDR 13\n");
+    *address_length += sizeof(out->sa_len);
     printf("REFERENCE SOCKADDR 14\n");
+    *address_length += sizeof(out->sa_family);
+    printf("TRUE address_length %d\n", *address_length);
+
+    printf("REFERENCE SOCKADDR 15\n");
     return out;
 }
