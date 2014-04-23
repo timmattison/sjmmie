@@ -62,6 +62,17 @@ struct sockaddr *reference_sockaddr_to_sockaddr(JNIEnv *env, jobject reference_s
     char *sa_data_dest = out->sa_data;
     memcpy(sa_data_dest, sa_data, *address_length);
 
+    int comparison_result = memcmp(out, last_address, *address_length);
+    if (comparison_result == 0) {
+        printf("Compare succeeded\n");
+    }
+    else {
+        printf("Compare failed\n");
+        for(int loop = 0; loop < *address_length; loop++) {
+            printf("%d %d\n", ((char *) last_address)[loop], ((char *) out)[loop]);
+        }
+    }
+
     *address_length += sizeof(out->sa_len);
     *address_length += sizeof(out->sa_family);
 
