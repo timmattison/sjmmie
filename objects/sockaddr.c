@@ -13,16 +13,7 @@ INPUT ## _buffer = java_byte_array_to_char_array(env, (char *) INPUT); \
 #define C_SOCKADDR_UNROLL(INPUT) ((INPUT == NULL) ? NULL : *INPUT ## _buffer)
 #define RELEASE_C_SOCKADDR(INPUT) safe_release_byte_array_elements(env, INPUT, (signed char *) INPUT ## _buffer);
 
-void *last_address;
-
 jobject sockaddr_to_reference_sockaddr(JNIEnv *env, struct sockaddr *address, int address_length) {
-    if (last_address != NULL) {
-        free(last_address);
-    }
-
-    last_address = calloc(1, address_length);
-    memcpy(last_address, address, address_length);
-
     address_length -= sizeof(address->sa_len);
     address_length -= sizeof(address->sa_family);
 
@@ -61,17 +52,6 @@ struct sockaddr *reference_sockaddr_to_sockaddr(JNIEnv *env, jobject reference_s
     *address_length = (int) (*env)->GetArrayLength(env, sa_data_field_byte_array);
     char *sa_data_dest = out->sa_data;
     memcpy(sa_data_dest, sa_data, *address_length);
-
-    int comparison_result = memcmp(out, last_address, *address_length);
-    if (comparison_result == 0) {
-        printf("Compare succeeded\n");
-    }
-    else {
-        printf("Compare failed\n");
-        for(int loop = 0; loop < *address_length; loop++) {
-            printf("%d %d\n", ((char *) last_address)[loop], ((char *) out)[loop]);
-        }
-    }
 
     *address_length += sizeof(out->sa_len);
     *address_length += sizeof(out->sa_family);
