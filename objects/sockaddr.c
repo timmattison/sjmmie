@@ -45,42 +45,25 @@ jobject sockaddr_to_reference_sockaddr(JNIEnv *env, struct sockaddr *address, in
 }
 
 struct sockaddr *reference_sockaddr_to_sockaddr(JNIEnv *env, jobject reference_sockaddr_object, int *address_length) {
-    printf("REFERENCE SOCKADDR 1\n");
     struct sockaddr *out = calloc(1, sizeof(struct sockaddr));
 
-    printf("REFERENCE SOCKADDR 2\n");
     jclass reference_sockaddr_class = (*env)->FindClass(env, REFERENCE_SOCKADDR_CLASS_NAME);
 
-    printf("REFERENCE SOCKADDR 3\n");
     jfieldID sa_len_field_id = (*env)->GetFieldID(env, reference_sockaddr_class, REFERENCE_SOCKADDR_SA_LEN_FIELD_NAME, "I");
-    printf("REFERENCE SOCKADDR 4\n");
     out->sa_len = (*env)->GetIntField(env, reference_sockaddr_object, sa_len_field_id);
 
-    printf("REFERENCE SOCKADDR 5\n");
     jfieldID sa_family_field_id = (*env)->GetFieldID(env, reference_sockaddr_class, REFERENCE_SOCKADDR_SA_FAMILY_FIELD_NAME, "I");
-    printf("REFERENCE SOCKADDR 6\n");
     out->sa_family = (*env)->GetIntField(env, reference_sockaddr_object, sa_family_field_id);
 
-    printf("REFERENCE SOCKADDR 7\n");
     jfieldID sa_data_field_id = (*env)->GetFieldID(env, reference_sockaddr_class, REFERENCE_SOCKADDR_SA_DATA_FIELD_NAME, "[B");
-    printf("REFERENCE SOCKADDR 8\n");
     jbyteArray sa_data_field_byte_array = (*env)->GetObjectField(env, reference_sockaddr_object, sa_data_field_id);
-    printf("REFERENCE SOCKADDR 9\n");
     char *sa_data = (*env)->GetByteArrayElements(env, sa_data_field_byte_array, 0);
-    printf("REFERENCE SOCKADDR 10\n");
     *address_length = (int) (*env)->GetArrayLength(env, sa_data_field_byte_array);
-    printf("address_length %d\n", *address_length);
-    printf("REFERENCE SOCKADDR 11\n");
     char *sa_data_dest = out->sa_data;
-    printf("REFERENCE SOCKADDR 12\n");
     memcpy(sa_data_dest, sa_data, *address_length);
 
-    printf("REFERENCE SOCKADDR 13\n");
     *address_length += sizeof(out->sa_len);
-    printf("REFERENCE SOCKADDR 14\n");
     *address_length += sizeof(out->sa_family);
-    printf("TRUE address_length %d\n", *address_length);
 
-    printf("REFERENCE SOCKADDR 15\n");
     return out;
 }
