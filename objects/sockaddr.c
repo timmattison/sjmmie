@@ -54,3 +54,9 @@ struct sockaddr *reference_sockaddr_to_sockaddr(JNIEnv *env, jobject reference_s
 
     return out;
 }
+
+void free_sockaddr(struct sockaddr *to_free) {
+    if(to_free != NULL) {
+        free(to_free);
+    }
+}

@@ -23,6 +23,9 @@ JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalConnect(
 	// Call the original function and store the result
 	return_value = connect(s, address, address_length);
 
+    // Free the rebuilt sockaddr structure
+    free_sockaddr(address);
+
 	// Return the result
 	return return_value;
 }
