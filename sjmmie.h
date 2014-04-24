@@ -50,6 +50,9 @@ extern void safe_release_byte_array_elements_copy_back(JNIEnv *env, jbyteArray j
 extern void safe_release_int_array_elements(JNIEnv *env, jintArray java_int_array, int *c_buffer);
 extern void safe_release_int_array_elements_copy_back(JNIEnv *env, jintArray java_byte_array, int *c_buffer);
 
+// Gem from https://stackoverflow.com/questions/3553296/c-sizeof-single-struct-member
+#define member_size(type, member) sizeof(((type *)0)->member)
+
 // Copies a sockaddr from C to Java
 jbyteArray copy_c_to_java_sockaddr(JNIEnv *env, struct sockaddr *input, int size);
 
