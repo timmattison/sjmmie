@@ -38,12 +38,6 @@ extern char *java_byte_array_to_char_array(JNIEnv *env, jbyteArray java_byte_arr
 // For converting char/byte arrays to Java arrays
 extern jbyteArray char_array_to_java_byte_array(JNIEnv *env, char* c_buffer, int c_buffer_length);
 
-// For converting Java arrays to int arrays
-extern int* java_int_array_to_int_array(JNIEnv *env, jintArray java_byte_array);
-
-// For converting int arrays to Java arrays
-extern jintArray int_array_to_java_int_array(JNIEnv *env, int* c_buffer, int c_buffer_length);
-
 // For safely freeing memory
 extern void safe_delete_local_ref(JNIEnv *env, jobject object);
 extern void safe_release_byte_array_elements(JNIEnv *env, jbyteArray java_byte_array, signed char *c_buffer);

@@ -206,48 +206,6 @@ JNIEnv* get_env() {
 	return attach_environment();
 }
 
-// For converting Java arrays to char/byte arrays
-char* java_byte_array_to_char_array(JNIEnv *env, jbyteArray java_byte_array) {
-	if(java_byte_array == NULL) {
-		return NULL;
-	}
-
-	return (char *) (*env)->GetByteArrayElements(env, java_byte_array, 0);
-}
-
-// For converting char/byte arrays to Java arrays
-jbyteArray char_array_to_java_byte_array(JNIEnv *env, char* c_buffer, int c_buffer_length) {
-    if(c_buffer == NULL) {
-        return NULL;
-    }
-
-    jbyteArray java_byte_array = (*env)->NewByteArray(env, c_buffer_length);
-    (*env)->SetByteArrayRegion(env, java_byte_array, 0, c_buffer_length, (jbyte*) c_buffer);
-
-    return java_byte_array;
-}
-
-// For converting Java arrays to int arrays
-int* java_int_array_to_int_array(JNIEnv *env, jintArray java_int_array) {
-    if(java_int_array == NULL) {
-        return NULL;
-    }
-
-    return (int *) (*env)->GetIntArrayElements(env, java_int_array, 0);
-}
-
-// For converting int arrays to Java arrays
-jbyteArray int_array_to_java_int_array(JNIEnv *env, int* c_buffer, int c_buffer_length) {
-    if(c_buffer == NULL) {
-        return NULL;
-    }
-
-    jintArray java_int_array = (*env)->NewIntArray(env, c_buffer_length);
-    (*env)->SetIntArrayRegion(env, java_int_array, 0, c_buffer_length, (jint*) c_buffer);
-
-    return java_int_array;
-}
-
 // For safely freeing memory
 void safe_delete_local_ref(JNIEnv *env, jobject object) {
 	if(object == NULL) {
