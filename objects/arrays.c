@@ -66,7 +66,7 @@ jbyteArray inner_char_array_to_java_byte_array(JNIEnv *env, jbyteArray java_byte
     // Is there any data to copy?
     if (c_buffer == NULL) {
         // No, just return NULL
-        // TODO - This doesn't quite work as expected for java_byte_array values that are passed by reference
+        // TODO - This doesn't quite work as expected for java_byte_array values that are passed by reference.  They need to be cleared out or set to zero length.
         return NULL;
     }
 
