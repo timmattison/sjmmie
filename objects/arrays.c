@@ -73,3 +73,20 @@ jbyteArray char_array_to_java_byte_array(JNIEnv *env, char *c_buffer, int c_buff
 
     return java_byte_array;
 }
+
+void print_java_array(JNIEnv *env, char *message, jbyteArray array) {
+    int java_length = (int) (*env)->GetArrayLength(env, array);
+    jbyte *bytes = (*env)->GetByteArrayElements(env, array, 0);
+
+    print_c_array(message, bytes, java_length);
+}
+
+void print_c_array(char *message, void *array, int size) {
+    if(message != NULL) {
+        printf("%s\n", message);
+    }
+
+    for(int loop = 0; loop < size; loop++) {
+        printf("[%d] - %d %c\n", loop, ((char *) array)[loop], ((char *) array)[loop]);
+    }
+}
