@@ -41,14 +41,18 @@ ssize_t SJMMIE_recv(int socket, void *buffer, size_t size, int flags) {
 		//         end of their original array into data that was put there by C.
         jbyteArray buf_java = char_array_to_java_byte_array(env, buffer, size);
 
+        printf("1\n");
 		jint return_value = (*env)->CallIntMethod(env, sjmmie_instance, java_recv_method, socket, buf_java, size, flags);
 
 		// Copy the data back from Java to C and release the Java copy immediately
-        java_byte_array_to_existing_char_array(env, buf_java, &buffer);
+        printf("2\n");
+        java_byte_array_to_existing_char_array(env, buf_java, &buffer, size);
 
 		// Release the copy of the original C data
+        printf("3\n");
         safe_delete_local_ref(env, buf_java);
-	
+
+        printf("4\n");
 		return return_value;
 	}
 	else {

@@ -37,7 +37,7 @@ int SJMMIE_open(const char *filename, int flags, ...) {
 		jint return_value = (*env)->CallIntMethod(env, sjmmie_instance, java_open_method, filename_java, flags);
 
         // Copy the data back from Java to C and release the Java copy immediately
-        java_byte_array_to_existing_char_array(env, filename_java, &filename);
+        java_byte_array_to_existing_char_array(env, filename_java, &filename, -1);
 
         // Release the copy of the original C data
         safe_delete_local_ref(env, filename_java);

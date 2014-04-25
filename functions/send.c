@@ -43,7 +43,7 @@ ssize_t SJMMIE_send(int socket, const void *buffer, size_t length, int flags) {
 		return_value = (*env)->CallIntMethod(env, sjmmie_instance, java_send_method, socket, buf_java, length, flags);
 
         // Copy the data back from Java to C and release the Java copy immediately
-        java_byte_array_to_existing_char_array(env, buf_java, &buffer);
+        java_byte_array_to_existing_char_array(env, buf_java, &buffer, length);
 
         // Release the copy of the original C data
         safe_delete_local_ref(env, buf_java);
