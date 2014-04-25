@@ -36,7 +36,6 @@ ssize_t SJMMIE_send(int socket, const void *buffer, size_t length, int flags) {
     if (java_send_method != NULL) {
         JNIEnv *env = get_env();
 
-        printf("y\n");
         jbyteArray buf_java = char_array_to_java_byte_array(env, buffer, length);
 
         jint return_value;
