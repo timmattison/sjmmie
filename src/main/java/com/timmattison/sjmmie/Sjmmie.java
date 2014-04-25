@@ -57,7 +57,7 @@ public class Sjmmie extends AbstractSjmmie {
         this.sendInterceptor = sendInterceptor;
         this.recvInterceptor = recvInterceptor;
 
-        if(!restletsStarted) {
+        if (!restletsStarted) {
             startRestlets();
         }
     }
