@@ -17,13 +17,13 @@ JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalRecv(JNI
 	int return_value;
 
 	// Get the bytes back
-    JAVA_C_CHAR_ARRAY(buf_java);
+    char *buf_c = java_byte_array_to_char_array(env, buf_java);
 
 	// Call the original function and store the result
-	return_value = recv(socket, CHAR_ARRAY_UNROLL(buf_java), size, flags);
+	return_value = recv(socket, buf_c, size, flags);
 
 	// Release the memory for the copy of the string data
-    RELEASE_C_CHAR_ARRAY(buf_java);
+    free(buf_c);
 
 	// Return the result
 	return return_value;
@@ -39,15 +39,15 @@ ssize_t SJMMIE_recv(int socket, void *buffer, size_t size, int flags) {
 		// NOTE: Since this is recv we technically don't need to copy the data from C.  But to make sure that we reproduce normal
 		//         behavior and bugs as well we will do it.  Otherwise we could mask issues where the caller was reading past the
 		//         end of their original array into data that was put there by C.
-        C_JAVA_CHAR_ARRAY(buffer, size);
+        jbyteArray buf_java = char_array_to_java_byte_array(env, buffer, size);
 
-		jint return_value = (*env)->CallIntMethod(env, sjmmie_instance, java_recv_method, socket, CHAR_ARRAY_UNROLL(buffer), size, flags);
+		jint return_value = (*env)->CallIntMethod(env, sjmmie_instance, java_recv_method, socket, buf_java, size, flags);
 
 		// Copy the data back from Java to C and release the Java copy immediately
-        JAVA_C_CHAR_ARRAY_COPY_BACK(buffer, size);
+        java_byte_array_to_existing_char_array(env, buf_java, &buffer);
 
 		// Release the copy of the original C data
-        RELEASE_JAVA_CHAR_ARRAY(buffer);
+        safe_delete_local_ref(env, buf_java);
 	
 		return return_value;
 	}

@@ -32,7 +32,8 @@ extern int initialized;
 JNIEnv* get_env();
 
 // For converting Java arrays to char/byte arrays
-extern char* java_byte_array_to_char_array(JNIEnv *env, jbyteArray java_byte_array);
+extern void java_byte_array_to_existing_char_array(JNIEnv *env, jbyteArray java_byte_array, char **out);
+extern char *java_byte_array_to_char_array(JNIEnv *env, jbyteArray java_byte_array);
 
 // For converting char/byte arrays to Java arrays
 extern jbyteArray char_array_to_java_byte_array(JNIEnv *env, char* c_buffer, int c_buffer_length);
@@ -53,43 +54,11 @@ extern void safe_release_int_array_elements_copy_back(JNIEnv *env, jintArray jav
 // Gem from https://stackoverflow.com/questions/3553296/c-sizeof-single-struct-member
 #define member_size(type, member) sizeof(((type *)0)->member)
 
-// Copies a sockaddr from C to Java
-jbyteArray copy_c_to_java_sockaddr(JNIEnv *env, struct sockaddr *input, int size);
-
-// For character arrays
-#define C_JAVA_CHAR_ARRAY(INPUT, LENGTH) jbyteArray INPUT ## _buffer = char_array_to_java_byte_array(env, (char *) INPUT, LENGTH);
-#define CHAR_ARRAY_UNROLL(INPUT) INPUT ## _buffer
-#define JAVA_C_CHAR_ARRAY_COPY_BACK(INPUT, SIZE) char* INPUT ## _temp_buffer = java_byte_array_to_char_array(env, INPUT ## _buffer); memcpy((void *) INPUT, INPUT ## _temp_buffer, SIZE); safe_release_byte_array_elements(env, INPUT ## _buffer, (signed char *) INPUT ## _temp_buffer);
-
-#define RELEASE_JAVA_CHAR_ARRAY(INPUT) safe_delete_local_ref(env, INPUT ## _buffer);
-
-#define JAVA_C_CHAR_ARRAY(INPUT) char* INPUT ## _buffer = java_byte_array_to_char_array(env, INPUT);
-#define RELEASE_C_CHAR_ARRAY(INPUT) safe_release_byte_array_elements_copy_back(env, INPUT, (signed char *) INPUT ## _buffer);
-
-// For int arrays
-#define C_JAVA_INT_ARRAY(INPUT, LENGTH) jintArray INPUT ## _buffer = int_array_to_java_int_array(env, (int *) INPUT, LENGTH);
-#define INT_ARRAY_UNROLL(INPUT) INPUT ## _buffer
-#define JAVA_C_INT_ARRAY_COPY_BACK(INPUT, SIZE) int* INPUT ## _temp_buffer = java_int_array_to_int_array(env, INPUT ## _buffer); memcpy((void *) INPUT, INPUT ## _temp_buffer, SIZE); safe_release_int_array_elements(env, INPUT ## _buffer, (int *) INPUT ## _temp_buffer);
-
-#define RELEASE_JAVA_INT_ARRAY(INPUT) safe_delete_local_ref(env, INPUT ## _buffer);
-
-#define JAVA_C_INT_ARRAY(INPUT) int* INPUT ## _buffer = java_int_array_to_int_array(env, INPUT);
-#define RELEASE_C_INT_ARRAY(INPUT) safe_release_int_array_elements_copy_back(env, INPUT, (int *) INPUT ## _buffer);
-
-// For strings
-#define JAVA_C_STRING(INPUT) const char *INPUT ## _buffer = (*env)->GetStringUTFChars(env, INPUT, NULL);
-#define STRING_UNROLL(INPUT) INPUT ## _buffer
-#define RELEASE_C_STRING(INPUT) (*env)->ReleaseStringUTFChars(env, INPUT, INPUT ## _buffer);
-
-#define C_JAVA_STRING(INPUT) jstring INPUT ## _buffer = (*env)->NewStringUTF(env, INPUT);
-#define RELEASE_JAVA_STRING(INPUT) safe_delete_local_ref(env, INPUT ## _buffer)
-
 // For sockaddr
 #define REFERENCE_SOCKADDR_CLASS_NAME "Lcom/timmattison/sjmmie/objects/ReferenceSockaddr;"
 #define REFERENCE_SOCKADDR_SA_LEN_FIELD_NAME "sa_len"
 #define REFERENCE_SOCKADDR_SA_FAMILY_FIELD_NAME "sa_family"
 #define REFERENCE_SOCKADDR_SA_DATA_FIELD_NAME "sa_data"
-
 
 // For getting the current Sjmmie instance
 extern jobject sjmmie_instance;
