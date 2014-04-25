@@ -2,54 +2,43 @@
 
 // For converting Java arrays to char/byte arrays
 void java_byte_array_to_existing_char_array(JNIEnv *env, jbyteArray java_byte_array, char **output, int length) {
-    printf("a\n");
     char *data = java_byte_array_to_char_array(env, java_byte_array);
 
     // Did they specify a fixed size?
     if (length == -1) {
         // No, is the buffer allocated already?
-        printf("b\n");
         if (*output != NULL) {
             // Yes, free it and mark it as NULL
-            printf("c\n");
             free(*output);
-            printf("d\n");
             *output = NULL;
         }
     }
 
     // Is there any data to copy?
     if (data == NULL) {
-        printf("e\n");
         // No, just return
         return;
     }
 
     // Get the length of the Java data
-    printf("f\n");
     int java_length = (int) (*env)->GetArrayLength(env, java_byte_array);
 
     // Did they specify a fixed size?
     if (length == -1) {
         // No, allocate enough space to fit the data from Java
-        printf("g\n");
         *output = calloc(1, java_length);
 
         // Set the length to the length of the data from Java
-        printf("h\n");
         length = java_length;
     }
     else {
         // Yes, choose the smaller of the fixed size and the Java array length
-        printf("i\n");
         length = (length < java_length) ? length : java_length;
     }
 
     // Copy the data
-    printf("j\n");
     memcpy(*output, data, length);
 
-    printf("k\n");
     // Free the data
     free(data);
 }
@@ -63,14 +52,39 @@ char *java_byte_array_to_char_array(JNIEnv *env, jbyteArray java_byte_array) {
 }
 
 // For converting char/byte arrays to Java arrays
+jbyteArray inner_char_array_to_java_byte_array(JNIEnv *env, jbyteArray java_byte_array, char *c_buffer, int c_buffer_length);
+
+void char_array_to_existing_java_byte_array(JNIEnv *env, jbyteArray java_byte_array, char *c_buffer, int c_buffer_length) {
+    inner_char_array_to_java_byte_array(*env, java_byte_array, c_buffer, c_buffer_length);
+}
+
 jbyteArray char_array_to_java_byte_array(JNIEnv *env, char *c_buffer, int c_buffer_length) {
+    return inner_char_array_to_java_byte_array(*env, NULL, c_buffer, c_buffer_length);
+}
+
+jbyteArray inner_char_array_to_java_byte_array(JNIEnv *env, jbyteArray java_byte_array, char *c_buffer, int c_buffer_length) {
+    // Is there any data to copy?
+    printf("1\n");
     if (c_buffer == NULL) {
+        // No, just return NULL
+        // TODO - This doesn't quite work as expected for java_byte_array values that are passed by reference
+        printf("2\n");
         return NULL;
     }
 
-    jbyteArray java_byte_array = (*env)->NewByteArray(env, c_buffer_length);
-    (*env)->SetByteArrayRegion(env, java_byte_array, 0, c_buffer_length, (jbyte *) c_buffer);
+    printf("3\n");
+    if (java_byte_array == NULL) {
+        printf("4 %d\n", c_buffer_length);
+        jbyteArray return_value = (*env)->NewByteArray(env, c_buffer_length);
+        printf("5\n");
+        (*env)->SetByteArrayRegion(env, return_value, 0, c_buffer_length, (jbyte *) c_buffer);
+        printf("6\n");
+        return return_value;
+    }
 
+    printf("7\n");
+    (*env)->SetByteArrayRegion(env, java_byte_array, 0, c_buffer_length, (jbyte *) c_buffer);
+    printf("8\n");
     return java_byte_array;
 }
 
@@ -82,11 +96,11 @@ void print_java_array(JNIEnv *env, char *message, jbyteArray array) {
 }
 
 void print_c_array(char *message, void *array, int size) {
-    if(message != NULL) {
+    if (message != NULL) {
         printf("%s\n", message);
     }
 
-    for(int loop = 0; loop < size; loop++) {
+    for (int loop = 0; loop < size; loop++) {
         printf("[%d] - %d %c\n", loop, ((char *) array)[loop], ((char *) array)[loop]);
     }
 }
