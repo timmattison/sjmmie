@@ -13,13 +13,10 @@ public class BasicRestletApplicationFactory implements RestletApplicationFactory
 
     @Override
     public RestletApplication create(@Assisted("toggles") List<Toggle> toggles) {
-        System.out.println("RAF 1");
         if (restletApplication == null) {
-            System.out.println("RAF 2");
             restletApplication = new RestletApplication(toggles);
         }
 
-        System.out.println("RAF 3");
         return restletApplication;
     }
 }
