@@ -7,6 +7,12 @@
     <content url="file://$MODULE_DIR$/../functions">
       <sourceFolder url="file://$MODULE_DIR$/../functions" isTestSource="false" />
     </content>
+    <content url="file://$MODULE_DIR$/../objects/arrays.c">
+      <sourceFolder url="file://$MODULE_DIR$/../objects/arrays.c" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../objects/arrays.h">
+      <sourceFolder url="file://$MODULE_DIR$/../objects/arrays.h" isTestSource="false" />
+    </content>
     <content url="file://$MODULE_DIR$/../objects/msghdr.c">
       <sourceFolder url="file://$MODULE_DIR$/../objects/msghdr.c" isTestSource="false" />
     </content>
