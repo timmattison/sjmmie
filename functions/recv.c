@@ -19,15 +19,11 @@ JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalRecv(JNI
 	// Get the bytes back
     char *buf_c = java_byte_array_to_char_array(env, buf_java);
 
-    print_c_array("C buffer before:", buf_c, size);
-
 	// Call the original function and store the result
 	return_value = recv(socket, buf_c, size, flags);
 
     // Copy the data back to Java
     char_array_to_existing_java_byte_array(env, buf_java, buf_c, size);
-
-    print_c_array("C buffer after:", buf_c, size);
 
 	// Release the memory for the copy of the string data
     free(buf_c);

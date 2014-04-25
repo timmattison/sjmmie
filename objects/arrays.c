@@ -64,27 +64,19 @@ jbyteArray char_array_to_java_byte_array(JNIEnv *env, char *c_buffer, int c_buff
 
 jbyteArray inner_char_array_to_java_byte_array(JNIEnv *env, jbyteArray java_byte_array, char *c_buffer, int c_buffer_length) {
     // Is there any data to copy?
-    printf("1\n");
     if (c_buffer == NULL) {
         // No, just return NULL
         // TODO - This doesn't quite work as expected for java_byte_array values that are passed by reference
-        printf("2\n");
         return NULL;
     }
 
-    printf("3\n");
     if (java_byte_array == NULL) {
-        printf("4 %d\n", c_buffer_length);
         jbyteArray return_value = (*env)->NewByteArray(env, c_buffer_length);
-        printf("5\n");
         (*env)->SetByteArrayRegion(env, return_value, 0, c_buffer_length, (jbyte *) c_buffer);
-        printf("6\n");
         return return_value;
     }
 
-    printf("7\n");
     (*env)->SetByteArrayRegion(env, java_byte_array, 0, c_buffer_length, (jbyte *) c_buffer);
-    printf("8\n");
     return java_byte_array;
 }
 
