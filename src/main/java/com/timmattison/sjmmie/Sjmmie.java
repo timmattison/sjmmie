@@ -13,6 +13,10 @@ import org.restlet.data.Protocol;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 /**
  * Created by timmattison on 2/20/14.
@@ -26,6 +30,11 @@ public class Sjmmie extends AbstractSjmmie {
 
     public static Sjmmie getInstance() {
         if (INSTANCE == null) {
+            LogManager logManager = LogManager.getLogManager();
+            Logger rootLogger = logManager.getLogger("");
+            rootLogger.setLevel(Level.ALL);
+            rootLogger.addHandler(new ConsoleHandler());
+
             Injector injector = Guice.createInjector(new SjmmieNopModule());
 
             // Get an instance of the Sjmmie object
