@@ -55,11 +55,11 @@ char *java_byte_array_to_char_array(JNIEnv *env, jbyteArray java_byte_array) {
 jbyteArray inner_char_array_to_java_byte_array(JNIEnv *env, jbyteArray java_byte_array, char *c_buffer, int c_buffer_length);
 
 void char_array_to_existing_java_byte_array(JNIEnv *env, jbyteArray java_byte_array, char *c_buffer, int c_buffer_length) {
-    inner_char_array_to_java_byte_array(*env, java_byte_array, c_buffer, c_buffer_length);
+    inner_char_array_to_java_byte_array(env, java_byte_array, c_buffer, c_buffer_length);
 }
 
 jbyteArray char_array_to_java_byte_array(JNIEnv *env, char *c_buffer, int c_buffer_length) {
-    return inner_char_array_to_java_byte_array(*env, NULL, c_buffer, c_buffer_length);
+    return inner_char_array_to_java_byte_array(env, NULL, c_buffer, c_buffer_length);
 }
 
 jbyteArray inner_char_array_to_java_byte_array(JNIEnv *env, jbyteArray java_byte_array, char *c_buffer, int c_buffer_length) {

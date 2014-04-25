@@ -25,7 +25,7 @@ JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalRecv(JNI
 	return_value = recv(socket, buf_c, size, flags);
 
     // Copy the data back to Java
-    buf_java = char_array_to_java_byte_array(env, buf_c, size);
+    char_array_to_existing_java_byte_array(env, buf_java, buf_c, size);
 
     print_c_array("C buffer after:", buf_c, size);
 
