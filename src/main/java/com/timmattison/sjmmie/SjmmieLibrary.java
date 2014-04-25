@@ -10,7 +10,7 @@ public class SjmmieLibrary {
         System.loadLibrary("sjmmie");
     }
 
-    public native int originalOpen(String filename, int flags);
+    public native int originalOpen(byte[] filename, int flags);
 
     public native int originalClose(int fildes);
 

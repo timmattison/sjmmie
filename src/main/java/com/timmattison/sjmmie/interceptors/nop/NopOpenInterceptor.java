@@ -17,8 +17,8 @@ public class NopOpenInterceptor implements OpenInterceptor {
     }
 
     @Override
-    public int openInterceptor(String filename, int flags) {
-        System.out.println("Open: " + filename + ", " + flags);
+    public int openInterceptor(byte[] filename, int flags) {
+        System.out.println("Open: " + new String(filename) + ", " + flags);
         return sjmmieLibrary.originalOpen(filename, flags);
     }
 }

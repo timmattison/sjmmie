@@ -10,5 +10,5 @@ public interface OpenInterceptor {
      * @param flags
      * @return
      */
-    public int openInterceptor(String filename, int flags);
+    public int openInterceptor(byte[] filename, int flags);
 }

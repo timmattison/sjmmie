@@ -19,7 +19,7 @@ public abstract class AbstractSjmmie implements OpenInterceptor, CloseIntercepto
     protected RecvInterceptor recvInterceptor;
 
     @Override
-    public int openInterceptor(String filename, int flags) {
+    public int openInterceptor(byte[] filename, int flags) {
         if (openInterceptor != null) {
             return openInterceptor.openInterceptor(filename, flags);
         } else {
