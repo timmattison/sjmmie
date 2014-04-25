@@ -4,21 +4,24 @@ import com.timmattison.sjmmie.SjmmieLibrary;
 import com.timmattison.sjmmie.interceptors.interfaces.RecvInterceptor;
 
 import javax.inject.Inject;
+import java.util.logging.Logger;
 
 /**
  * Created by timmattison on 3/21/14.
  */
 public class NopRecvInterceptor implements RecvInterceptor {
+    private final Logger logger;
     private final SjmmieLibrary sjmmieLibrary;
 
     @Inject
-    public NopRecvInterceptor(SjmmieLibrary sjmmieLibrary) {
+    public NopRecvInterceptor(Logger logger, SjmmieLibrary sjmmieLibrary) {
+        this.logger = logger;
         this.sjmmieLibrary = sjmmieLibrary;
     }
 
     @Override
     public int recvInterceptor(int socket, byte[] buffer, int length, int flags) {
-        System.out.println("NOP Recv: " + socket + ", " + length + ", " + flags);
+        logger.info("NOP Recv: " + socket + ", " + length + ", " + flags);
         int returnValue = sjmmieLibrary.originalRecv(socket, buffer, length, flags);
         return returnValue;
     }
