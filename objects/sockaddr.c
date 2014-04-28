@@ -21,6 +21,8 @@ jobject sockaddr_to_reference_sockaddr(JNIEnv *env, struct sockaddr *address, in
 struct sockaddr *reference_sockaddr_to_sockaddr(JNIEnv *env, jobject reference_sockaddr_object, int *address_length) {
     jclass reference_sockaddr_class = (*env)->FindClass(env, REFERENCE_SOCKADDR_CLASS_NAME);
 
+    char *sa_data = get_byte_array_field(env, reference_sockaddr_class, reference_sockaddr_object, REFERENCE_SOCKADDR_SA_DATA_FIELD_NAME, address_length);
+
     int sa_len_size = member_size(struct sockaddr, sa_len);
     int sa_family_size = member_size(struct sockaddr, sa_family);
 
@@ -30,8 +32,6 @@ struct sockaddr *reference_sockaddr_to_sockaddr(JNIEnv *env, jobject reference_s
     out->sa_len = get_int_field(env, reference_sockaddr_class, reference_sockaddr_object, REFERENCE_SOCKADDR_SA_LEN_FIELD_NAME);
     out->sa_family = get_int_field(env, reference_sockaddr_class, reference_sockaddr_object, REFERENCE_SOCKADDR_SA_FAMILY_FIELD_NAME);
     char *sa_data_dest = out->sa_data;
-
-    char *sa_data = get_byte_array_field(env, reference_sockaddr_class, reference_sockaddr_object, REFERENCE_SOCKADDR_SA_DATA_FIELD_NAME, address_length);
     memcpy(sa_data_dest, sa_data, *address_length);
 
     // Address length needs to be the length of the whole address structure including sa_len and sa_family.
