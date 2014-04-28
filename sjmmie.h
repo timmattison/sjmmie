@@ -42,11 +42,28 @@ extern void safe_release_int_array_elements_copy_back(JNIEnv *env, jintArray jav
 // Gem from https://stackoverflow.com/questions/3553296/c-sizeof-single-struct-member
 #define member_size(type, member) sizeof(((type *)0)->member)
 
+// General object handling
+void set_int_field(JNIEnv *env, jclass class, jobject object, char *field_name, int value);
+void set_byte_array_field(JNIEnv *env, jclass class, jobject object, char *field_name, char *value, int length);
+jmethodID get_no_args_constructor(JNIEnv *env, jclass jclass);
+int get_int_field(JNIEnv *env, jclass class, jobject object, char *field_name);
+char *get_byte_array_field(JNIEnv *env, jclass class, jobject object, char *field_name, int *output_length);
+
 // For sockaddr
 #define REFERENCE_SOCKADDR_CLASS_NAME "Lcom/timmattison/sjmmie/objects/ReferenceSockaddr;"
 #define REFERENCE_SOCKADDR_SA_LEN_FIELD_NAME "sa_len"
 #define REFERENCE_SOCKADDR_SA_FAMILY_FIELD_NAME "sa_family"
 #define REFERENCE_SOCKADDR_SA_DATA_FIELD_NAME "sa_data"
+
+// For msghdr
+#define REFERENCE_MSGHDR_CLASS_NAME "Lcom/timmattison/sjmmie/objects/ReferenceMsghdr;"
+#define REFERENCE_MSGHDR_MSG_NAMELEN_FIELD_NAME "msg_namelen"
+#define REFERENCE_MSGHDR_MSG_NAME_FIELD_NAME "msg_name"
+#define REFERENCE_MSGHDR_MSG_IOVLEN_FIELD_NAME "msg_iovlen"
+#define REFERENCE_MSGHDR_MSG_IOV_FIELD_NAME "msg_iov"
+#define REFERENCE_MSGHDR_MSG_CONTROLLEN_FIELD_NAME "msg_controllen"
+#define REFERENCE_MSGHDR_MSG_CONTROL_FIELD_NAME "msg_control"
+#define REFERENCE_MSGHDR_MSG_FLAGS_FIELD_NAME "msg_flags"
 
 // For getting the current Sjmmie instance
 extern jobject sjmmie_instance;

@@ -12,8 +12,8 @@ PROGRAM_TO_SJMMIE="/Applications/Firefox.app/Contents/MacOS/firefox"
 #PROGRAM_TO_SJMMIE="ping localhost"
 #PROGRAM_TO_SJMMIE="nslookup google.com"
 
-echo "Without SJMMIE"
-$PROGRAM_TO_SJMMIE
+#echo "Without SJMMIE"
+#$PROGRAM_TO_SJMMIE
 
 echo "With SJMMIE"
 PROGRAM_TO_SJMMIE="$PROGRAM_TO_SJMMIE" ./run.sh

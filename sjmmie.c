@@ -246,3 +246,48 @@ void safe_release_int_array_elements_copy_back(JNIEnv *env, jintArray java_int_a
 
     (*env)->ReleaseIntArrayElements(env, java_int_array, (int *) c_buffer, 0);
 }
+
+jfieldID get_jfieldid_int_field(JNIEnv *env, jclass class, char *field_name) {
+    return (*env)->GetFieldID(env, class, field_name, "I");
+}
+
+jfieldID get_jfieldid_byte_array_field(JNIEnv *env, jclass class, char *field_name) {
+    return (*env)->GetFieldID(env, class, field_name, "[B");
+}
+
+void set_int_field(JNIEnv *env, jclass class, jobject object, char *field_name, int value) {
+    jfieldID field_id = get_jfieldid_int_field(env, class, field_name);
+    (*env)->SetIntField(env, object, field_id, value);
+}
+
+void set_byte_array_field(JNIEnv *env, jclass class, jobject object, char *field_name, char *value, int length) {
+    jfieldID field_id = (*env)->GetFieldID(env, class, field_name, "[B");
+    jbyteArray sa_data_byte_array = (*env)->NewByteArray(env, length);
+    (*env)->SetByteArrayRegion(env, sa_data_byte_array, 0, length, (jbyte *) value);
+    (*env)->SetObjectField(env, object, field_id, sa_data_byte_array);
+}
+
+int get_int_field(JNIEnv *env, jclass class, jobject object, char *field_name) {
+    jfieldID field_id = get_jfieldid_int_field(env, class, field_name);
+    return (*env)->GetIntField(env, object, field_id);
+}
+
+char *get_byte_array_field(JNIEnv *env, jclass class, jobject object, char *field_name, int *output_length) {
+    printf("a1\n");
+    jfieldID field_id = get_jfieldid_byte_array_field(env, class, field_name);
+    printf("a2\n");
+    jbyteArray field_byte_array = (*env)->GetObjectField(env, object, field_id);
+
+    if((output_length != NULL) && (field_byte_array != NULL)) {
+        printf("a3\n");
+        *output_length = (int) (*env)->GetArrayLength(env, field_byte_array);
+    }
+
+    printf("a4\n");
+    return (*env)->GetByteArrayElements(env, field_byte_array, 0);
+}
+
+jmethodID get_no_args_constructor(JNIEnv *env, jclass class) {
+    return (*env)->GetMethodID(env, class, "<init>", no_arguments);
+}
+
