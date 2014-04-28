@@ -273,17 +273,13 @@ int get_int_field(JNIEnv *env, jclass class, jobject object, char *field_name) {
 }
 
 char *get_byte_array_field(JNIEnv *env, jclass class, jobject object, char *field_name, int *output_length) {
-    printf("a1\n");
     jfieldID field_id = get_jfieldid_byte_array_field(env, class, field_name);
-    printf("a2\n");
     jbyteArray field_byte_array = (*env)->GetObjectField(env, object, field_id);
 
     if((output_length != NULL) && (field_byte_array != NULL)) {
-        printf("a3\n");
         *output_length = (int) (*env)->GetArrayLength(env, field_byte_array);
     }
 
-    printf("a4\n");
     return (*env)->GetByteArrayElements(env, field_byte_array, 0);
 }
 
