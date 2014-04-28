@@ -18,6 +18,8 @@ JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalOpen(JNI
 	// Call the original function and store the result
 	return_value = open(filename_c, flags);
 
+    // DO NOT COPY BACK!
+
 	// Release the resources for the converted string
     free(filename_c);
 
@@ -36,8 +38,7 @@ int SJMMIE_open(const char *filename, int flags, ...) {
 
 		jint return_value = (*env)->CallIntMethod(env, sjmmie_instance, java_open_method, filename_java, flags);
 
-        // Copy the data back from Java to C and release the Java copy immediately
-        java_byte_array_to_existing_char_array(env, filename_java, &filename, -1);
+        // DO NOT COPY BACK!
 
         // Release the copy of the original C data
         safe_delete_local_ref(env, filename_java);

@@ -23,6 +23,8 @@ JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalConnect(
 	// Call the original function and store the result
 	return_value = connect(s, address, address_length);
 
+    // DO NOT COPY BACK!
+
     // Free the rebuilt sockaddr structure
     free_sockaddr(address);
 
@@ -40,6 +42,11 @@ int SJMMIE_connect(int s, const struct sockaddr *name, socklen_t namelen) {
         jobject reference_sockaddr_object = sockaddr_to_reference_sockaddr(env, name, namelen);
 
 		jint return_value = (*env)->CallIntMethod(env, sjmmie_instance, java_connect_method, s, reference_sockaddr_object);
+
+        // DO NOT COPY BACK!
+
+        // Delete the copy
+        safe_delete_local_ref(env, reference_sockaddr_object);
 
 		return return_value;
 	}

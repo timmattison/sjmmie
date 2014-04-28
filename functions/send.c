@@ -22,6 +22,8 @@ JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalSend(JNI
     // Call the original function and store the result
     return_value = send(socket, buf_c, length, flags);
 
+    // DO NOT COPY BACK!
+
     // Release the memory for the copy of the string data
     free(buf_c);
 
@@ -42,8 +44,7 @@ ssize_t SJMMIE_send(int socket, const void *buffer, size_t length, int flags) {
 
         return_value = (*env)->CallIntMethod(env, sjmmie_instance, java_send_method, socket, buf_java, length, flags);
 
-        // Copy the data back from Java to C and release the Java copy immediately
-        java_byte_array_to_existing_char_array(env, buf_java, &buffer, length);
+        // DO NOT COPY BACK!
 
         // Release the copy of the original C data
         safe_delete_local_ref(env, buf_java);
