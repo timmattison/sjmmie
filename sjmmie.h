@@ -13,6 +13,7 @@
 #include <sys/socket.h>
 
 #include "objects/sockaddr.h"
+#include "objects/msghdr.h"
 #include "objects/arrays.h"
 
 extern const char *constructor_name;
