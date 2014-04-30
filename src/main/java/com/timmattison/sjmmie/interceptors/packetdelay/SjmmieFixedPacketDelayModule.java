@@ -3,9 +3,17 @@ package com.timmattison.sjmmie.interceptors.packetdelay;
 import com.google.inject.AbstractModule;
 import com.timmattison.sjmmie.SjmmieLibrary;
 import com.timmattison.sjmmie.interceptors.interfaces.*;
-import com.timmattison.sjmmie.interceptors.nop.*;
+import com.timmattison.sjmmie.interceptors.nop.NopCloseInterceptor;
+import com.timmattison.sjmmie.interceptors.nop.NopConnectInterceptor;
+import com.timmattison.sjmmie.interceptors.nop.NopOpenInterceptor;
+import com.timmattison.sjmmie.interceptors.nop.NopSocketInterceptor;
 import com.timmattison.sjmmie.restlets.BasicRestletApplicationFactory;
 import com.timmattison.sjmmie.restlets.RestletApplicationFactory;
+
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 /**
  * Created by timmattison on 3/13/14.
@@ -13,6 +21,12 @@ import com.timmattison.sjmmie.restlets.RestletApplicationFactory;
 public class SjmmieFixedPacketDelayModule extends AbstractModule {
     @Override
     protected void configure() {
+        // Set up the logger
+        LogManager logManager = LogManager.getLogManager();
+        Logger rootLogger = logManager.getLogger("");
+        rootLogger.setLevel(Level.ALL);
+        rootLogger.addHandler(new ConsoleHandler());
+
         bind(SjmmieLibrary.class).toInstance(new SjmmieLibrary());
 
         // Normal implementations

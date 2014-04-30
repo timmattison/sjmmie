@@ -1,15 +1,23 @@
 package com.timmattison.sjmmie.interceptors.packetdelay;
 
+import javax.inject.Inject;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 
 /**
  * Created by timmattison on 3/24/14.
  */
 public class BasicSocketDelayer implements SocketDelayer {
+    private final Logger logger;
     private Set<Integer> socketDescriptorSet = new HashSet<Integer>();
 
     private int delay = 50;
+
+    @Inject
+    public BasicSocketDelayer(Logger logger) {
+        this.logger = logger;
+    }
 
     @Override
     public int getDelay() {
@@ -23,7 +31,7 @@ public class BasicSocketDelayer implements SocketDelayer {
 
     public void sentDataOnSocket(int socketDescriptor) {
         // Indicate that we want to delay next time
-        System.out.println("Adding socket descriptor " + socketDescriptor);
+        logger.info("Adding socket descriptor " + socketDescriptor);
         socketDescriptorSet.add(socketDescriptor);
     }
 
@@ -36,7 +44,7 @@ public class BasicSocketDelayer implements SocketDelayer {
             // Yes, remove the socket descriptor from the set so we know we delayed already
             socketDescriptorSet.remove(socketDescriptor);
 
-            System.out.println("DELAYING...");
+            logger.info("DELAYING...");
 
             try {
                 // Sleep for the specified delay

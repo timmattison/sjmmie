@@ -4,23 +4,26 @@ import com.timmattison.sjmmie.SjmmieLibrary;
 import com.timmattison.sjmmie.interceptors.interfaces.RecvInterceptor;
 
 import javax.inject.Inject;
+import java.util.logging.Logger;
 
 /**
  * Created by timmattison on 3/21/14.
  */
 public class DelayRecvIntereceptor implements RecvInterceptor {
+    private final Logger logger;
     private final SjmmieLibrary sjmmieLibrary;
     private final SocketDelayer socketDelayer;
 
     @Inject
-    public DelayRecvIntereceptor(SjmmieLibrary sjmmieLibrary, SocketDelayer socketDelayer) {
+    public DelayRecvIntereceptor(Logger logger, SjmmieLibrary sjmmieLibrary, SocketDelayer socketDelayer) {
+        this.logger = logger;
         this.sjmmieLibrary = sjmmieLibrary;
         this.socketDelayer = socketDelayer;
     }
 
     @Override
     public int recvInterceptor(int socket, byte[] buffer, int length, int flags) {
-        System.out.println("Delay Recv: " + socket + ", " + length + ", " + flags);
+        logger.info(socket + ", " + length + ", " + flags);
 
         if (socketDelayer != null) {
             socketDelayer.receivedDataOnSocket(socket);

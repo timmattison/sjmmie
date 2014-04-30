@@ -22,6 +22,7 @@ import java.util.logging.Logger;
  * Created by timmattison on 2/20/14.
  */
 public class Sjmmie extends AbstractSjmmie {
+    private final Logger logger;
     private static Sjmmie INSTANCE = null;
     private static final int listeningPort = 64000;
     private final RestletApplicationFactory restletApplicationFactory;
@@ -45,7 +46,8 @@ public class Sjmmie extends AbstractSjmmie {
     }
 
     @Inject
-    public Sjmmie(RestletApplicationFactory restletApplicationFactory, OpenInterceptor openInterceptor, CloseInterceptor closeInterceptor, ConnectInterceptor connectInterceptor, SendToInterceptor sendToInterceptor, SendToInterceptorToggle sendToInterceptorToggle, RecvFromInterceptor recvFromInterceptor, SocketInterceptor socketInterceptor, SendInterceptor sendInterceptor, RecvInterceptor recvInterceptor) {
+    public Sjmmie(RestletApplicationFactory restletApplicationFactory, OpenInterceptor openInterceptor, CloseInterceptor closeInterceptor, ConnectInterceptor connectInterceptor, SendToInterceptor sendToInterceptor, SendToInterceptorToggle sendToInterceptorToggle, RecvFromInterceptor recvFromInterceptor, SocketInterceptor socketInterceptor, SendInterceptor sendInterceptor, Logger logger, RecvInterceptor recvInterceptor) {
+        this.logger = logger;
         this.restletApplicationFactory = restletApplicationFactory;
         this.openInterceptor = openInterceptor;
         this.closeInterceptor = closeInterceptor;
@@ -72,6 +74,8 @@ public class Sjmmie extends AbstractSjmmie {
 
             // Attach the sample application.
             component.getDefaultHost().attach(restletApplicationFactory.create(getToggles()));
+
+            logger.info("Starting RESTlets");
 
             // Start the component.
             component.start();

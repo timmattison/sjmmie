@@ -21,7 +21,7 @@ public class NopRecvInterceptor implements RecvInterceptor {
 
     @Override
     public int recvInterceptor(int socket, byte[] buffer, int length, int flags) {
-        logger.info("NOP Recv: " + socket + ", " + length + ", " + flags);
+        logger.info(socket + ", " + length + ", " + flags);
         int returnValue = sjmmieLibrary.originalRecv(socket, buffer, length, flags);
         return returnValue;
     }

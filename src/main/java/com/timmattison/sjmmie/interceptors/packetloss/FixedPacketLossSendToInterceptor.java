@@ -5,18 +5,21 @@ import com.timmattison.sjmmie.SjmmieLibrary;
 import com.timmattison.sjmmie.interceptors.interfaces.SendToInterceptor;
 
 import javax.inject.Inject;
+import java.util.logging.Logger;
 
 /**
  * Created by timmattison on 3/21/14.
  */
 public class FixedPacketLossSendToInterceptor implements SendToInterceptor {
+    private final Logger logger;
     private final SjmmieLibrary sjmmieLibrary;
     private final int modulus;
     private int counter = 0;
     private boolean enabled = true;
 
     @Inject
-    public FixedPacketLossSendToInterceptor(@Assisted("Modulus") int modulus, SjmmieLibrary sjmmieLibrary) {
+    public FixedPacketLossSendToInterceptor(Logger logger, @Assisted("Modulus") int modulus, SjmmieLibrary sjmmieLibrary) {
+        this.logger = logger;
         this.modulus = modulus;
         this.sjmmieLibrary = sjmmieLibrary;
     }
@@ -27,7 +30,7 @@ public class FixedPacketLossSendToInterceptor implements SendToInterceptor {
             counter++;
 
             if ((counter % modulus) == 0) {
-                System.out.println("[" + sockfd + ", " + counter + "] Dropping " + len + " byte(s)");
+                logger.info("[" + sockfd + ", " + counter + "] Dropping " + len + " byte(s)");
                 return len;
             }
         }
@@ -42,7 +45,7 @@ public class FixedPacketLossSendToInterceptor implements SendToInterceptor {
 
     @Override
     public void sendToInterceptorSetEnabled(boolean enabled) {
-        System.out.println("Fixed packet loss is now " + (enabled ? "enabled" : "disabled"));
+        logger.info("Fixed packet loss is now " + (enabled ? "enabled" : "disabled"));
         this.enabled = enabled;
     }
 }

@@ -7,22 +7,25 @@ import com.timmattison.sjmmie.enums.SocketTypes;
 import com.timmattison.sjmmie.interceptors.interfaces.SocketInterceptor;
 
 import javax.inject.Inject;
+import java.util.logging.Logger;
 
 /**
  * Created by timmattison on 3/13/14.
  */
 public class NopSocketInterceptor implements SocketInterceptor {
+    private final Logger logger;
     private final SjmmieLibrary sjmmieLibrary;
 
     @Inject
-    public NopSocketInterceptor(SjmmieLibrary sjmmieLibrary) {
+    public NopSocketInterceptor(Logger logger, SjmmieLibrary sjmmieLibrary) {
+        this.logger = logger;
         this.sjmmieLibrary = sjmmieLibrary;
     }
 
     @Override
     public int socketInterceptor(int domain, int type, int protocol) {
         int socketDescriptor = sjmmieLibrary.originalSocket(domain, type, protocol);
-        System.out.println("Socket: Descriptor -> " + socketDescriptor + ", Domain -> " + SocketAddressFamilies.findByValue(domain) + "[" + domain + "], type -> " + SocketTypes.findByValue(type) + "[" + type + "], protocol -> " + SocketProtocols.findByValue(protocol) + "[" + protocol + "]");
+        logger.info("Socket: Descriptor -> " + socketDescriptor + ", Domain -> " + SocketAddressFamilies.findByValue(domain) + "[" + domain + "], type -> " + SocketTypes.findByValue(type) + "[" + type + "], protocol -> " + SocketProtocols.findByValue(protocol) + "[" + protocol + "]");
 
         return socketDescriptor;
     }
