@@ -33,8 +33,8 @@ jobject msghdr_to_reference_msghdr(JNIEnv *env, struct msghdr *msghdr, int addre
     (*env)->SetByteArrayRegion(env, msg_name_byte_array, 0, address_length, (jbyte *) msghdr->msg_name);
     (*env)->SetObjectField(env, reference_msghdr_object, msg_name_field_id, msg_name_byte_array);
 
-    jfieldID name_len_field_id = (*env)->GetFieldID(env, reference_msghdr_class, REFERENCE_MSGHDR_MSG_NAMELEN_FIELD_NAME, "I");
-    (*env)->SetIntField(env, reference_msghdr_object, name_len_field_id, msghdr->msg_namelen);
+    jfieldID msg_name_len_field_id = (*env)->GetFieldID(env, reference_msghdr_class, REFERENCE_MSGHDR_MSG_NAMELEN_FIELD_NAME, "I");
+    (*env)->SetIntField(env, reference_msghdr_object, msg_name_len_field_id, msghdr->msg_namelen);
 
     jfieldID msg_iov_field_id = (*env)->GetFieldID(env, reference_msghdr_class, REFERENCE_MSGHDR_MSG_IOV_FIELD_NAME, "[java/lang/Object;");
 
