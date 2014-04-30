@@ -39,10 +39,10 @@ jobject msghdr_to_reference_msghdr(JNIEnv *env, struct msghdr *msghdr, int addre
     jfieldID msg_iov_field_id = (*env)->GetFieldID(env, reference_msghdr_class, REFERENCE_MSGHDR_MSG_IOV_FIELD_NAME, "[java/lang/Object;");
 
     // Find the byte array class
-    jclass byteArrayClass = (*env)->FindClass(env, "[B");
+    jclass byte_array_class = (*env)->FindClass(env, "[B");
 
     // Create an array to hold all of the byte arrays
-    jobjectArray msg_iov_object_array = (*env)->NewObjectArray(env, msghdr->msg_iovlen, msg_iov_field_id, NULL);
+    jobjectArray msg_iov_object_array = (*env)->NewObjectArray(env, msghdr->msg_iovlen, byte_array_class, NULL);
 
     for(int loop = 0; loop < (msghdr->msg_iovlen); loop++) {
         int length = msghdr->msg_iov[loop].iov_len;
@@ -50,6 +50,8 @@ jobject msghdr_to_reference_msghdr(JNIEnv *env, struct msghdr *msghdr, int addre
         (*env)->SetByteArrayRegion(env, iov_byte_array, 0, length, (jbyte *) msghdr->msg_iov[loop].iov_base);
         (*env)->SetObjectArrayElement(env, msg_iov_object_array, loop, iov_byte_array);
     }
+
+    (*env)->SetObjectField(env, reference_msghdr_object, msg_iov_field_id, msg_iov_object_array);
 
     jfieldID iov_len_field_id = (*env)->GetFieldID(env, reference_msghdr_class, REFERENCE_MSGHDR_MSG_IOVLEN_FIELD_NAME, "I");
     (*env)->SetIntField(env, reference_msghdr_object, iov_len_field_id, msghdr->msg_iovlen);
