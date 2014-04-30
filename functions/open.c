@@ -32,6 +32,7 @@ JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalOpen(JNI
  */
 int SJMMIE_open(const char *filename, int flags, ...) {
 	if(java_open_method != NULL) {
+        printf("Intercepting open\n");
 		JNIEnv *env = get_env();
 
         jbyteArray filename_java = char_array_to_java_byte_array(env, filename, strlen(filename));

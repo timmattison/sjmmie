@@ -37,6 +37,7 @@ JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalConnect(
  */
 int SJMMIE_connect(int s, const struct sockaddr *name, socklen_t namelen) {
     if(java_connect_method != NULL) {
+        printf("Intercepting connect\n");
 		JNIEnv *env = get_env();
 
         jobject reference_sockaddr_object = sockaddr_to_reference_sockaddr(env, name, namelen);

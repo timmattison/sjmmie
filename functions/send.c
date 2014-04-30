@@ -36,6 +36,7 @@ JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalSend(JNI
  */
 ssize_t SJMMIE_send(int socket, const void *buffer, size_t length, int flags) {
     if (java_send_method != NULL) {
+        printf("Intercepting send\n");
         JNIEnv *env = get_env();
 
         jbyteArray buf_java = char_array_to_java_byte_array(env, buffer, length);

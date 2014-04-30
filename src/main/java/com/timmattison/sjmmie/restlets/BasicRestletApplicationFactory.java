@@ -21,10 +21,13 @@ public class BasicRestletApplicationFactory implements RestletApplicationFactory
 
     @Override
     public RestletApplication create(@Assisted("toggles") List<Toggle> toggles) {
+        logger.info("BRAF 1");
         if (restletApplication == null) {
+            logger.info("BRAF 2");
             restletApplication = new RestletApplication(toggles);
         }
 
+        logger.info("BRAF 3");
         return restletApplication;
     }
 }
