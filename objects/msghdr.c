@@ -23,18 +23,15 @@ struct iovec {
     size_t	 iov_len;
 };
  */
-jobject msghdr_to_reference_msghdr(JNIEnv *env, struct msghdr *msghdr, int address_length) {
+jobject msghdr_to_reference_msghdr(JNIEnv *env, struct msghdr *msghdr) {
     jclass reference_msghdr_class = (*env)->FindClass(env, REFERENCE_MSGHDR_CLASS_NAME);
     jmethodID reference_msghdr_constructor = (*env)->GetMethodID(env, reference_msghdr_class, "<init>", no_arguments);
     jobject reference_msghdr_object = (*env)->NewObject(env, reference_msghdr_class, reference_msghdr_constructor);
 
     jfieldID msg_name_field_id = (*env)->GetFieldID(env, reference_msghdr_class, REFERENCE_MSGHDR_MSG_NAME_FIELD_NAME, "[B");
-    jbyteArray msg_name_byte_array = (*env)->NewByteArray(env, address_length);
-    (*env)->SetByteArrayRegion(env, msg_name_byte_array, 0, address_length, (jbyte *) msghdr->msg_name);
+    jbyteArray msg_name_byte_array = (*env)->NewByteArray(env, msghdr->msg_namelen);
+    (*env)->SetByteArrayRegion(env, msg_name_byte_array, 0, msghdr->msg_namelen, (jbyte *) msghdr->msg_name);
     (*env)->SetObjectField(env, reference_msghdr_object, msg_name_field_id, msg_name_byte_array);
-
-    jfieldID msg_name_len_field_id = (*env)->GetFieldID(env, reference_msghdr_class, REFERENCE_MSGHDR_MSG_NAMELEN_FIELD_NAME, "I");
-    (*env)->SetIntField(env, reference_msghdr_object, msg_name_len_field_id, msghdr->msg_namelen);
 
     jfieldID msg_iov_field_id = (*env)->GetFieldID(env, reference_msghdr_class, REFERENCE_MSGHDR_MSG_IOV_FIELD_NAME, "[java/lang/Object;");
 
@@ -53,16 +50,10 @@ jobject msghdr_to_reference_msghdr(JNIEnv *env, struct msghdr *msghdr, int addre
 
     (*env)->SetObjectField(env, reference_msghdr_object, msg_iov_field_id, msg_iov_object_array);
 
-    jfieldID msg_iov_len_field_id = (*env)->GetFieldID(env, reference_msghdr_class, REFERENCE_MSGHDR_MSG_IOVLEN_FIELD_NAME, "I");
-    (*env)->SetIntField(env, reference_msghdr_object, msg_iov_len_field_id, msghdr->msg_iovlen);
-
     jfieldID msg_control_field_id = (*env)->GetFieldID(env, reference_msghdr_class, REFERENCE_MSGHDR_MSG_CONTROL_FIELD_NAME, "[B");
-    jbyteArray msg_control_byte_array = (*env)->NewByteArray(env, address_length);
-    (*env)->SetByteArrayRegion(env, msg_control_byte_array, 0, address_length, (jbyte *) msghdr->msg_control);
+    jbyteArray msg_control_byte_array = (*env)->NewByteArray(env, msghdr->msg_controllen);
+    (*env)->SetByteArrayRegion(env, msg_control_byte_array, 0, msghdr->msg_controllen, (jbyte *) msghdr->msg_control);
     (*env)->SetObjectField(env, reference_msghdr_object, msg_control_field_id, msg_control_byte_array);
-
-    jfieldID msg_control_len_field_id = (*env)->GetFieldID(env, reference_msghdr_class, REFERENCE_MSGHDR_MSG_CONTROLLEN_FIELD_NAME, "I");
-    (*env)->SetIntField(env, reference_msghdr_object, msg_control_len_field_id, msghdr->msg_controllen);
 
     jfieldID msg_flags_field_id = (*env)->GetFieldID(env, reference_msghdr_class, REFERENCE_MSGHDR_MSG_FLAGS_FIELD_NAME, "I");
     (*env)->SetIntField(env, reference_msghdr_object, msg_flags_field_id, msghdr->msg_flags);
@@ -70,21 +61,18 @@ jobject msghdr_to_reference_msghdr(JNIEnv *env, struct msghdr *msghdr, int addre
     return reference_msghdr_object;
 }
 
-struct sockaddr *reference_msghdr_to_msghdr(JNIEnv *env, jobject reference_sockaddr_object, int *address_length) {
+struct sockaddr *reference_msghdr_to_msghdr(JNIEnv *env, jobject reference_msghdr_object) {
     jclass reference_msghdr_class = (*env)->FindClass(env, REFERENCE_MSGHDR_CLASS_NAME);
 
     jfieldID msg_name_field_id = (*env)->GetFieldID(env, reference_msghdr_class, REFERENCE_MSGHDR_MSG_NAME_FIELD_NAME, "[B");
-    jfieldID name_len_field_id = (*env)->GetFieldID(env, reference_msghdr_class, REFERENCE_MSGHDR_MSG_NAMELEN_FIELD_NAME, "I");
+    jbyteArray msg_name_field_byte_array = (*env)->GetObjectField(env, reference_msghdr_object, msg_name_field_id);
+    char *msg_name = (*env)->GetByteArrayElements(env, msg_name_field_byte_array, 0);
+    int msg_name_length = (int) (*env)->GetArrayLength(env, msg_name_field_byte_array);
+
     jfieldID msg_iov_field_id = (*env)->GetFieldID(env, reference_msghdr_class, REFERENCE_MSGHDR_MSG_IOV_FIELD_NAME, "[java/lang/Object;");
-    jfieldID msg_iov_len_field_id = (*env)->GetFieldID(env, reference_msghdr_class, REFERENCE_MSGHDR_MSG_IOVLEN_FIELD_NAME, "I");
     jfieldID msg_control_field_id = (*env)->GetFieldID(env, reference_msghdr_class, REFERENCE_MSGHDR_MSG_CONTROL_FIELD_NAME, "[B");
-    jfieldID msg_control_len_field_id = (*env)->GetFieldID(env, reference_msghdr_class, REFERENCE_MSGHDR_MSG_CONTROLLEN_FIELD_NAME, "I");
     jfieldID msg_flags_field_id = (*env)->GetFieldID(env, reference_msghdr_class, REFERENCE_MSGHDR_MSG_FLAGS_FIELD_NAME, "I");
 
-    jfieldID sa_data_field_id = (*env)->GetFieldID(env, reference_sockaddr_class, REFERENCE_SOCKADDR_SA_DATA_FIELD_NAME, "[B");
-    jbyteArray sa_data_field_byte_array = (*env)->GetObjectField(env, reference_sockaddr_object, sa_data_field_id);
-    char *sa_data = (*env)->GetByteArrayElements(env, sa_data_field_byte_array, 0);
-    *address_length = (int) (*env)->GetArrayLength(env, sa_data_field_byte_array);
 
     int sa_len_size = member_size(struct sockaddr, sa_len);
     int sa_family_size = member_size(struct sockaddr, sa_family);

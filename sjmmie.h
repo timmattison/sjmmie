@@ -58,11 +58,8 @@ char *get_byte_array_field(JNIEnv *env, jclass class, jobject object, char *fiel
 
 // For msghdr
 #define REFERENCE_MSGHDR_CLASS_NAME "Lcom/timmattison/sjmmie/objects/ReferenceMsghdr;"
-#define REFERENCE_MSGHDR_MSG_NAMELEN_FIELD_NAME "msg_namelen"
 #define REFERENCE_MSGHDR_MSG_NAME_FIELD_NAME "msg_name"
-#define REFERENCE_MSGHDR_MSG_IOVLEN_FIELD_NAME "msg_iovlen"
 #define REFERENCE_MSGHDR_MSG_IOV_FIELD_NAME "msg_iov"
-#define REFERENCE_MSGHDR_MSG_CONTROLLEN_FIELD_NAME "msg_controllen"
 #define REFERENCE_MSGHDR_MSG_CONTROL_FIELD_NAME "msg_control"
 #define REFERENCE_MSGHDR_MSG_FLAGS_FIELD_NAME "msg_flags"
 
