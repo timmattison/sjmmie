@@ -25,7 +25,6 @@ JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalClose(JN
  */
 int SJMMIE_close(int fildes) {
 	if(java_close_method != NULL) {
-        printf("Intercepting close\n");
 		JNIEnv *env = get_env();
 
 		jint return_value = (*env)->CallIntMethod(env, sjmmie_instance, java_close_method, fildes);

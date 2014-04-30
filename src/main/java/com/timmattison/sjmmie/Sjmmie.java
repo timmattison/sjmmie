@@ -30,7 +30,6 @@ public class Sjmmie extends AbstractSjmmie {
     private static boolean restletsStarted = false;
 
     public static Sjmmie getInstance() {
-        System.out.println("Calling getInstance");
         if (INSTANCE == null) {
             LogManager logManager = LogManager.getLogManager();
             Logger rootLogger = logManager.getLogger("");

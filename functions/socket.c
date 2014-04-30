@@ -19,7 +19,6 @@ JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalSocket(J
  */
 int SJMMIE_socket(int domain, int type, int protocol) {
 	if(java_socket_method != NULL) {
-        printf("Intercepting socket\n");
 		JNIEnv *env = get_env();
 
 		return (*env)->CallIntMethod(env, sjmmie_instance, java_socket_method, domain, type, protocol);

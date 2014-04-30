@@ -37,7 +37,6 @@ JNIEXPORT int JNICALL Java_com_timmattison_sjmmie_SjmmieLibrary_originalRecv(JNI
  */
 ssize_t SJMMIE_recv(int socket, void *buffer, size_t size, int flags) {
 	if(java_recv_method != NULL) {
-        printf("Intercepting recv\n");
 		JNIEnv *env = get_env();
 
 		// NOTE: Since this is recv we technically don't need to copy the data from C.  But to make sure that we reproduce normal
