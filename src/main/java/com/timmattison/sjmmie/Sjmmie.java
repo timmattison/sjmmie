@@ -30,19 +30,21 @@ public class Sjmmie extends AbstractSjmmie {
     private static boolean restletsStarted = false;
 
     public static Sjmmie getInstance() {
-        if (INSTANCE == null) {
-            LogManager logManager = LogManager.getLogManager();
-            Logger rootLogger = logManager.getLogger("");
-            rootLogger.setLevel(Level.ALL);
-            rootLogger.addHandler(new ConsoleHandler());
+        synchronized (Sjmmie.class) {
+            if (INSTANCE == null) {
+                LogManager logManager = LogManager.getLogManager();
+                Logger rootLogger = logManager.getLogger("");
+                rootLogger.setLevel(Level.ALL);
+                rootLogger.addHandler(new ConsoleHandler());
 
-            Injector injector = Guice.createInjector(new SjmmieNopModule());
+                Injector injector = Guice.createInjector(new SjmmieNopModule());
 
-            // Get an instance of the Sjmmie object
-            INSTANCE = injector.getInstance(Sjmmie.class);
+                // Get an instance of the Sjmmie object
+                INSTANCE = injector.getInstance(Sjmmie.class);
+            }
+
+            return INSTANCE;
         }
-
-        return INSTANCE;
     }
 
     @Inject
