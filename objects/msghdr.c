@@ -1,28 +1,5 @@
 #include "sjmmie.h"
 
-//public class ReferenceMsghdr {
-//    public byte[] msg_name;
-//    public byte[][] msg_iov;
-//    public byte[] msg_control;
-//    public int msg_flags;
-//}
-
-/*
-struct msghdr {
-	-- void		*msg_name;
-    -- socklen_t	msg_namelen;
-    -- struct		iovec *msg_iov;
-    -- int		msg_iovlen;
-    -- void		*msg_control;
-    -- socklen_t	msg_controllen;
-    -- int		msg_flags;
-}
-
-struct iovec {
-	void *   iov_base;
-    size_t	 iov_len;
-};
- */
 jobject msghdr_to_reference_msghdr(JNIEnv *env, struct msghdr *msghdr) {
     jclass reference_msghdr_class = (*env)->FindClass(env, REFERENCE_MSGHDR_CLASS_NAME);
     jmethodID reference_msghdr_constructor = (*env)->GetMethodID(env, reference_msghdr_class, "<init>", no_arguments);
