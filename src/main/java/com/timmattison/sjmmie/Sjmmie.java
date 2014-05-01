@@ -59,7 +59,8 @@ public class Sjmmie extends AbstractSjmmie {
         this.recvFromInterceptor = recvFromInterceptor;
         this.socketInterceptor = socketInterceptor;
         this.sendInterceptor = sendInterceptor;
-        this.recvInterceptor = recvInterceptor;
+        this.sendInterceptor = null;
+        this.recvInterceptor = null;
 
         logger.info("Interceptors wired up");
 
