@@ -48,7 +48,10 @@ void set_int_field(JNIEnv *env, jclass class, jobject object, char *field_name, 
 void set_byte_array_field(JNIEnv *env, jclass class, jobject object, char *field_name, char *value, int length);
 jmethodID get_no_args_constructor(JNIEnv *env, jclass jclass);
 int get_int_field(JNIEnv *env, jclass class, jobject object, char *field_name);
+jfieldID get_jfieldid_byte_array_field(JNIEnv *env, jclass class, char *field_name);
+jfieldID get_jfieldid_object_array_field(JNIEnv *env, jclass class, char *field_name);
 char *get_byte_array_field(JNIEnv *env, jclass class, jobject object, char *field_name, int *output_length);
+jobject get_object_array_field(JNIEnv *env, jclass class, jobject object, char *field_name, int *output_length);
 
 // For sockaddr
 #define REFERENCE_SOCKADDR_CLASS_NAME "Lcom/timmattison/sjmmie/objects/ReferenceSockaddr;"

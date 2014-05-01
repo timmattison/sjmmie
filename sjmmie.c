@@ -255,6 +255,10 @@ jfieldID get_jfieldid_byte_array_field(JNIEnv *env, jclass class, char *field_na
     return (*env)->GetFieldID(env, class, field_name, "[B");
 }
 
+jfieldID get_jfieldid_object_array_field(JNIEnv *env, jclass class, char *field_name) {
+    return (*env)->GetFieldID(env, class, field_name, "[java/lang/Object;");
+}
+
 void set_int_field(JNIEnv *env, jclass class, jobject object, char *field_name, int value) {
     jfieldID field_id = get_jfieldid_int_field(env, class, field_name);
     (*env)->SetIntField(env, object, field_id, value);
@@ -281,6 +285,17 @@ char *get_byte_array_field(JNIEnv *env, jclass class, jobject object, char *fiel
     }
 
     return (*env)->GetByteArrayElements(env, field_byte_array, 0);
+}
+
+jobject get_object_array_field(JNIEnv *env, jclass class, jobject object, char *field_name, int *output_length) {
+    jfieldID field_id = get_jfieldid_object_array_field(env, class, field_name);
+    jobjectArray field_object_array = (*env)->GetObjectField(env, object, field_id);
+
+    if((output_length != NULL) && (field_object_array != NULL)) {
+        *output_length = (int) (*env)->GetArrayLength(env, field_object_array);
+    }
+
+    return field_object_array;
 }
 
 jmethodID get_no_args_constructor(JNIEnv *env, jclass class) {
