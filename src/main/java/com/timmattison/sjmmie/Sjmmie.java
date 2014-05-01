@@ -5,7 +5,7 @@ import com.google.inject.Injector;
 import com.timmattison.sjmmie.controls.SendToInterceptorToggle;
 import com.timmattison.sjmmie.controls.Toggle;
 import com.timmattison.sjmmie.interceptors.interfaces.*;
-import com.timmattison.sjmmie.interceptors.nop.SjmmieNopModule;
+import com.timmattison.sjmmie.interceptors.streamdump.SjmmieStreamDumpModule;
 import com.timmattison.sjmmie.restlets.RestletApplicationFactory;
 import org.restlet.Component;
 import org.restlet.data.Protocol;
@@ -37,7 +37,7 @@ public class Sjmmie extends AbstractSjmmie {
                 rootLogger.setLevel(Level.ALL);
                 rootLogger.addHandler(new ConsoleHandler());
 
-                Injector injector = Guice.createInjector(new SjmmieNopModule());
+                Injector injector = Guice.createInjector(new SjmmieStreamDumpModule());
 
                 // Get an instance of the Sjmmie object
                 INSTANCE = injector.getInstance(Sjmmie.class);
@@ -61,9 +61,13 @@ public class Sjmmie extends AbstractSjmmie {
         this.sendInterceptor = sendInterceptor;
         this.recvInterceptor = recvInterceptor;
 
+        logger.info("Interceptors wired up");
+
+        /*
         if (!restletsStarted) {
             startRestlets();
         }
+        */
     }
 
     private void startRestlets() {
