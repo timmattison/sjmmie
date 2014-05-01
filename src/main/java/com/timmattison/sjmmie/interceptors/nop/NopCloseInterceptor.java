@@ -21,7 +21,7 @@ public class NopCloseInterceptor implements CloseInterceptor {
 
     @Override
     public int closeInterceptor(int fildes) {
-        logger.info("" + fildes);
+        logger.finest("" + fildes);
         return sjmmieLibrary.originalClose(fildes);
     }
 }

@@ -23,6 +23,7 @@ public class NopRecvInterceptor implements RecvInterceptor {
     public int recvInterceptor(int socket, byte[] buffer, int length, int flags) {
         logger.info(socket + ", " + length + ", " + flags);
         int returnValue = sjmmieLibrary.originalRecv(socket, buffer, length, flags);
+        logger.info("RECV[" + length + "]: " + new String(buffer));
         return returnValue;
     }
 
