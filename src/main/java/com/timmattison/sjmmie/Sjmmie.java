@@ -56,8 +56,6 @@ public class Sjmmie extends AbstractSjmmie {
         for (Handler handler : handlers) {
             logger.removeHandler(handler);
         }
-
-        logger.addHandler(new ConsoleHandler());
     }
 
     @Inject
