@@ -75,11 +75,6 @@ public class Sjmmie extends AbstractSjmmie {
 
         logger.info("Interceptors wired up");
 
-        for (int loop = 0; loop < 10; loop++) {
-            logger.info("" + loop);
-            System.err.println("println " + loop);
-        }
-
         /*
         if (!restletsStarted) {
             startRestlets();
