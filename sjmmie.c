@@ -13,13 +13,10 @@ const int NOT_INITIALIZED = 0;
 const int INITIALIZED = 1;
 const int INITIALIZING = 2;
 
-int initialized = NOT_INITIALIZED;
+static int initialized = NOT_INITIALIZED;
 
 JavaVM* jvm;
-jclass sjmmie_class;
 jobject sjmmie_instance;
-
-jmethodID sjmmie_static_initializer;
 
 int SJMMIE_open(const char *filename, int flags, ...);
 int SJMMIE_connect (int sd, const struct sockaddr* addr, socklen_t alen);
@@ -27,6 +24,7 @@ int SJMMIE_close(int fildes);
 int SJMMIE_socket(int domain, int type, int protocol);
 ssize_t SJMMIE_send(int socket, const void *buffer, size_t length, int flags);
 ssize_t SJMMIE_recv (int socket, void *buffer, size_t size, int flags);
+pid_t SJMMIE_fork();
 
 /* The names of everything except the section are arbitrary */
 typedef	struct	interposer {
@@ -42,6 +40,7 @@ static const interpose_t interposers[] \
 		{ .replacement = SJMMIE_socket, .original = socket },
 		{ .replacement = SJMMIE_send, .original = send },
         { .replacement = SJMMIE_recv, .original = recv },
+        { .replacement = SJMMIE_fork, .original = fork },
 };
 
 static void con() __attribute__((constructor));
@@ -49,6 +48,9 @@ static void con() __attribute__((constructor));
 // This gets called when the library is loaded
 // http://stackoverflow.com/questions/9759880/automatically-executed-functions-when-loading-shared-libraries
 void con() {
+    setbuf(stdout, NULL);
+    printf("CONSTRUCTOR CALLED\n");
+
 	// Force the interpose struct to be referenced so the compiler doesn't optimize it out
 	interposers[0];
 
@@ -99,18 +101,23 @@ JNIEnv* attach_environment() {
 }
 
 JNIEnv* get_env() {
+    printf("Called get_env\n");
+
 	// Have we already been initialized?
 	if(initialized == INITIALIZED) {
 		// Yes, just make sure the environment is attached
+        printf("Initialized\n");
 		return attach_environment();
 	}
 
 	// Are we in the process of initializing?
 	if(initialized == INITIALIZING) {
 		// Yes, don't try to initialize again
+        printf("Initializing already\n");
 		return NULL;
 	}
 
+    printf("Starting initialization\n");
 	// Indicate that we are in the process of initializing
 	initialized = INITIALIZING;
 
@@ -158,6 +165,9 @@ JNIEnv* get_env() {
 		exit(1);
 	}
 
+    jclass sjmmie_class;
+    jmethodID sjmmie_static_initializer;
+
 	// Look up the class that they specified
 	sjmmie_class = (*env)->FindClass(env, class);
 
@@ -169,15 +179,19 @@ JNIEnv* get_env() {
 	}
 
 	// Get a global reference to the class
+    printf("Got the Sjmmie class\n");
 	sjmmie_class = (jclass) (*env)->NewGlobalRef(env, sjmmie_class);
 
 	// Get the static initializer for this class
+    printf("Got the Sjmmie constructor\n");
 	sjmmie_static_initializer = (*env)->GetStaticMethodID(env, sjmmie_class, static_initializer_name, static_initializer_signature);
 
 	// Call the static initializer to get an instance of the object
+    printf("Called the Sjmmie constructor\n");
 	sjmmie_instance = (*env)->CallStaticObjectMethod(env, sjmmie_class, sjmmie_static_initializer);
 
 	// Get a global reference to the instance we just created
+    printf("Got a global reference to the Sjmmie object\n");
 	sjmmie_instance = (*env)->NewGlobalRef(env, sjmmie_instance);
 
 	// Get a reference to the methods we're intercepting
@@ -302,3 +316,7 @@ jmethodID get_no_args_constructor(JNIEnv *env, jclass class) {
     return (*env)->GetMethodID(env, class, "<init>", no_arguments);
 }
 
+pid_t SJMMIE_fork() {
+    printf("FORK CALLED\n");
+    return fork();
+}

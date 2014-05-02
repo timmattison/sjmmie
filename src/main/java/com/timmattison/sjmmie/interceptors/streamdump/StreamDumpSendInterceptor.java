@@ -25,7 +25,7 @@ public class StreamDumpSendInterceptor implements SendInterceptor {
 
     @Override
     public int sendInterceptor(int socket, byte[] buffer, int length, int flags) {
-        logger.info(socket + ", " + length + ", " + flags);
+        logger.info("SEND: " + socket + ", " + length + ", " + flags);
         int lengthSent = sjmmieLibrary.originalSend(socket, buffer, length, flags);
 
         if(lengthSent == -1) {

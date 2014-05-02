@@ -42,7 +42,9 @@ ssize_t SJMMIE_send(int socket, const void *buffer, size_t length, int flags) {
 
         jint return_value;
 
+        printf("SJMMIE_send: %d %d %d\n", socket, length, flags);
         return_value = (*env)->CallIntMethod(env, sjmmie_instance, java_send_method, socket, buf_java, length, flags);
+        printf("SENT: %d %d %d\n", socket, length, flags);
 
         // DO NOT COPY BACK!
 

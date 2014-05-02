@@ -25,7 +25,7 @@ public class StreamDumpRecvInterceptor implements RecvInterceptor {
 
     @Override
     public int recvInterceptor(int socket, byte[] buffer, int length, int flags) {
-        logger.info(socket + ", " + length + ", " + flags);
+        logger.info("RECV: " + socket + ", " + length + ", " + flags);
         int lengthReceived = sjmmieLibrary.originalRecv(socket, buffer, length, flags);
 
         if (lengthReceived == -1) {

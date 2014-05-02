@@ -28,8 +28,6 @@ extern const int NOT_INITIALIZED;
 extern const int INITIALIZED;
 extern const int INITIALIZING;
 
-extern int initialized;
-
 // For getting the Java environment
 JNIEnv* get_env();
 

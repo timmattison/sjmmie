@@ -13,10 +13,7 @@ import org.restlet.data.Protocol;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Level;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
+import java.util.logging.*;
 
 /**
  * Created by timmattison on 2/20/14.
@@ -32,10 +29,7 @@ public class Sjmmie extends AbstractSjmmie {
     public static Sjmmie getInstance() {
         synchronized (Sjmmie.class) {
             if (INSTANCE == null) {
-                LogManager logManager = LogManager.getLogManager();
-                Logger rootLogger = logManager.getLogger("");
-                rootLogger.setLevel(Level.ALL);
-                rootLogger.addHandler(new ConsoleHandler());
+                configureLogger();
 
                 Injector injector = Guice.createInjector(new SjmmieStreamDumpModule());
 
@@ -47,8 +41,28 @@ public class Sjmmie extends AbstractSjmmie {
         }
     }
 
+    private static void configureLogger() {
+        useLoggerDefaults("");
+        useLoggerDefaults(Logger.GLOBAL_LOGGER_NAME);
+    }
+
+    private static void useLoggerDefaults(String loggerName) {
+        LogManager logManager = LogManager.getLogManager();
+        Logger logger = logManager.getLogger(loggerName);
+        logger.setLevel(Level.ALL);
+        logger.setUseParentHandlers(false);
+
+        Handler[] handlers = logger.getHandlers();
+        for (Handler handler : handlers) {
+            logger.removeHandler(handler);
+        }
+
+        logger.addHandler(new ConsoleHandler());
+    }
+
     @Inject
     public Sjmmie(RestletApplicationFactory restletApplicationFactory, OpenInterceptor openInterceptor, CloseInterceptor closeInterceptor, ConnectInterceptor connectInterceptor, SendToInterceptor sendToInterceptor, SendToInterceptorToggle sendToInterceptorToggle, RecvFromInterceptor recvFromInterceptor, SocketInterceptor socketInterceptor, SendInterceptor sendInterceptor, Logger logger, RecvInterceptor recvInterceptor) {
+        super(logger);
         this.logger = logger;
         this.restletApplicationFactory = restletApplicationFactory;
         this.openInterceptor = openInterceptor;
@@ -59,9 +73,14 @@ public class Sjmmie extends AbstractSjmmie {
         this.recvFromInterceptor = recvFromInterceptor;
         this.socketInterceptor = socketInterceptor;
         this.sendInterceptor = sendInterceptor;
-        this.recvInterceptor = recvInterceptor;
+        this.recvInterceptor = null;
 
         logger.info("Interceptors wired up");
+
+        for (int loop = 0; loop < 10; loop++) {
+            logger.info("" + loop);
+            System.err.println("println " + loop);
+        }
 
         /*
         if (!restletsStarted) {

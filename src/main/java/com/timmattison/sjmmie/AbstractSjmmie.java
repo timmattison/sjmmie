@@ -3,10 +3,13 @@ package com.timmattison.sjmmie;
 import com.timmattison.sjmmie.interceptors.interfaces.*;
 import com.timmattison.sjmmie.objects.ReferenceSockaddr;
 
+import java.util.logging.Logger;
+
 /**
  * Created by timmattison on 2/20/14.
  */
 public abstract class AbstractSjmmie implements OpenInterceptor, CloseInterceptor, ConnectInterceptor, SendToInterceptor, RecvFromInterceptor, SocketInterceptor, SendInterceptor, RecvInterceptor {
+    private final Logger logger;
     private static SjmmieLibrary sjmmieLibrary = new SjmmieLibrary();
 
     protected OpenInterceptor openInterceptor;
@@ -17,6 +20,10 @@ public abstract class AbstractSjmmie implements OpenInterceptor, CloseIntercepto
     protected SocketInterceptor socketInterceptor;
     protected SendInterceptor sendInterceptor;
     protected RecvInterceptor recvInterceptor;
+
+    public AbstractSjmmie(Logger logger) {
+        this.logger = logger;
+    }
 
     @Override
     public int openInterceptor(byte[] filename, int flags) {
@@ -85,10 +92,16 @@ public abstract class AbstractSjmmie implements OpenInterceptor, CloseIntercepto
 
     @Override
     public int sendInterceptor(int socket, byte[] buffer, int length, int flags) {
-        if (sendInterceptor != null) {
-            return sendInterceptor.sendInterceptor(socket, buffer, length, flags);
-        } else {
-            return sjmmieLibrary.originalSend(socket, buffer, length, flags);
+        try {
+            if (sendInterceptor != null) {
+                logger.info("CALLING INTERCEPTOR");
+                return sendInterceptor.sendInterceptor(socket, buffer, length, flags);
+            } else {
+                logger.info("CALLING ORIGINAL SEND");
+                return sjmmieLibrary.originalSend(socket, buffer, length, flags);
+            }
+        } finally {
+            logger.info("CALLED EITHER SEND");
         }
     }
 
