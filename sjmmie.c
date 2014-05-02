@@ -48,6 +48,7 @@ static void con() __attribute__((constructor));
 // This gets called when the library is loaded
 // http://stackoverflow.com/questions/9759880/automatically-executed-functions-when-loading-shared-libraries
 void con() {
+    // Disable all stdout buffering
     setbuf(stdout, NULL);
 
 	// Force the interpose struct to be referenced so the compiler doesn't optimize it out
