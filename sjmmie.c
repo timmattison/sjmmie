@@ -104,14 +104,12 @@ JNIEnv* get_env() {
 	// Have we already been initialized?
 	if(initialized == INITIALIZED) {
 		// Yes, just make sure the environment is attached
-        printf("Initialized\n");
 		return attach_environment();
 	}
 
 	// Are we in the process of initializing?
 	if(initialized == INITIALIZING) {
 		// Yes, don't try to initialize again
-        printf("Initializing already\n");
 		return NULL;
 	}
 
