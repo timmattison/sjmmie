@@ -49,7 +49,6 @@ static void con() __attribute__((constructor));
 // http://stackoverflow.com/questions/9759880/automatically-executed-functions-when-loading-shared-libraries
 void con() {
     setbuf(stdout, NULL);
-    printf("CONSTRUCTOR CALLED\n");
 
 	// Force the interpose struct to be referenced so the compiler doesn't optimize it out
 	interposers[0];
@@ -101,8 +100,6 @@ JNIEnv* attach_environment() {
 }
 
 JNIEnv* get_env() {
-    printf("Called get_env\n");
-
 	// Have we already been initialized?
 	if(initialized == INITIALIZED) {
 		// Yes, just make sure the environment is attached
@@ -117,7 +114,6 @@ JNIEnv* get_env() {
 		return NULL;
 	}
 
-    printf("Starting initialization\n");
 	// Indicate that we are in the process of initializing
 	initialized = INITIALIZING;
 
@@ -179,19 +175,15 @@ JNIEnv* get_env() {
 	}
 
 	// Get a global reference to the class
-    printf("Got the Sjmmie class\n");
 	sjmmie_class = (jclass) (*env)->NewGlobalRef(env, sjmmie_class);
 
 	// Get the static initializer for this class
-    printf("Got the Sjmmie constructor\n");
 	sjmmie_static_initializer = (*env)->GetStaticMethodID(env, sjmmie_class, static_initializer_name, static_initializer_signature);
 
 	// Call the static initializer to get an instance of the object
-    printf("Called the Sjmmie constructor\n");
 	sjmmie_instance = (*env)->CallStaticObjectMethod(env, sjmmie_class, sjmmie_static_initializer);
 
 	// Get a global reference to the instance we just created
-    printf("Got a global reference to the Sjmmie object\n");
 	sjmmie_instance = (*env)->NewGlobalRef(env, sjmmie_instance);
 
 	// Get a reference to the methods we're intercepting
