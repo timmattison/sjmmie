@@ -2,7 +2,6 @@ package com.timmattison.sjmmie.interceptors.nop;
 
 import com.timmattison.sjmmie.SjmmieLibrary;
 import com.timmattison.sjmmie.interceptors.interfaces.SendInterceptor;
-import com.timmattison.sjmmie.interceptors.interfaces.SendToInterceptor;
 
 import javax.inject.Inject;
 
